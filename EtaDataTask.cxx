@@ -37,7 +37,7 @@ EtaDataTask::EtaDataTask(const char* name)
 
 EtaDataTask::~EtaDataTask()
 {
-  return;
+  return ;
 }
 
 void EtaDataTask::UserCreateOutputObjects()
@@ -143,4 +143,4 @@ const TObject* EtaDataTask::FindOutputObject(const char* const  name,
     AliFatal("Object of name does not inherit from given class");
   return obj;
 }
-  
+

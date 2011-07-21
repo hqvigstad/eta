@@ -1,4 +1,4 @@
-static const char* gMode =  "full";
+static const char* gMode =  "terminate";
 static const char* gDataDir =  "/alice/sim/LHC11b6/";
 static const char* gPrefix = "";
 static const char* gRunFile = "file.txt";

@@ -32,7 +32,13 @@ void runGrid()
   gROOT->LoadMacro("EtaDataTask.cxx++g");   
   AliAnalysisTask *task = new EtaDataTask("EtaDataTask");
   mgr->AddTask(task);
-
+  
+  if( true ){ // Use Physics Selection
+    gROOT->LoadMacro("$ALICE_ROOT/ANALYSIS/macros/AddTaskPhysicsSelection.C");
+    AliPhysicsSelectionTask* physSelTask = AddTaskPhysicsSelection();
+    yourTask->SetCollisionCandidates(AliVEvent::kMB) 
+  }
+  
   AliESDInputHandler* esdH = new AliESDInputHandler();
   mgr->SetInputEventHandler(esdH);
 
