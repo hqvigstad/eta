@@ -26,8 +26,8 @@ class EtaHandler
 
  protected:
   TList* fOutputList; //points to where created output is added, set at creation
-
   
+  TLorentzVector GetMomentum(AliESDTrack* track);
   TObject* FindOutputObject(const char* const name,
 				  const char* const clas = "TObject");
   TH1* FindTH1(const char* const name)

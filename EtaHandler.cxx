@@ -8,6 +8,7 @@
 #include "TH2F.h"
 #include "TIterator.h"
 #include "TList.h"
+#include "TMath.h"
 
 #include <iostream>
 using namespace std;
@@ -24,14 +25,20 @@ EtaHandler::~EtaHandler()
 void EtaHandler::CreateHistograms()
 {
   TH2F* fH2_GG_PtvIM = new TH2F("fH2_GG_PtvIM", "fH2_GG_PtvIM",
-				200, 0, 20,  // Pt
+				500, 0, 50,  // Pt
 				200, 0, 1);  // IM
   fOutputList->Add( fH2_GG_PtvIM );
 
   TH2F* fH2_EtaCand_PtvIM = new TH2F("fH2_EtaCand_PtvIM", "fH2_EtaCand_PtvIM",
-				200, 0, 20,  // Pt
+				500, 0, 50,  // Pt
 				200, 0, 1);  // IM
   fOutputList->Add( fH2_EtaCand_PtvIM );
+
+  TH2F* fH2_EPCand_PtvIM = new TH2F("fH2_EPCand_PtvIM", "fH2_EPCand_PtvIM",
+				200, 0, 20,  // Pt
+				200, 0, 1);  // IM
+  fOutputList->Add( fH2_EPCand_PtvIM );
+
 }
 
 vector<EtaCandidate> 
@@ -54,7 +61,7 @@ EtaHandler::EtaCandidates(double vertex[3],
       
       
       double m cand.GetVector().M();
-      double pt cand.GetVector().M();
+      double pt cand.GetVector().Pt();
       
       FindTH2("fH2_GG_PtvIM")->Fill( pt, m );
       
@@ -63,7 +70,7 @@ EtaHandler::EtaCandidates(double vertex[3],
 	  m > sEtaMass - sEtaMassCut  &&  m < sEtaMass + sEtaMassCutt
 	  )
 	{
-	  FindTH1("fH2_EtaCand_PtvIM")->Fill( pt, m );
+	  FindTH2("fH2_EtaCand_PtvIM")->Fill( pt, m );
 	  candidates.push_back( cand );
 	}
     }
@@ -78,14 +85,35 @@ void EtaHandler::EtaPrime(TList* etas, TRefArray* tracks, TRefArray* tracks2)
     
   vector<EtaCandidate> candidates;
   
-  for(int ei = 0; ei < etas->GetEntries(); ++ei)
-    for(int t1i = 0; t1i < tracks->GetEntries(); ++t1i)
+  for(int ei = 0; ei < etas->GetEntries(); ++ei) {
+    for(int t1i = 0; t1i < tracks->GetEntries(); ++t1i) {
+      TLorentzVector tv1 = GetMomentum(tracks->At(t1i));
       for(int t2i = i1+1; t2i < tracks2->GetEntries(); ++t2i) {
-	return;
+	TLorentzVector tv2 = GetMomentum(tracks->At(t2i));
+	if(true)
+	  {
+	    EPCVector =  ei.GetVector() + tv1 + tv2;
+	    FindTH2("fH2_EPCand_PtvIM")->Fill(EPCVector.Pt(),
+					      EPCVector.M());
+	  }
       }
-
+    }
+  }
 }
 
+TLorentzVector EtaHandler::GetMomentum(AliESDTrack* track)
+{
+  Double_t p[3];
+  track->PxPyPz(p);
+
+  // Assume pi+/-
+  double m = 0.13957018;
+  double E = TMath::Sqrt( E**2 + p[0]**2 + p[1]**2 + p[2]**2 );
+
+  TLorentzVector momentum(p[0], p[1], p[2], E);
+  return momentum;
+}
+    
 TObject* EtaHandler::FindOutputObject(const char* const  name, 
 				const char* const clas)
 {

@@ -32,6 +32,7 @@ class EtaDataTask : public AliAnalysisTaskSE
 
   const AliESDEvent* GetEvent(); // returns ESD Event
   void GetClusters(TRefArray* clusters); // fills 'clusters'
+  void GetTracks(TRefArray* tracks);
   const AliESDVertex* GetVertex(Double_t vertex[3]); // sets vertex
   const AliESDCaloCells* GetPHOSCells(); 
   

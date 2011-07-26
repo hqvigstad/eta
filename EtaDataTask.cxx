@@ -52,6 +52,11 @@ void EtaDataTask::UserCreateOutputObjects()
   // PHOS->GetYaxis()->SNetTitle("Counts");
   fOutputList->Add( nClusters );
 
+  TH2F* fCEnergyvNCells = new TH2F("fCEnergyvNCells", "fCEnergyvNCells",
+				   500, 0, 50,
+				   50, 0, 50);
+  fOutputList->Add( fCEnergyvNCells );
+
   EtaHandler eta(fOutputList);
   eta.CreateHistograms();
 
@@ -72,14 +77,27 @@ void EtaDataTask::UserExec(Option_t* )
 {
   double vertex[3];
   GetVertex(vertex);
+  
+  // Get Clusters
   TRefArray* clusters = new TRefArray;
   GetClusters( clusters );
   FindTH1("nClusters")->Fill( clusters->GetEntries() );
+  TH2* fCEnergyvNCells = FindTH2("fCEnergyvNCells");
+  TIterator* iter = clusters->MakeIterator();
+  while( iter->Next() )
+    iter->Fill( fCEnergyvNCells->E(), fCEnergyvNCells->GetNCells() );
   
+  // Get Tracks
+  TRefArray* tracks = new TRefArray;
+  GetTracks( tracks );
+
   EtaHandler eta(fOutputList);
-  eta.EtaCandidates(vertex, clusters);
+  vector<EtaCandidate> etas = eta.EtaCandidates(vertex, clusters);
+
   
+
   delete clusters;
+  delete tracks;
   PostData(1, fOutputList);
 }
 
@@ -102,6 +120,7 @@ const AliESDEvent* EtaDataTask::GetEvent()
   return ((const AliESDEvent*) event);
 }
 
+
 void EtaDataTask::GetClusters(TRefArray* clusters)
 {
   const AliESDEvent* event = GetEvent();
@@ -111,6 +130,13 @@ void EtaDataTask::GetClusters(TRefArray* clusters)
     }
 }
 
+
+void EtaDataTask::GetTracks(TRefArray* tracks)
+{
+  const AliESDEvent* event = GetEvent();
+  for(int i=0; i< event->GetNumberOfTracks(); ++i)
+    tracks->Add( event->GetTrack(i) );
+}
 
 const AliESDVertex* EtaDataTask::GetVertex(double vertex[3])
 {
