@@ -2,12 +2,14 @@
 
 #include "AliESDCaloCluster.h"
 
-
-void EtaCandidate::AddCluster(AliESDCaloCluster* cluster, double vertex[3])
+EtaCandidate::EtaCandidate(AliESDCaloCluster* clu1, AliESDCaloCluster* clu2,
+			   double vertex[3])
 {
-  particleMeasurements.Add( cluster );
+  particleMeasurements.Add( clu1 );
+  particleMeasurements.Add( clu2 );
   
-  TLorentzVector tempvec;
-  cluster->GetMomentum(tempvec, vertex);
-  vector += tempvec;
+  TLorentzVector v1, v2;
+  clu1->GetMomentum(v1, vertex);
+  clu2->GetMomentum(v2, vertex);
+  vector = v1 + v2;
 }
