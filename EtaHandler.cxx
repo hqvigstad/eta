@@ -13,37 +13,17 @@
 #include <iostream>
 using namespace std;
 
-EtaHandler::EtaHandler(TList* list) 
-{
-  fOutputList = list;
-  fOutputList->FirstLink(); // test, better to crash now rather then later
-}
+EtaHandler::EtaHandler() 
+  : fOutputList(0), 
+    fConfig()
+{}
 
 EtaHandler::~EtaHandler() 
 {return;}
 
-void EtaHandler::CreateHistograms()
-{
-  TH2F* fH2_GG_PtvIM = new TH2F("fH2_GG_PtvIM", "fH2_GG_PtvIM",
-				500, 0, 50,  // Pt
-				200, 0, 1);  // IM
-  fOutputList->Add( fH2_GG_PtvIM );
-
-  TH2F* fH2_EtaCand_PtvIM = new TH2F("fH2_EtaCand_PtvIM", "fH2_EtaCand_PtvIM",
-				500, 0, 50,  // Pt
-				200, 0, 1);  // IM
-  fOutputList->Add( fH2_EtaCand_PtvIM );
-
-  TH2F* fH2_EPCand_PtvIM = new TH2F("fH2_EPCand_PtvIM", "fH2_EPCand_PtvIM",
-				200, 0, 20,  // Pt
-				200, 0, 1);  // IM
-  fOutputList->Add( fH2_EPCand_PtvIM );
-
-}
 
 vector<EtaCandidate> 
-EtaHandler::EtaCandidates(double vertex[3],
-			  TRefArray* cArray,  TRefArray* cArray2 )
+EtaHandler::EtaCandidates(double vertex[3], TRefArray* cArray,  TRefArray* cArray2 )
 {
   if( ! cArray2 )
     cArray2 = cArray;
@@ -101,6 +81,29 @@ void EtaHandler::EtaPrime(TList* etas, TRefArray* tracks, TRefArray* tracks2)
   }
 }
 
+
+void EtaHandler::CreateHistograms()
+{
+  if( ! fOutputList )
+    Error("fOuputList is not set");
+  
+  TH2F* fH2_GG_PtvIM = new TH2F("fH2_GG_PtvIM", "fH2_GG_PtvIM",
+				500, 0, 50,  // Pt
+				200, 0, 1);  // IM
+  fOutputList->Add( fH2_GG_PtvIM );
+
+  TH2F* fH2_EtaCand_PtvIM = new TH2F("fH2_EtaCand_PtvIM", "fH2_EtaCand_PtvIM",
+				500, 0, 50,  // Pt
+				200, 0, 1);  // IM
+  fOutputList->Add( fH2_EtaCand_PtvIM );
+
+  TH2F* fH2_EPCand_PtvIM = new TH2F("fH2_EPCand_PtvIM", "fH2_EPCand_PtvIM",
+				200, 0, 20,  // Pt
+				200, 0, 1);  // IM
+  fOutputList->Add( fH2_EPCand_PtvIM );
+
+}
+
 TLorentzVector EtaHandler::GetMomentum(AliESDTrack* track)
 {
   Double_t p[3];
@@ -114,8 +117,7 @@ TLorentzVector EtaHandler::GetMomentum(AliESDTrack* track)
   return momentum;
 }
     
-TObject* EtaHandler::FindOutputObject(const char* const  name, 
-				const char* const clas)
+TObject* EtaHandler::FindOutputObject(const char* const  name, const char* const clas)
 {
   TObject* obj = fOutputList->FindObject(name);
   if(! obj)
@@ -127,3 +129,12 @@ TObject* EtaHandler::FindOutputObject(const char* const  name,
   return obj;
 }
   
+TH1* FindTH1(const char* const name)
+{
+  return (TH1*) FindOutputObject(name, "TH1");
+}
+
+TH2* FindTH2(const char* const name)
+{ 
+  return (TH2*) FindOutputObject(name, "TH2"); 
+}

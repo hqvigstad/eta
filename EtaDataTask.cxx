@@ -91,9 +91,12 @@ void EtaDataTask::UserExec(Option_t* )
   TRefArray* tracks = new TRefArray;
   GetTracks( tracks );
 
-  EtaHandler eta(fOutputList);
-  vector<EtaCandidate> etas = eta.EtaCandidates(vertex, clusters);
+  // Get Eta Candidates
+  EtaHandler etaHandler();
+  etaHandler.SetOutputList(fOutputList);
+  vector<EtaCandidate> etas = etaHandler.EtaCandidates(vertex, clusters);
 
+  // Get Eta Prime Candidates
   
 
   delete clusters;

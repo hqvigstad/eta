@@ -36,6 +36,8 @@ class EtaDataTask : public AliAnalysisTaskSE
   const AliESDVertex* GetVertex(Double_t vertex[3]); // sets vertex
   const AliESDCaloCells* GetPHOSCells(); 
   
+  
+  
   TList* fOutputList;
   const TObject* FindOutputObject(const char* const name, 
 				  const char* const clas = "TObject");

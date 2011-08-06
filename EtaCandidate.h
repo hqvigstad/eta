@@ -9,7 +9,7 @@ class AliESDCaloCluster;
 class EtaCandidate
 {
  public:
-  EtaCandidate(AliESDCaloCluster* clu1, AliESDCaloCluster* clu2);
+  EtaCandidate(AliESDCaloCluster* clu1, AliESDCaloCluster* clu2, double vertex[3]);
   TRefArray GetParticleMeasurements() { return particleMeasurements; }
   const TLorentzVector& GetVector() { return vector; }
   
