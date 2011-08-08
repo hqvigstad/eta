@@ -17,7 +17,6 @@ void EtaAnalysis::ProcessEvent(AliESDEvent* event)
   if( ! fHistograms )
     fHists = new EtaHistograms(fOutputList);
   
-  
   TRefArray caloClusters = GetClusters();
   vector<TGDCandidate> tgdCands = ProcessTGDCandidates(caloClusters, vertex);
 }

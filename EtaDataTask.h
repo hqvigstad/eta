@@ -31,21 +31,9 @@ class EtaDataTask : public AliAnalysisTaskSE
   EtaDataTask& operator=(const EtaDataTask& );//Not Implemented
 
   const AliESDEvent* GetEvent(); // returns ESD Event
-  void GetClusters(TRefArray* clusters); // fills 'clusters'
-  void GetTracks(TRefArray* tracks);
-  const AliESDVertex* GetVertex(Double_t vertex[3]); // sets vertex
-  const AliESDCaloCells* GetPHOSCells(); 
   
-  
-  
+  EtaAnalysis* fEtaAnalysis;
   TList* fOutputList;
-  const TObject* FindOutputObject(const char* const name, 
-				  const char* const clas = "TObject");
-  TH1F* FindTH1F(const char* const name)
-      { return (TH1F*) FindOutputObject(name, "TH1F"); }
-  TH1* FindTH1(const char* const name)
-      { return (TH1*) FindOutputObject(name, "TH1"); }
-  
   
   ClassDef(EtaDataTask, 1);
 };
