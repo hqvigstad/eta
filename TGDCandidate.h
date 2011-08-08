@@ -1,23 +1,24 @@
-#ifndef ETACANDIDATE_H
-#define ETACANDIDATE_H
+#ifndef TGDCANDIDATE_H
+#define TGDCANDIDATE_H
 
 #include "TObject.h"
 #include "TLorentzVector.h"
 #include "TRefArray.h"
 class AliESDCaloCluster;
 class AliESDVertex;
+class AliESDEvent;
 
-class EtaCandidate
+class TGDCandidate
 {
  public:
-  EtaCandidate(AliESDCaloCluster* clu1, AliESDCaloCluster* clu2, double vertex[3]);
-  TRefArray GetParticleMeasurements() { return particleMeasurements; }
-  const TLorentzVector& GetVector() { return vector; }
+  TGDCandidate(AliESDCaloCluster* clu1, AliESDCaloCluster* clu2, AliESDVertex* );
+  TRefArray GetParticleMeasurements() { return fParticleMeasurements; }
+  const TLorentzVector& GetVector() { return fVector; }
   
  protected:
   TRefArray fParticleMeasurements;
   TLorentzVector fVector; // The measured lorentz
-  AliESDVertex fVertex;
+  AliESDVertex* fVertex;
 };
 
 #endif

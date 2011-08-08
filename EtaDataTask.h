@@ -1,6 +1,8 @@
 #ifndef ETADATATASK_H
 #define ETADATATASK_H
 
+class EtaAnalysis;
+
 class TList;
 class AliESDEvent;
 class TRefArray;
@@ -30,7 +32,7 @@ class EtaDataTask : public AliAnalysisTaskSE
   EtaDataTask(const EtaDataTask&);//Not Implemented
   EtaDataTask& operator=(const EtaDataTask& );//Not Implemented
 
-  const AliESDEvent* GetEvent(); // returns ESD Event
+  AliESDEvent* GetEvent(); // returns ESD Event
   
   EtaAnalysis* fEtaAnalysis;
   TList* fOutputList;

@@ -1,23 +1,28 @@
 // Author: Henrik Qvigstad
 
+#include "AliESDEvent.h"
 #include "EtaAnalysis.h"
+#include "AliESDVertex.h"
+
 #include "EtaHistograms.h"
 
 EtaAnalysis::EtaAnalysis(const EtaConfig& config)
-  : EtaConfig(config),
+  : fConfig(config),
     fOutputList(0),
     fHistograms(0)
 {
 }
 
-EtaAnalysis::EtaAnalysis()
+EtaAnalysis::~EtaAnalysis()
+{}
 
 void EtaAnalysis::ProcessEvent(AliESDEvent* event)
 {
   if( ! fHistograms )
-    fHists = new EtaHistograms(fOutputList);
+    fHistograms = new EtaHistograms(fOutputList);
   
-  TRefArray caloClusters = GetClusters();
+  TRefArray caloClusters = GetClusters(event);
+  AliESDVertex* vertex = GetVertex(event);
   vector<TGDCandidate> tgdCands = ProcessTGDCandidates(caloClusters, vertex);
 }
 
@@ -27,29 +32,38 @@ const TRefArray EtaAnalysis::GetClusters(AliESDEvent* event)
   TRefArray cluArray;
   for(int i=0; i< event->GetNumberOfCaloClusters(); ++i)
     {
-      AliESDCaloCluster* cluster = event->GetCaloCluster(i);
-      cluArray->Add( event->GetCaloCluster(i) );
+      cluArray.Add( event->GetCaloCluster(i) );
     }
   return cluArray;
 }
 
 
-vector<TGDCandidate> ProcessTGDCandidates(const TRefArray& caloClusters, AliESDVertex* vertex)
+vector<TGDCandidate> EtaAnalysis::ProcessTGDCandidates(const TRefArray& caloClusters, AliESDVertex* vertex)
 {
   vector<TGDCandidate> candidates;
-  
-  for(int i1  = 0; i1 < caloClusters->GetEntries(); ++i1)
-    for(int i2 = i1+1; i2 < caloClusters->GetEntries(); ++i2) {
-      AliESDCaloCluster* clu1 = (AliESDCaloCluster* ) caloClusters->At(i1);
-      AliESDCaloCluster* clu2 = (AliESDCaloCluster* ) caloClusters->At(i2);
+   
+  for(int i1  = 0; i1 < caloClusters.GetEntries(); ++i1)
+    for(int i2 = i1+1; i2 < caloClusters.GetEntries(); ++i2) {
+      AliESDCaloCluster* clu1 = (AliESDCaloCluster* ) caloClusters.At(i1);
+      AliESDCaloCluster* clu2 = (AliESDCaloCluster* ) caloClusters.At(i2);
       
       TGDCandidate candidate(clu1, clu2, vertex);
 
-      double m cand.GetVector().M();
-      double pt cand.GetVector().Pt();
+      double m = candidate.GetVector().M();
+      double pt = candidate.GetVector().Pt();
       fHistograms->FillTGDCandidates( pt, m );
       
-      candidates.push_back( cand );
+      candidates.push_back( candidate );
     }
   return candidates;
+}
+
+
+AliESDVertex* EtaAnalysis::GetVertex(AliESDEvent* event)
+{
+  AliESDVertex *esdVertex = (AliESDVertex* )event->GetPrimaryVertex();
+  if (!esdVertex) {
+    cout << "FATAL: Vertex not found" << endl;
+  } 
+  return esdVertex;
 }

@@ -1,7 +1,6 @@
 #include "EtaDataTask.h"
 
-#include "EtaHandler.h"
-
+#include "EtaAnalysis.h"
 #include "TChain.h"
 #include "TLorentzVector.h"
 #include "TList.h"
@@ -46,7 +45,7 @@ void EtaDataTask::UserCreateOutputObjects()
   fOutputList = new TList();
   fOutputList->SetOwner();
   
-  fEtaAnalysis = new EtaAnalysis();
+  fEtaAnalysis = new EtaAnalysis(EtaConfig());
   fEtaAnalysis->SetOutputList(fOutputList);
   PostData(1, fOutputList);
   
@@ -90,7 +89,7 @@ void EtaDataTask::UserExec(Option_t* )
   // TRefArray* tracks = new TRefArray;
   // GetTracks( tracks );
 
-  const AliESDEvent* event = GetEvent();
+  AliESDEvent* event = GetEvent();
   fEtaAnalysis->ProcessEvent(event);
   
   PostData(1, fOutputList);
@@ -98,21 +97,20 @@ void EtaDataTask::UserExec(Option_t* )
 
 void EtaDataTask::Terminate(Option_t* )
 {
-  new TCanvas;
-  FindTH1("fH2_GG_PtvIM")->Draw();
-  new TCanvas;
-  FindTH1("nClusters")->Draw();
+  // new TCanvas;
+  // FindTH1("fH2_GG_PtvIM")->Draw();
+  // new TCanvas;
+  // FindTH1("nClusters")->Draw();
 }
 
-
-const AliESDEvent* EtaDataTask::GetEvent()
+AliESDEvent* EtaDataTask::GetEvent()
 {
   AliVEvent *event = InputEvent();
   if (!event)
     AliFatal("Could not retrieve event");
   if(! event->InheritsFrom("AliESDEvent"))
       AliFatal("Event is not ESD");
-  return ((const AliESDEvent*) event);
+  return ( (AliESDEvent*) event);
 }
 
 
@@ -133,17 +131,6 @@ const AliESDEvent* EtaDataTask::GetEvent()
 //     tracks->Add( event->GetTrack(i) );
 // }
 
-// const AliESDVertex* EtaDataTask::GetVertex(double vertex[3])
-// {
-//   const AliESDVertex *esdVertex = GetEvent()->GetPrimaryVertex();
-//   if (!esdVertex) {
-//     AliFatal("Vertex not found");
-//   } 
-//   //fOutput.nVertexCon = esdVertex->GetNContributors();
-//   if(vertex)
-//     esdVertex->GetXYZ(vertex);
-//   return esdVertex;
-// }
 
 
 // const AliESDCaloCells* EtaDataTask::GetPHOSCells()

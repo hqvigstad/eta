@@ -1,3 +1,6 @@
+#include "EtaHistograms.h"
+// Author: Henrik Qvigstad
+
 #include "TH2F.h"
 #include "TList.h"
 
@@ -7,6 +10,9 @@ EtaHistograms::EtaHistograms(TList* outputList)
 {
 }
 
+
+EtaHistograms::~EtaHistograms()
+{}
 
 void EtaHistograms::FillTGDCandidates(double pt, double m)
 {

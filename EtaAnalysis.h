@@ -4,8 +4,13 @@
 
 #include "TGDCandidate.h"
 
+#include <vector>
+#include <iostream>
+using namespace std;
+
 class TList;
 class EtaHistograms;
+class AliESDEvent;
 
 struct EtaConfig
 {
@@ -30,6 +35,7 @@ class EtaAnalysis
   
  private:
   const TRefArray GetClusters(AliESDEvent* );
+  static AliESDVertex* GetVertex(AliESDEvent* );
   vector<TGDCandidate> ProcessTGDCandidates(const TRefArray& caloClusters, AliESDVertex* vertex);
 
 

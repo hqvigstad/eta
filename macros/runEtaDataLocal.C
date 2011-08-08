@@ -19,8 +19,9 @@ void runEtaDataLocal()
 
   // Create tasks
   gSystem->AddIncludePath("-I../../EtaDataTask");
-  gROOT->LoadMacro("../EtaCandidate.cxx+g");
-  gROOT->LoadMacro("../EtaHandler.cxx+g");
+  gROOT->LoadMacro("../EtaHistograms.cxx+g");
+  gROOT->LoadMacro("../TGDCandidate.cxx+g");
+  gROOT->LoadMacro("../EtaAnalysis.cxx+g");
   gROOT->LoadMacro("../EtaDataTask.cxx+g");
 
   // Create the analysis manager

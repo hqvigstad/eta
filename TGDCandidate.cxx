@@ -1,8 +1,9 @@
 // Author: Henrik Qvigstad 
 
 #include "TGDCandidate.h"
-
 #include "AliESDCaloCluster.h"
+#include "AliESDVertex.h"
+#include "AliESDEvent.h"
 
 TGDCandidate::TGDCandidate(AliESDCaloCluster* clu1, AliESDCaloCluster* clu2, AliESDVertex* vertex)
 {
@@ -10,7 +11,7 @@ TGDCandidate::TGDCandidate(AliESDCaloCluster* clu1, AliESDCaloCluster* clu2, Ali
   fParticleMeasurements.Add( clu2 );
   fVertex = vertex;
 
-  double vertex_pos[3]
+  double vertex_pos[3];
   vertex->GetXYZ(vertex_pos);
 
   TLorentzVector v1, v2;
