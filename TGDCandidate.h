@@ -5,6 +5,7 @@
 #include "TLorentzVector.h"
 #include "TRefArray.h"
 class AliESDCaloCluster;
+class AliESDVertex;
 
 class EtaCandidate
 {
@@ -14,9 +15,9 @@ class EtaCandidate
   const TLorentzVector& GetVector() { return vector; }
   
  protected:
-  TRefArray particleMeasurements;
-  TLorentzVector vector; // The measured lorentz
-  
+  TRefArray fParticleMeasurements;
+  TLorentzVector fVector; // The measured lorentz
+  AliESDVertex fVertex;
 };
 
 #endif

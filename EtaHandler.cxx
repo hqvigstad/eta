@@ -23,7 +23,7 @@ EtaHandler::~EtaHandler()
 
 
 vector<EtaCandidate> 
-EtaHandler::EtaCandidates(double vertex[3], TRefArray* cArray,  TRefArray* cArray2 )
+EtaHandler::EtaCandidates(AliESDVertex* vertex, TRefArray* cArray,  TRefArray* cArray2 )
 {
   if( ! cArray2 )
     cArray2 = cArray;
