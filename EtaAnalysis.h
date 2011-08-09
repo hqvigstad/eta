@@ -34,10 +34,10 @@ class EtaAnalysis
   
   
  private:
-  const TRefArray GetClusters(AliESDEvent* );
+  static const TRefArray GetClusters(AliESDEvent* );
+  void PlotClusters(const TRefArray);
   static AliESDVertex* GetVertex(AliESDEvent* );
   vector<TGDCandidate> ProcessTGDCandidates(const TRefArray& caloClusters, AliESDVertex* vertex);
-
 
   const EtaConfig fConfig;
   TList* fOutputList; 

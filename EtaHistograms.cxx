@@ -26,3 +26,13 @@ void EtaHistograms::FillTGDCandidates(double pt, double m)
   fTGDCandidates->Fill(pt, m);
 }
 
+void EtaHistograms::FillNCells(double e, int nCells)
+{
+  if( ! fNCells )
+    {
+      fNCells = new TH2F("fNCells", "Number of Cells in cluster", 1000, 0, 100, 100, 0, 100);
+      fNCells->GetXaxis()->SetTitle("E [GeV]");
+      fOutputList->Add(fNCells);
+    }
+  fNCells->Fill(e, nCells);
+}
