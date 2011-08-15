@@ -6,7 +6,7 @@
 
 EtaHistograms::EtaHistograms(TList* outputList)
   : fOutputList(outputList),
-    fTGDCandidates(0)
+    fEtaCandidates(0)
 {
 }
 
@@ -14,16 +14,16 @@ EtaHistograms::EtaHistograms(TList* outputList)
 EtaHistograms::~EtaHistograms()
 {}
 
-void EtaHistograms::FillTGDCandidates(double pt, double m)
+void EtaHistograms::FillEtaCandidates(double pt, double m)
 {
-  if( ! fTGDCandidates )
+  if( ! fEtaCandidates )
     {
-      fTGDCandidates = new TH2F("fTGDCandidates", "Two Gamma Decay Candidates", 1000, 0, 100, 1000, 0, 1);
-      fTGDCandidates->GetXaxis()->SetTitle("Pt [GeV]");
-      fTGDCandidates->GetYaxis()->SetTitle("IM [GeV]");
-      fOutputList->Add(fTGDCandidates);
+      fEtaCandidates = new TH2F("fEtaCandidates", "Two Gamma Decay Candidates", 1000, 0, 100, 1000, 0, 1);
+      fEtaCandidates->GetXaxis()->SetTitle("Pt [GeV]");
+      fEtaCandidates->GetYaxis()->SetTitle("IM [GeV]");
+      fOutputList->Add(fEtaCandidates);
     }
-  fTGDCandidates->Fill(pt, m);
+  fEtaCandidates->Fill(pt, m);
 }
 
 void EtaHistograms::FillNCells(double e, int nCells)

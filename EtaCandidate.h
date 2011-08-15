@@ -1,5 +1,5 @@
-#ifndef TGDCANDIDATE_H
-#define TGDCANDIDATE_H
+#ifndef EtaCANDIDATE_H
+#define EtaCANDIDATE_H
 
 #include "TObject.h"
 #include "TLorentzVector.h"
@@ -8,15 +8,20 @@ class AliESDCaloCluster;
 class AliESDVertex;
 class AliESDEvent;
 
-class TGDCandidate
+class EtaCandidate
 {
  public:
-  TGDCandidate(AliESDCaloCluster* clu1, AliESDCaloCluster* clu2, AliESDVertex* );
-  TRefArray GetParticleMeasurements() { return fParticleMeasurements; }
+  EtaCandidate(AliESDCaloCluster* clu1, AliESDCaloCluster* clu2, AliESDVertex* );
+
+  AliESDtrack* GetTrack1() {return fTrack1;}
+  AliESDtrack* GetTrack2() {return fTrack2;}
+
   const TLorentzVector& GetVector() { return fVector; }
   
  protected:
-  TRefArray fParticleMeasurements;
+  AliESDCaloCluster* fCluster1;
+  AliESDCaloCluster* fCluster2;
+
   TLorentzVector fVector; // The measured lorentz
   AliESDVertex* fVertex;
 };

@@ -2,7 +2,7 @@
 #define ETAANALYSIS_H
 // Author: Henrik Qvigstad
 
-#include "TGDCandidate.h"
+#include "EtaCandidate.h"
 
 #include <vector>
 #include <iostream>
@@ -34,10 +34,11 @@ class EtaAnalysis
   
   
  private:
-  static const TRefArray GetClusters(AliESDEvent* );
-  void PlotClusters(const TRefArray);
+  const TRefArray GetClusters(AliESDEvent* );
+  const TRefArray GetTracks(AliESDEvent* );
   static AliESDVertex* GetVertex(AliESDEvent* );
-  vector<TGDCandidate> ProcessTGDCandidates(const TRefArray& caloClusters, AliESDVertex* vertex);
+  vector<EtaCandidate> ProcessEtaCandidates(const TRefArray& caloClusters, AliESDVertex* vertex);
+  void ProcessEtaPriCandidates(vector<EtaCandidate> Etas, const TRefArray& tracks);
 
   const EtaConfig fConfig;
   TList* fOutputList; 
