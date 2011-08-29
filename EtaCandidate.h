@@ -13,8 +13,8 @@ class EtaCandidate
  public:
   EtaCandidate(AliESDCaloCluster* clu1, AliESDCaloCluster* clu2, AliESDVertex* );
 
-  AliESDtrack* GetTrack1() {return fTrack1;}
-  AliESDtrack* GetTrack2() {return fTrack2;}
+  AliESDCaloCluster* GetCluster1() {return fCluster1;}
+  AliESDCaloCluster* GetCluster2() {return fCluster2;}
 
   const TLorentzVector& GetVector() { return fVector; }
   

@@ -22,11 +22,16 @@ void EtaAnalysis::ProcessEvent(AliESDEvent* event)
     fHistograms = new EtaHistograms(fOutputList);
   
   const TRefArray caloClusters = GetClusters(event);
-  //  PlotClusters(caloClusters);
   AliESDVertex* vertex = GetVertex(event);
-  vector<EtaCandidate> tgdCands = ProcessEtaCandidates(caloClusters, vertex);
+  vector<EtaCandidate> etaCands = ExtractEtaCandidates(caloClusters, vertex);
   const TRefArray tracks = GetTracks(event);
-  ProcessEtaPriCandidates(tgdCands, tracks);
+  vector<EtaPriCandidate> etaPriCands = ExtractEtaPriCandidates(etaCands, tracks);
+
+  vector<EtaPriCandidate>::iterator cand;
+  for ( cand = etaPriCands.begin(); cand < etaPriCands.end(); ++cand )
+    if ( fConfig->PassCut( *cand ) )
+      fHistograms->Fill(*cand);
+	 
 }
 
 
@@ -54,8 +59,6 @@ const TRefArray EtaAnalysis::GetTracks(AliESDEvent* event)
     {
       AliESDtrack *track = event->GetTrack(iTracks);
       tracks.Add(track);
-      //Int_t nitsclusters = track->GetNcls(0);
-      //Int_t ntpcclusters = track->GetNcls(1);
     }
 }
 
@@ -70,7 +73,7 @@ AliESDVertex* EtaAnalysis::GetVertex(AliESDEvent* event)
 }
 
 
-vector<EtaCandidate> EtaAnalysis::ProcessEtaCandidates(const TRefArray& caloClusters, AliESDVertex* vertex)
+vector<EtaCandidate> EtaAnalysis::ExtractEtaCandidates(const TRefArray& caloClusters, AliESDVertex* vertex)
 {
   vector<EtaCandidate> candidates;
    
@@ -91,9 +94,11 @@ vector<EtaCandidate> EtaAnalysis::ProcessEtaCandidates(const TRefArray& caloClus
 }
 
 
-void EtaAnalysis::ProcessEtaPriCandidates(vector<EtaCandidate> etas, const TRefArray& tracks)
+vector<EtaPriCandidate> EtaAnalysis::ExtractEtaPriCandidates(vector<EtaCandidate> etas, const TRefArray& tracks)
 {
-  for(int iEta=0; iEta < etas.size(); ++iEta) 
+  vector<EtaPriCandidate> candidates
+
+    for(int iEta=0; iEta < etas.size(); ++iEta) 
     for(int iTrk1=0; iTrk1 < tracks.GetEntires(); ++iTrk1)
       for(int iTrk2=iTk1+1; iTrk2 < tracks.GetEntries(); ++iTrk2)
 	{
@@ -102,15 +107,9 @@ void EtaAnalysis::ProcessEtaPriCandidates(vector<EtaCandidate> etas, const TRefA
 	  AliESDtrack track2 = (AliESDtrack*) tracks[iTrk2];
 	  
 	  if( track1->Charge() != track2->Charge() )
-	    EtaPriCandidate(eta, track1, track2)
-	  double p1[3], pvec2[3];
-	  track1->GetConstrainedPxPyPz(mom1);
-	  track2->GetConstrainedPxPyPz(mom2);
-	  
-	  Short_t qcharge1 = track1->Charge(); 
-	  Short_t qcharge2 = track2->Charge(); 
-	  
-	  
-	  w[1]=pid.GetProbability(AliPID::kMuon); 
+	    {
+	      EtaCandidate candidate = EtaPriCandidate(eta, track1, track2);
+	      candidates.push_back( candidate );
+	    }
 	}
 }

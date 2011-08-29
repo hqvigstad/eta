@@ -15,11 +15,12 @@ class EtaPriCandidate
  public:
   EtaPriCandidate(EtaCandidate eta, AliESDtrack* track1, AliESDtrack* track2);
 
-  EtaCandidate GetEtaC() {return fEta
+  EtaCandidate GetEtaCandidate() {return fEta; }
   AliESDtrack* GetTrack1() {return fTrack1;}
   AliESDtrack* GetTrack2() {return fTrack2;}
   
   const TLorentzVector& GetVector() { return fVector; }
+  const AliESDVertex* GetVertex() { return fVertex }
   
  protected:
   EtaCandidate fEta;

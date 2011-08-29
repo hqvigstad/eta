@@ -3,6 +3,8 @@
 // Author: Henrik Qvigstad
 
 #include "EtaCandidate.h"
+#include "EtaPriCandidate.h"
+#include "EtaConfig.h"
 
 #include <vector>
 #include <iostream>
@@ -12,16 +14,6 @@ class TList;
 class EtaHistograms;
 class AliESDEvent;
 
-struct EtaConfig
-{
-  EtaConfig();
-  double fCEnergyMin;
-  int fNCellsMin;
-};
-
-EtaConfig::EtaConfig()
-: fCEnergyMin(0.3), fNCellsMin(3)
-{}
 
 class EtaAnalysis 
 {
@@ -37,10 +29,10 @@ class EtaAnalysis
   const TRefArray GetClusters(AliESDEvent* );
   const TRefArray GetTracks(AliESDEvent* );
   static AliESDVertex* GetVertex(AliESDEvent* );
-  vector<EtaCandidate> ProcessEtaCandidates(const TRefArray& caloClusters, AliESDVertex* vertex);
-  void ProcessEtaPriCandidates(vector<EtaCandidate> Etas, const TRefArray& tracks);
+  vector<EtaCandidate> ExtractEtaCandidates(const TRefArray& caloClusters, AliESDVertex* vertex);
+  vector<EtaPriCandidate> ExtractEtaPriCandidates(vector<EtaCandidate> Etas, const TRefArray& tracks);
 
-  const EtaConfig fConfig;
+  EtaConfig fConfig;
   TList* fOutputList; 
   EtaHistograms* fHistograms;
 };

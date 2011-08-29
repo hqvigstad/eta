@@ -48,18 +48,6 @@ void EtaDataTask::UserCreateOutputObjects()
   fEtaAnalysis = new EtaAnalysis(EtaConfig());
   fEtaAnalysis->SetOutputList(fOutputList);
   PostData(1, fOutputList);
-  
-  // TH1F* nClusters = 
-  //   new TH1F("nClusters", "Two Cluster I. Mass", 30, 0, 30);
-  // // TH1F* Pt = new TH1F("PHOS", "Two Cluster I. Mass", 200, 0, 1);
-  // // PHOS->GetXaxis()->SetTitle("M_{#gamma#gamma} [GeV/c^2]");
-  // // PHOS->GetYaxis()->SNetTitle("Counts");
-  // fOutputList->Add( nClusters );
-
-  // TH2F* fCEnergyvNCells = new TH2F("fCEnergyvNCells", "fCEnergyvNCells",
-  // 				   500, 0, 50,
-  // 				   50, 0, 50);
-  // fOutputList->Add( fCEnergyvNCells );
 }
 
 Bool_t EtaDataTask::UserNotify()
@@ -67,28 +55,8 @@ Bool_t EtaDataTask::UserNotify()
   return kTRUE;
 }
   
-/* This member cleans up all the the event specific data,
- * and should be called either in the beginning or the end of
- * any deriving class.
- */
 void EtaDataTask::UserExec(Option_t* )
 {
-  // double vertex[3];
-  // GetVertex(vertex);
-  
-  // // Get Clusters
-  // TRefArray* clusters = new TRefArray;
-  // GetClusters( clusters );
-  // FindTH1("nClusters")->Fill( clusters->GetEntries() );
-  // TH2* fCEnergyvNCells = FindTH2("fCEnergyvNCells");
-  // TIterator* iter = clusters->MakeIterator();
-  // while( iter->Next() )
-  //   iter->Fill( fCEnergyvNCells->E(), fCEnergyvNCells->GetNCells() );
-  
-  // // Get Tracks
-  // TRefArray* tracks = new TRefArray;
-  // GetTracks( tracks );
-
   AliESDEvent* event = GetEvent();
   fEtaAnalysis->ProcessEvent(event);
   
