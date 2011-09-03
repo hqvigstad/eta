@@ -13,10 +13,11 @@ class EtaCandidate
  public:
   EtaCandidate(AliESDCaloCluster* clu1, AliESDCaloCluster* clu2, AliESDVertex* );
 
-  AliESDCaloCluster* GetCluster1() {return fCluster1;}
-  AliESDCaloCluster* GetCluster2() {return fCluster2;}
+  AliESDCaloCluster* GetCluster1() const {return fCluster1;}
+  AliESDCaloCluster* GetCluster2() const {return fCluster2;}
 
-  const TLorentzVector& GetVector() { return fVector; }
+  const TLorentzVector& GetVector() const { return fVector; }
+  AliESDVertex* GetVertex() const { return fVertex; }
   
  protected:
   AliESDCaloCluster* fCluster1;

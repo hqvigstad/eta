@@ -65,10 +65,7 @@ void EtaDataTask::UserExec(Option_t* )
 
 void EtaDataTask::Terminate(Option_t* )
 {
-  // new TCanvas;
-  // FindTH1("fH2_GG_PtvIM")->Draw();
-  // new TCanvas;
-  // FindTH1("nClusters")->Draw();
+  fEtaAnalysis->Terminate();
 }
 
 AliESDEvent* EtaDataTask::GetEvent()

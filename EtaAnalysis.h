@@ -24,6 +24,7 @@ class EtaAnalysis
   void SetOutputList(TList* list) {fOutputList = list;}
   void ProcessEvent(AliESDEvent* );
   
+  void Terminate();
   
  private:
   const TRefArray GetClusters(AliESDEvent* );

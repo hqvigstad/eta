@@ -3,35 +3,59 @@
 
 #include "TH2F.h"
 #include "TList.h"
+#include "TCanvas.h"
+
+#include "AliESDCaloCluster.h"
+#include "AliESDtrack.h"
 
 EtaHistograms::EtaHistograms(TList* outputList)
   : fOutputList(outputList),
     fEtaCandidates(0),
     fEtaPriCandidates(0),
     fNCells(0)
-{
-}
+{}
 
 
 EtaHistograms::~EtaHistograms()
 {}
 
+
+void EtaHistograms::DrawSummery()
+{
+  new TCanvas;
+  GetEtaCandidates()->Draw();
+  new TCanvas;
+  GetEtaPriCandidates()->Draw();
+}
+
 void EtaHistograms::Fill(const EtaPriCandidate& cand)
 {
-  if( ! fEtaPriCandidates )
-    {
-      fEtaPriCandidates = new TH2F("fEtaPriCandidates", "Eta Prime Candidates", 1000, 0, 100, 1000, 0, 2);
-      fEtaPriCandidates->GetXaxis()->SetTitle("Pt [GeV]");
-      fEtaPriCandidates->GetYaxis()->SetTitle("IM [GeV]");
-      fOutputList->Add(fEtaCandidates);
-    }
-  
-  fEtaPriCandidates->Fill(cand.GetVector().Pt(), cand.GetVector().M());
+  TLorentzVector candVec = cand.GetVector();
+  GetEtaPriCandidates()->Fill(candVec.Pt(), candVec.M());
 }
 
 
+void EtaHistograms::Fill(const EtaCandidate& eta)
+{
+  double m = eta.GetVector().M();
+  double pt = eta.GetVector().Pt();
+  GetEtaCandidates()->Fill(pt, m);
+}
 
-void EtaHistograms::FillEtaCandidates(double pt, double m)
+void EtaHistograms::Fill(AliESDCaloCluster* cluster)
+{
+  double e = cluster->E();
+  double nCells = cluster->GetNCells();
+  GetNCells()->Fill(e, nCells);
+}
+
+
+void EtaHistograms::Fill(AliESDtrack* track)
+{
+  
+}
+
+TH2F* EtaHistograms::GetEtaCandidates()
 {
   if( ! fEtaCandidates )
     {
@@ -40,11 +64,23 @@ void EtaHistograms::FillEtaCandidates(double pt, double m)
       fEtaCandidates->GetYaxis()->SetTitle("IM [GeV]");
       fOutputList->Add(fEtaCandidates);
     }
-
-  fEtaCandidates->Fill(pt, m);
+  return fEtaCandidates;
 }
 
-void EtaHistograms::FillNCells(double e, int nCells)
+TH2F* EtaHistograms::GetEtaPriCandidates()
+{
+  if( ! fEtaPriCandidates )
+    {
+      fEtaPriCandidates = new TH2F("fEtaPriCandidates", "Eta Prime Candidates", 1000, 0, 100, 1000, 0, 2);
+      fEtaPriCandidates->GetXaxis()->SetTitle("Pt [GeV]");
+      fEtaPriCandidates->GetYaxis()->SetTitle("IM [GeV]");
+      fOutputList->Add(fEtaCandidates);
+    }
+  return fEtaPriCandidates;
+}
+
+
+TH2F* EtaHistograms::GetNCells()
 {
   if( ! fNCells )
     {
@@ -52,5 +88,5 @@ void EtaHistograms::FillNCells(double e, int nCells)
       fNCells->GetXaxis()->SetTitle("E [GeV]");
       fOutputList->Add(fNCells);
     }
-  fNCells->Fill(e, nCells);
+  return fNCells;
 }

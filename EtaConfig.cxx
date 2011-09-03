@@ -16,26 +16,26 @@ EtaConfig::EtaConfig()
 
 bool EtaConfig::PassCut(const EtaPriCandidate& cand )
 {
-  if( cand->GetVector() > fEtaPriPtMin 
-      && PassCut( cand->GetEtaCandidate() )
-      && cand->GetTrack1()->Charge() != cand->GetTrack2()->Charge()
-      && PassCut( cand->GetTrack1() ) 
-      && PassCut( cand->GetTrack2() )
+  if( cand.GetVector().Pt() > fEtaPriPtMin 
+      && PassCut( cand.GetEtaCandidate() )
+      && cand.GetTrack1()->Charge() != cand.GetTrack2()->Charge()
+      && PassCut( cand.GetTrack1() ) 
+      && PassCut( cand.GetTrack2() )
       )
     return true;
   else 
-    return false
+    return false;
 }
 
 bool EtaConfig::PassCut(const EtaCandidate& cand)
 {
-  if( cand->GetVector() > fEtaPtMin 
-      && PassCut( cand->GetCluster1() ) 
-      && PassCut( cand->GetCluster2() )
+  if( cand.GetVector().Pt() > fEtaPtMin 
+      && PassCut( cand.GetCluster1() ) 
+      && PassCut( cand.GetCluster2() )
       )
     return true;
   else 
-    return false
+    return false;
 }
 
 bool EtaConfig::PassCut(AliESDtrack* track)
@@ -47,15 +47,13 @@ bool EtaConfig::PassCut(AliESDtrack* track)
   // Double_t py_rec = p[1];
   // Double_t pz_rec = p[2];
 
-  Double_t w[10];
-  w[1]=
-
   if( track->Pt() > fTPtMin 
       && track->IsOn(AliESDtrack::kTPCpid)
-      && track->>GetNcls(0) >= fNITSCMin
-      && track->>GetNcls(1) >= fNTPCCMin
+      && track->GetNcls(0) >= fNITSCMin
+      && track->GetNcls(1) >= fNTPCCMin
       ) {
-    Double_t p[10]; track->GetTPCpid(p);
+    Double_t p[10]; 
+    track->GetTPCpid(p);
     AliPID pid(p);
     if( pid.GetProbability(AliPID::kMuon) > fMuonPIDMin )
       return true;
@@ -65,8 +63,8 @@ bool EtaConfig::PassCut(AliESDtrack* track)
 
 bool EtaConfig::PassCut(AliESDCaloCluster* cluster)
 {
-  if( track->Pt() > fCEnergyMin
-      && track->GetNCells() > fNCellsMin
+  if( cluster->E() > fCEnergyMin
+      && cluster->GetNCells() > fNCellsMin
       )
     return true;
   else

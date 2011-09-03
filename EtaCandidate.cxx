@@ -14,7 +14,7 @@ EtaCandidate::EtaCandidate(AliESDCaloCluster* clu1, AliESDCaloCluster* clu2, Ali
 
   // Set and extract vertex pos.
   fVertex = vertex;
-  Double vertex_pos[3];
+  double vertex_pos[3];
   vertex->GetXYZ(vertex_pos);
 
   // Determine fVector

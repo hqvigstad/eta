@@ -14,7 +14,8 @@ EtaAnalysis::EtaAnalysis(const EtaConfig& config)
 }
 
 EtaAnalysis::~EtaAnalysis()
-{}
+{
+}
 
 void EtaAnalysis::ProcessEvent(AliESDEvent* event)
 {
@@ -29,8 +30,7 @@ void EtaAnalysis::ProcessEvent(AliESDEvent* event)
 
   vector<EtaPriCandidate>::iterator cand;
   for ( cand = etaPriCands.begin(); cand < etaPriCands.end(); ++cand )
-    if ( fConfig->PassCut( *cand ) )
-      fHistograms->Fill(*cand);
+    fHistograms->Fill(*cand);
 	 
 }
 
@@ -41,10 +41,8 @@ const TRefArray EtaAnalysis::GetClusters(AliESDEvent* event)
   for(int iClu=0; iClu< event->GetNumberOfCaloClusters(); ++iClu)
     {
       AliESDCaloCluster* cluster = event->GetCaloCluster(iClu);
-      fHistograms->FillNCells(cluster->E(), cluster->GetNCells() );
 
-      // if pass Energy & N.Cells cut.
-      //if(fConfig.fNCellsMin <= Energy  &&  fConfig.fCEnergyMin <= Energy )
+      fHistograms->Fill(cluster );
       cluArray.Add( cluster );
     }
   return cluArray;
@@ -60,6 +58,7 @@ const TRefArray EtaAnalysis::GetTracks(AliESDEvent* event)
       AliESDtrack *track = event->GetTrack(iTracks);
       tracks.Add(track);
     }
+  return tracks;
 }
 
 
@@ -84,10 +83,7 @@ vector<EtaCandidate> EtaAnalysis::ExtractEtaCandidates(const TRefArray& caloClus
       
       EtaCandidate candidate(clu1, clu2, vertex);
 
-      double m = candidate.GetVector().M();
-      double pt = candidate.GetVector().Pt();
-      fHistograms->FillEtaCandidates( pt, m );
-      
+      fHistograms->Fill( candidate );
       candidates.push_back( candidate );
     }
   return candidates;
@@ -96,20 +92,24 @@ vector<EtaCandidate> EtaAnalysis::ExtractEtaCandidates(const TRefArray& caloClus
 
 vector<EtaPriCandidate> EtaAnalysis::ExtractEtaPriCandidates(vector<EtaCandidate> etas, const TRefArray& tracks)
 {
-  vector<EtaPriCandidate> candidates
-
-    for(int iEta=0; iEta < etas.size(); ++iEta) 
-    for(int iTrk1=0; iTrk1 < tracks.GetEntires(); ++iTrk1)
-      for(int iTrk2=iTk1+1; iTrk2 < tracks.GetEntries(); ++iTrk2)
+  vector<EtaPriCandidate> candidates;
+    
+  for(unsigned int iEta=0; iEta < etas.size(); ++iEta) 
+    for(int iTrk1=0; iTrk1 < tracks.GetEntries(); ++iTrk1)
+      for(int iTrk2=iTrk1+1; iTrk2 < tracks.GetEntries(); ++iTrk2)
 	{
 	  EtaCandidate eta = etas[iEta];
-	  AliESDtrack track1 = (AliESDtrack*) tracks[iTrk1];
-	  AliESDtrack track2 = (AliESDtrack*) tracks[iTrk2];
+	  AliESDtrack* track1 = (AliESDtrack*) tracks[iTrk1];
+	  AliESDtrack* track2 = (AliESDtrack*) tracks[iTrk2];
 	  
-	  if( track1->Charge() != track2->Charge() )
-	    {
-	      EtaCandidate candidate = EtaPriCandidate(eta, track1, track2);
-	      candidates.push_back( candidate );
-	    }
+	  EtaPriCandidate candidate = EtaPriCandidate(eta, track1, track2);
+	  candidates.push_back( candidate );
 	}
+  return candidates;
+}
+
+
+void EtaAnalysis::Terminate()
+{
+  fHistograms->DrawSummery();
 }

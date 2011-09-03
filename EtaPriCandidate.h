@@ -9,18 +9,19 @@
 class AliESDCaloCluster;
 class AliESDVertex;
 class AliESDEvent;
+class AliESDtrack;
 
 class EtaPriCandidate
 {
  public:
   EtaPriCandidate(EtaCandidate eta, AliESDtrack* track1, AliESDtrack* track2);
 
-  EtaCandidate GetEtaCandidate() {return fEta; }
-  AliESDtrack* GetTrack1() {return fTrack1;}
-  AliESDtrack* GetTrack2() {return fTrack2;}
+  const EtaCandidate& GetEtaCandidate() const {return fEta; }
+  AliESDtrack* GetTrack1() const {return fTrack1;}
+  AliESDtrack* GetTrack2() const {return fTrack2;}
   
-  const TLorentzVector& GetVector() { return fVector; }
-  const AliESDVertex* GetVertex() { return fVertex }
+  const TLorentzVector& GetVector() const { return fVector; }
+  AliESDVertex* GetVertex() const { return fEta.GetVertex(); }
   
  protected:
   EtaCandidate fEta;
@@ -28,7 +29,6 @@ class EtaPriCandidate
   AliESDtrack* fTrack2;
 
   TLorentzVector fVector; // The measured lorentz
-  AliESDVertex* fVertex;
 };
 
 #endif

@@ -12,12 +12,21 @@ class EtaHistograms
   EtaHistograms(TList* outputList);
   ~EtaHistograms();
   
-  void Fill(EtaPriCandidate );
-  void FillEtaCandidates(double pt, double m);
-  void FillNCells(double e, int nCells);
+  void DrawSummery();
   
+  void Fill(const EtaPriCandidate& );
+  void Fill(const EtaCandidate& );
+  void Fill(AliESDCaloCluster* );
+  void Fill(AliESDtrack* );
+
+
+  TH2F* GetEtaCandidates();
+  TH2F* GetEtaPriCandidates();
+  TH2F* GetNCells();
+
  private:
   TList* fOutputList;
+
   TH2F* fEtaCandidates;
   TH2F* fEtaPriCandidates;
   TH2F* fNCells;
