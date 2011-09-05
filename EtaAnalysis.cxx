@@ -22,16 +22,25 @@ void EtaAnalysis::ProcessEvent(AliESDEvent* event)
   if( ! fHistograms )
     fHistograms = new EtaHistograms(fOutputList);
   
-  const TRefArray caloClusters = GetClusters(event);
+  // Get Calorimeter Clusters
+  vector<AliESDCaloCluster*> caloClusters = GetClusters(event);
+  fHistograms->FillFull(caloClusters);
+  caloClusters = fConfig.SelectClusters( caloClusters );
+  
+  // Get Eta Candidates
   AliESDVertex* vertex = GetVertex(event);
   vector<EtaCandidate> etaCands = ExtractEtaCandidates(caloClusters, vertex);
-  const TRefArray tracks = GetTracks(event);
-  vector<EtaPriCandidate> etaPriCands = ExtractEtaPriCandidates(etaCands, tracks);
+  fHistograms->FillFull(etaCands);
+  etaCands = fConfig.SelectEtaCands( etaCands );
+  
+  // Get Tracks
+  vector<AliESDtrack*> tracks = GetTracks(event);
+  fHistograms->FillFull(tracks);
+  tracks = fConfig.SelectTracks( tracks );
 
-  vector<EtaPriCandidate>::iterator cand;
-  for ( cand = etaPriCands.begin(); cand < etaPriCands.end(); ++cand )
-    fHistograms->Fill(*cand);
-	 
+  vector<EtaPriCandidate> etaPriCands = ExtractEtaPriCandidates(etaCands, tracks);
+  fHistograms->FillFull(etaPriCands);
+  	 
 }
 
 
@@ -113,3 +122,4 @@ void EtaAnalysis::Terminate()
 {
   fHistograms->DrawSummery();
 }
+
