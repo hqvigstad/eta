@@ -28,13 +28,13 @@ class EtaAnalysis
   
   void Terminate();
   
- private:
-  vector<AliESDCaloCluster*> GetClusters(AliESDEvent* );
-  vector<AliESDtrack*> GetTracks(AliESDEvent* );
+  static vector<AliESDCaloCluster*> GetClusters(AliESDEvent* );
+  static vector<AliESDtrack*> GetTracks(AliESDEvent* );
   static AliESDVertex* GetVertex(AliESDEvent* );
-  vector<EtaCandidate> ExtractEtaCandidates(const TRefArray& caloClusters, AliESDVertex* vertex);
-  vector<EtaPriCandidate> ExtractEtaPriCandidates(vector<EtaCandidate> Etas, const TRefArray& tracks);
+  static vector<EtaCandidate> ExtractEtaCandidates(vector<AliESDCaloCluster*>, AliESDVertex* );
+  static vector<EtaPriCandidate> ExtractEtaPriCandidates(vector<EtaCandidate> , vector<AliESDtrack*>);
 
+ private:
   EtaConfig fConfig;
   TList* fOutputList; 
   EtaHistograms* fHistograms;

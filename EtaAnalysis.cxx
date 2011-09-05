@@ -44,28 +44,28 @@ void EtaAnalysis::ProcessEvent(AliESDEvent* event)
 }
 
 
-const TRefArray EtaAnalysis::GetClusters(AliESDEvent* event)
+vector<AliESDCaloCluster*> EtaAnalysis::GetClusters(AliESDEvent* event)
 {
-  TRefArray cluArray;
+  vector<AliESDCaloCluster*> cluArray;
   for(int iClu=0; iClu< event->GetNumberOfCaloClusters(); ++iClu)
     {
       AliESDCaloCluster* cluster = event->GetCaloCluster(iClu);
 
       fHistograms->Fill(cluster );
-      cluArray.Add( cluster );
+      cluArray.push_back( cluster );
     }
   return cluArray;
 }
 
-const TRefArray EtaAnalysis::GetTracks(AliESDEvent* event)
+vector<AliESDtrack*> EtaAnalysis::GetTracks(AliESDEvent* event)
 {
-  TRefArray tracks;
+  vector<AliESDtrack*> tracks
   
   Int_t nTracks = event->GetNumberOfTracks();
   for(Int_t iTracks = 0; iTracks < nTracks; iTracks++) 
     {
       AliESDtrack *track = event->GetTrack(iTracks);
-      tracks.Add(track);
+      tracks.push_back(track);
     }
   return tracks;
 }
@@ -81,40 +81,28 @@ AliESDVertex* EtaAnalysis::GetVertex(AliESDEvent* event)
 }
 
 
-vector<EtaCandidate> EtaAnalysis::ExtractEtaCandidates(const TRefArray& caloClusters, AliESDVertex* vertex)
+static vector<EtaCandidate> EtaAnalysis::ExtractEtaCandidates(vector<AliESDCaloCluster*> clus, AliESDVertex* vertex)
 {
-  vector<EtaCandidate> candidates;
-   
-  for(int i1  = 0; i1 < caloClusters.GetEntries(); ++i1)
-    for(int i2 = i1+1; i2 < caloClusters.GetEntries(); ++i2) {
-      AliESDCaloCluster* clu1 = (AliESDCaloCluster* ) caloClusters.At(i1);
-      AliESDCaloCluster* clu2 = (AliESDCaloCluster* ) caloClusters.At(i2);
-      
-      EtaCandidate candidate(clu1, clu2, vertex);
-
-      fHistograms->Fill( candidate );
-      candidates.push_back( candidate );
-    }
-  return candidates;
+  vector<EtaCandidate> cands;
+  
+  for(int i1  = 0; i1 < clus.size(); ++i1)
+    for(int i2 = i1+1; i2 < clus.size(); ++i2) 
+      cands.push_back( EtaCandidate(clus[i1], clus[i2], vertex) );
+  
+  return cands;
 }
 
 
-vector<EtaPriCandidate> EtaAnalysis::ExtractEtaPriCandidates(vector<EtaCandidate> etas, const TRefArray& tracks)
+vector<EtaPriCandidate> EtaAnalysis::ExtractEtaPriCandidates(vector<EtaCandidate> etas, vector<AliESDtrack*> trks)
 {
-  vector<EtaPriCandidate> candidates;
+  vector<EtaPriCandidate> cands;
     
-  for(unsigned int iEta=0; iEta < etas.size(); ++iEta) 
-    for(int iTrk1=0; iTrk1 < tracks.GetEntries(); ++iTrk1)
-      for(int iTrk2=iTrk1+1; iTrk2 < tracks.GetEntries(); ++iTrk2)
-	{
-	  EtaCandidate eta = etas[iEta];
-	  AliESDtrack* track1 = (AliESDtrack*) tracks[iTrk1];
-	  AliESDtrack* track2 = (AliESDtrack*) tracks[iTrk2];
-	  
-	  EtaPriCandidate candidate = EtaPriCandidate(eta, track1, track2);
-	  candidates.push_back( candidate );
-	}
-  return candidates;
+  for(unsigned int ie=0; ie < etas.size(); ++ie) 
+    for(int it1=0; it1 < tracks.GetEntries(); ++it1)
+      for(int it2=it1+1; it2 < tracks.GetEntries(); ++it2)
+	cands.push_back( EtaPriCandidate(etas[ie], trks[it1], trks[it2]) );
+  
+  return cands;
 }
 
 
