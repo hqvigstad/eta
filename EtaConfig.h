@@ -12,20 +12,19 @@ class EtaConfig
  public:
   EtaConfig();
 
-  bool PassCut(const EtaPriCandidate& );
-  bool PassCut(const EtaCandidate& );
-  bool PassCut(AliESDtrack* );
-  bool PassCut(AliESDCaloCluster* );
-  
+  bool PassCut(const EtaPriCandidate& , bool checkConstituents = false , AliESDVertex* traceTo = 0) const;
+  bool PassCut(const EtaCandidate& , bool checkConstituents = false ) const;
+  bool PassCut(AliESDtrack* , AliESDVertex* traceTo = 0) const;
+  bool PassCut(AliESDCaloCluster* ) const;
 
-  double fCEnergyMin; // Cluster Energy Minimum
-  double fEtaPtMin; // Eta Candidate Pt Minimum
-  double fEtaPriPtMin; // Eta Prime Candidate Pt Minimum
+  double fClusterEnergyMin;
+  double fEtaPtMin;
+  double fEtaPriPtMin;
   int fNCellsMin;
   double fMuonPIDMin;
-  int fNTPCCMin;
-  int fNITSCMin;
-  double fTPtMin;
+  int fNTPCClustersMin;
+  int fNITSClustersMin;
+  double fTrackPtMin;
 };
 
 #endif
