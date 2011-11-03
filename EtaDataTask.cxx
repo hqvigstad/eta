@@ -37,7 +37,8 @@ EtaDataTask::EtaDataTask(const char* name)
 
 EtaDataTask::~EtaDataTask()
 {
-  return ;
+  delete fEtaAnalysis;
+  delete fOutputList;
 }
 
 void EtaDataTask::UserCreateOutputObjects()
@@ -45,9 +46,13 @@ void EtaDataTask::UserCreateOutputObjects()
   fOutputList = new TList();
   fOutputList->SetOwner();
   
-  fEtaAnalysis = new EtaAnalysis(EtaConfig());
+  EtaConfig* config = new EtaConfig;
+  
+  fEtaAnalysis = new EtaAnalysis(config);
   fEtaAnalysis->SetOutputList(fOutputList);
   PostData(1, fOutputList);
+
+  delete config;
 }
 
 Bool_t EtaDataTask::UserNotify()

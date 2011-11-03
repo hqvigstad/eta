@@ -2,7 +2,7 @@
 #include "EtaCandidate.h"
 #include "AliESDtrack.h"
 
-EtaPriCandidate::EtaPriCandidate(EtaCandidate eta, AliESDtrack* track1, AliESDtrack* track2)
+EtaPriCandidate::EtaPriCandidate(EtaCandidate eta, const AliESDtrack* track1, const AliESDtrack* track2)
   : fEta(eta),
     fTrack1(track1),
     fTrack2(track2),

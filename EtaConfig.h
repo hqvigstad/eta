@@ -14,8 +14,8 @@ class EtaConfig
 
   bool PassCut(const EtaPriCandidate& , bool checkConstituents = false , AliESDVertex* traceTo = 0) const;
   bool PassCut(const EtaCandidate& , bool checkConstituents = false ) const;
-  bool PassCut(AliESDtrack* , AliESDVertex* traceTo = 0) const;
-  bool PassCut(AliESDCaloCluster* ) const;
+  bool PassCut(const AliESDtrack* , const AliESDVertex* traceTo = 0) const;
+  bool PassCut(const AliESDCaloCluster* ) const;
 
   double fClusterEnergyMin;
   double fEtaPtMin;

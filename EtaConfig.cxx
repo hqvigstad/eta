@@ -7,17 +7,17 @@
 
 EtaConfig::EtaConfig()
 : fClusterEnergyMin(0.3),
-  fEtaPtMin(0),
-  fEtaPriPtMin(0),
-  fNCellsMin(3),
+  fEtaPtMin(1.0),
+  fEtaPriPtMin(1.0),
+  fNCellsMin(5),
   fMuonPIDMin(0.0),
-  fNTPClustersMin(100),
+  fNTPCClustersMin(0),
   fNITSClustersMin(0),
-  fTrackPtMin(0.2)
+  fTrackPtMin(1.0)
 {}
 
 
-bool EtaConfig::PassCut(const EtaPriCandidate& cand , bool checkConstituents, AliESDVertex* traceTo)
+bool EtaConfig::PassCut(const EtaPriCandidate& cand , bool checkConstituents, AliESDVertex* traceTo) const
 {
   if( cand.GetVector().Pt() < fEtaPriPtMin )
     return false;
@@ -34,11 +34,11 @@ bool EtaConfig::PassCut(const EtaPriCandidate& cand , bool checkConstituents, Al
 	return false;
     }
 
-  return false;
+  return true;
 }
 
 
-bool EtaConfig::PassCut(const EtaCandidate& cand, bool checkConstituents)
+bool EtaConfig::PassCut(const EtaCandidate& cand, bool checkConstituents) const
 {
   if( cand.GetVector().Pt() < fEtaPtMin )
     return false;
@@ -51,27 +51,29 @@ bool EtaConfig::PassCut(const EtaCandidate& cand, bool checkConstituents)
 	return false;
     }
 
-  return false;
+  return true;
 }
 
 
-bool EtaConfig::PassCut(AliESDtrack* track, AliESDVertex* traceTo)
+bool EtaConfig::PassCut(const AliESDtrack* track, const AliESDVertex* traceTo) const
 {
-  if( track->Pt() < fTPtMin )
+  if( track->Pt() < fTrackPtMin )
     return false;
-  if( ! track->IsOn(AliESDtrack::kTPCpid) )
-    return false;
+  // if( ! track->IsOn(AliESDtrack::kTPCpid) )
+  //   return false;
   if( track->GetNcls(0) < fNITSClustersMin )
     return false;
-  if( track->GetNcls(1) < fNTPClustersMin )
+  if( track->GetNcls(1) < fNTPCClustersMin )
     return false;
+  // TODO: traceTo
+  //if( ! track->Traceable(traceTo) ) {}  
   
   // PID
-  Double_t p[10];
-  track->GetTPCpid(p);
-  AliPID pid(p);
-  if( pid.GetProbability(AliPID::kMuon) < fMuonPIDMin )
-    return false;
+  // Double_t p[10];
+  // track->GetTPCpid(p);
+  // AliPID pid(p);
+  // if( pid.GetProbability(AliPID::kMuon) < fMuonPIDMin )
+  //   return false;
   
   // Extract momentum
   // Double_t p[3]; p[0] = 0.0; p[1] = 0.0; p[2]=0.0;
@@ -83,7 +85,7 @@ bool EtaConfig::PassCut(AliESDtrack* track, AliESDVertex* traceTo)
   return true;
 }
 
-bool EtaConfig::PassCut(AliESDCaloCluster* cluster)
+bool EtaConfig::PassCut(const AliESDCaloCluster* cluster) const
 {
   if( cluster->E() < fClusterEnergyMin)
     return false;

@@ -11,20 +11,20 @@ class AliESDEvent;
 class EtaCandidate
 {
  public:
-  EtaCandidate(AliESDCaloCluster* clu1, AliESDCaloCluster* clu2, AliESDVertex* );
+  EtaCandidate(AliESDCaloCluster* clu1, AliESDCaloCluster* clu2, const AliESDVertex* );
 
   AliESDCaloCluster* GetCluster1() const {return fCluster1;}
   AliESDCaloCluster* GetCluster2() const {return fCluster2;}
 
   const TLorentzVector& GetVector() const { return fVector; }
-  AliESDVertex* GetVertex() const { return fVertex; }
+  const AliESDVertex* GetVertex() const { return fVertex; }
   
  protected:
   AliESDCaloCluster* fCluster1;
   AliESDCaloCluster* fCluster2;
 
   TLorentzVector fVector; // The measured lorentz
-  AliESDVertex* fVertex;
+  const AliESDVertex* fVertex;
 };
 
 #endif

@@ -31,9 +31,9 @@ void runEtaDataLocal()
 
   AliESDInputHandler* esdH = new AliESDInputHandler();
   mgr->SetInputEventHandler(esdH);
-  AliMCEventHandler* mcH = new AliMCEventHandler;
-  mcH->SetReadTR(kFALSE);
-  mgr->SetMCtruthEventHandler(mcH);
+  // AliMCEventHandler* mcH = new AliMCEventHandler;
+  // mcH->SetReadTR(kFALSE);
+  // mgr->SetMCtruthEventHandler(mcH);
 
 
 
@@ -55,7 +55,7 @@ void runEtaDataLocal()
   if (!mgr->InitAnalysis()) return;
   
   gROOT->LoadMacro("$ALICE_ROOT/PWG0/CreateESDChain.C");
-  TChain* chain = CreateESDChain("104540_011.txt", 2);
+  TChain* chain = CreateESDChain("files.txt", 2);
 
   mgr->PrintStatus();
 
