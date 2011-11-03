@@ -1,5 +1,5 @@
-#ifndef ETADATATASK_H
-#define ETADATATASK_H
+#ifndef ETATASK_H
+#define ETATASK_H
 /*
 Eta Prime Analysis for the ALICE Experiment.
 Copyright (C) 2011 Henrik Qvigstad <henrik.qvigstad@cern.ch>
@@ -35,11 +35,11 @@ class TH1;
 
 #include "AliAnalysisTaskSE.h"
 
-class EtaDataTask : public AliAnalysisTaskSE
+class EtaTask : public AliAnalysisTaskSE
 {
  public:
-  EtaDataTask(const char* name = "EtaDataTask");
-  virtual ~EtaDataTask();
+  EtaTask(const char* name = "EtaTask");
+  virtual ~EtaTask();
   
   virtual void UserCreateOutputObjects();
   virtual Bool_t UserNotify();
@@ -47,15 +47,15 @@ class EtaDataTask : public AliAnalysisTaskSE
   virtual void Terminate(Option_t *);
 
  protected:
-  EtaDataTask(const EtaDataTask&);//Not Implemented
-  EtaDataTask& operator=(const EtaDataTask& );//Not Implemented
+  EtaTask(const EtaTask&);//Not Implemented
+  EtaTask& operator=(const EtaTask& );//Not Implemented
 
   AliESDEvent* GetEvent(); // returns ESD Event
   
   EtaAnalysis* fEtaAnalysis;
   TList* fOutputList;
   
-  ClassDef(EtaDataTask, 1);
+  ClassDef(EtaTask, 1);
 };
 
 #endif

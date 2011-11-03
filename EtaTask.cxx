@@ -17,7 +17,7 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 */
 
-#include "EtaDataTask.h"
+#include "EtaTask.h"
 
 #include "EtaAnalysis.h"
 #include "TChain.h"
@@ -43,9 +43,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 #include <fstream>
 #include <stdexcept>
 
-ClassImp(EtaDataTask);
+ClassImp(EtaTask);
 
-EtaDataTask::EtaDataTask(const char* name)
+EtaTask::EtaTask(const char* name)
   : AliAnalysisTaskSE(name),
     fEtaAnalysis(0),
     fOutputList(0)
@@ -54,13 +54,13 @@ EtaDataTask::EtaDataTask(const char* name)
 }
 
 
-EtaDataTask::~EtaDataTask()
+EtaTask::~EtaTask()
 {
   delete fEtaAnalysis;
   delete fOutputList;
 }
 
-void EtaDataTask::UserCreateOutputObjects()
+void EtaTask::UserCreateOutputObjects()
 {
   fOutputList = new TList();
   fOutputList->SetOwner();
@@ -74,12 +74,12 @@ void EtaDataTask::UserCreateOutputObjects()
   delete config;
 }
 
-Bool_t EtaDataTask::UserNotify()
+Bool_t EtaTask::UserNotify()
 {
   return kTRUE;
 }
   
-void EtaDataTask::UserExec(Option_t* )
+void EtaTask::UserExec(Option_t* )
 {
   AliESDEvent* event = GetEvent();
   fEtaAnalysis->ProcessEvent(event);
@@ -87,12 +87,12 @@ void EtaDataTask::UserExec(Option_t* )
   PostData(1, fOutputList);
 }
 
-void EtaDataTask::Terminate(Option_t* )
+void EtaTask::Terminate(Option_t* )
 {
   fEtaAnalysis->Terminate();
 }
 
-AliESDEvent* EtaDataTask::GetEvent()
+AliESDEvent* EtaTask::GetEvent()
 {
   AliVEvent *event = InputEvent();
   if (!event)
@@ -103,7 +103,7 @@ AliESDEvent* EtaDataTask::GetEvent()
 }
 
 
-// void EtaDataTask::GetClusters(TRefArray* clusters)
+// void EtaTask::GetClusters(TRefArray* clusters)
 // {
 //   const AliESDEvent* event = GetEvent();
 //   for(int i=0; i< event->GetNumberOfCaloClusters(); ++i)
@@ -113,7 +113,7 @@ AliESDEvent* EtaDataTask::GetEvent()
 // }
 
 
-// void EtaDataTask::GetTracks(TRefArray* tracks)
+// void EtaTask::GetTracks(TRefArray* tracks)
 // {
 //   const AliESDEvent* event = GetEvent();
 //   for(int i=0; i< event->GetNumberOfTracks(); ++i)
@@ -122,7 +122,7 @@ AliESDEvent* EtaDataTask::GetEvent()
 
 
 
-// const AliESDCaloCells* EtaDataTask::GetPHOSCells()
+// const AliESDCaloCells* EtaTask::GetPHOSCells()
 // {
 //   AliESDCaloCells* cells = GetEvent()->GetPHOSCells();
 //   if( ! cells)
@@ -130,7 +130,7 @@ AliESDEvent* EtaDataTask::GetEvent()
 //   return cells;
 // }
 
-// const TObject* EtaDataTask::FindOutputObject(const char* const  name, 
+// const TObject* EtaTask::FindOutputObject(const char* const  name, 
 // 				const char* const clas)
 // {
 //   TObject* obj = fOutputList->FindObject(name);

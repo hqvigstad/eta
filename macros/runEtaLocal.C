@@ -18,13 +18,12 @@ void runEtaDataLocal()
   //gROOT->ProcessLine(".include $ALICE_ROOT/include");
 
   // Create tasks
-  gSystem->AddIncludePath("-I../../EtaDataTask");
   gROOT->LoadMacro("../EtaCandidate.cxx+g");
   gROOT->LoadMacro("../EtaPriCandidate.cxx+g");
   gROOT->LoadMacro("../EtaHistograms.cxx+g");
   gROOT->LoadMacro("../EtaConfig.cxx+g");
   gROOT->LoadMacro("../EtaAnalysis.cxx+g");
-  gROOT->LoadMacro("../EtaDataTask.cxx+g");
+  gROOT->LoadMacro("../EtaTask.cxx+g");
 
   // Create the analysis manager
   AliAnalysisManager *mgr = new AliAnalysisManager("AnalysisManager");
@@ -37,7 +36,7 @@ void runEtaDataLocal()
 
 
 
-  EtaDataTask* task = new EtaDataTask("EtaDataTask");
+  EtaTask* task = new EtaTask("EtaTask");
 
   // Add tasks
   mgr->AddTask(task);
@@ -46,7 +45,7 @@ void runEtaDataLocal()
   AliAnalysisDataContainer *cinput = mgr->GetCommonInputContainer();
   mgr->ConnectInput(task, 0, cinput);
 
-  AliAnalysisDataContainer *PHOSOutput = mgr->CreateContainer("PHOSOutput", TList::Class(),    AliAnalysisManager::kOutputContainer, "EtaDataTask_output.root");
+  AliAnalysisDataContainer *PHOSOutput = mgr->CreateContainer("PHOSOutput", TList::Class(),    AliAnalysisManager::kOutputContainer, "EtaTask_output.root");
   mgr->ConnectOutput(task, 1, PHOSOutput);
 
   // Enable debug printouts
