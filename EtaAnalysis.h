@@ -51,6 +51,8 @@ class EtaAnalysis
   void FillFull( vector<EtaCandidate> );
   void FillFull( vector<EtaPriCandidate> );
 
+  void SetVerbose(int verbose) {fVerbose = verbose;}
+
   static const vector<AliESDCaloCluster*> GetClusters(const AliESDEvent* );
   static const vector<AliESDtrack*> GetTracks(const AliESDEvent* );
   static const AliESDVertex* GetVertex(const AliESDEvent* );

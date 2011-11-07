@@ -41,7 +41,7 @@ EtaAnalysis::EtaAnalysis(const EtaConfig* config)
   : fConfig(new EtaConfig(*config)),
     fOutputList(0),
     fHistograms(new EtaHistograms ),
-    fVerbose(1)
+    fVerbose(0)
 {
 }
 
