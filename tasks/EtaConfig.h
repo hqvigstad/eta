@@ -45,6 +45,8 @@ class EtaConfig
   int fNITSClustersMin;
   double fTrackPtMin;
   double fTrackChi2Max;
+  double fEtaMass;
+  double fEtaMassDiffMax;
 
  private:
   AliESDtrackCuts* fTrackCuts;

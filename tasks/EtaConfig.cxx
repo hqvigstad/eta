@@ -22,6 +22,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 #include "AliESDtrack.h"
 #include "AliESDtrackCuts.h"
 #include "AliESDVertex.h"
+#include "TMath.h"
 
 
 EtaConfig::EtaConfig()
@@ -34,6 +35,8 @@ EtaConfig::EtaConfig()
   fNITSClustersMin(0),
   fTrackPtMin(0.5),
   fTrackChi2Max(2),
+  fEtaMass(547.853),
+  fEtaMassDiffMax(547.853*0.05),
   fTrackCuts(0)
 {
   fTrackCuts = AliESDtrackCuts::GetStandardITSTPCTrackCuts2010();
@@ -69,6 +72,9 @@ bool EtaConfig::PassCut(const EtaPriCandidate& cand , bool checkConstituents, Al
 bool EtaConfig::PassCut(const EtaCandidate& cand, bool checkConstituents) const
 {
   if( cand.GetVector().Pt() < fEtaPtMin )
+    return false;
+  
+  if( fEtaMassDiffMax < TMath::Abs(cand.GetVector().M()-fEtaMass) )
     return false;
 
   if( checkConstituents )
