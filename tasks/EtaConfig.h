@@ -23,13 +23,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 #include "EtaPriCandidate.h"
 class AliESDtrack;
 class AliESDCaloCluster;
+class AliESDtrackCuts;
 
 class EtaConfig
 {
  public:
   EtaConfig();
-
-  bool PassCut(const EtaPriCandidate& , bool checkConstituents = false , AliESDVertex* traceTo = 0) const;
+  ~EtaConfig();
+  
+  bool PassCut(const EtaPriCandidate& , bool checkConstituents = false , AliESDVertex* relateToVertex = 0) const;
   bool PassCut(const EtaCandidate& , bool checkConstituents = false ) const;
   bool PassCut(const AliESDtrack* , const AliESDVertex* traceTo = 0) const;
   bool PassCut(const AliESDCaloCluster* ) const;
@@ -42,6 +44,10 @@ class EtaConfig
   int fNTPCClustersMin;
   int fNITSClustersMin;
   double fTrackPtMin;
+  double fTrackChi2Max;
+
+ private:
+  AliESDtrackCuts* fTrackCuts;
 };
 
 #endif

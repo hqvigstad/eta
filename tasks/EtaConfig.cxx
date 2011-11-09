@@ -5,7 +5,7 @@ Copyright (C) 2011 Henrik Qvigstad <henrik.qvigstad@cern.ch>
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
-License as published by the Free Software Foundation 
+License as published by the Free Software Foundation
 version 2.1 of the License.
 
 This library is distributed in the hope that it will be useful,
@@ -20,19 +20,30 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 
 #include "AliESDCaloCluster.h"
 #include "AliESDtrack.h"
+#include "AliESDtrackCuts.h"
+#include "AliESDVertex.h"
 
 
 EtaConfig::EtaConfig()
 : fClusterEnergyMin(0.3),
-  fEtaPtMin(1.0),
-  fEtaPriPtMin(1.0),
-  fNCellsMin(5),
+  fEtaPtMin(0.0),
+  fEtaPriPtMin(0.0),
+  fNCellsMin(3),
   fMuonPIDMin(0.0),
   fNTPCClustersMin(0),
   fNITSClustersMin(0),
-  fTrackPtMin(1.0)
-{}
+  fTrackPtMin(0.5),
+  fTrackChi2Max(2),
+  fTrackCuts(0)
+{
+  fTrackCuts = AliESDtrackCuts::GetStandardITSTPCTrackCuts2010();
+}
 
+
+EtaConfig::~EtaConfig()
+{
+  delete fTrackCuts;
+}
 
 bool EtaConfig::PassCut(const EtaPriCandidate& cand , bool checkConstituents, AliESDVertex* traceTo) const
 {
@@ -72,26 +83,45 @@ bool EtaConfig::PassCut(const EtaCandidate& cand, bool checkConstituents) const
 }
 
 
-bool EtaConfig::PassCut(const AliESDtrack* track, const AliESDVertex* traceTo) const
+bool EtaConfig::PassCut(const AliESDtrack* track, const AliESDVertex* relateToVertex) const
 {
   if( track->Pt() < fTrackPtMin )
     return false;
   // if( ! track->IsOn(AliESDtrack::kTPCpid) )
   //   return false;
-  if( track->GetNcls(0) < fNITSClustersMin )
+  // if( track->GetNcls(0) < fNITSClustersMin )
+  //   return false;
+  // if( track->GetNcls(1) < fNTPCClustersMin )
+  //   return false;
+
+  // Use AcceptTrack to reject to reject non standard tracks
+  if( ! fTrackCuts->AcceptTrack((AliESDtrack*) track) ) // conversion is quick fix, TODO: remove, as of nov 9, AcceptTrack takes 'const AliESDtrack*' in trunk.
     return false;
-  if( track->GetNcls(1) < fNTPCClustersMin )
-    return false;
-  // TODO: traceTo
-  //if( ! track->Traceable(traceTo) ) {}  
-  
+
+  // vertex
+  if( relateToVertex ) {
+    if( track->GetVertexID() == relateToVertex->GetID() ) {
+      // track is related to @relateToVertex
+      const Char_t trackChi2 = track->GetConstrainedChi2();
+      // assuming chi2 is not normalised by degrees of freedom
+      // mean = 1
+      // upper 5% percentile is lower bound by ~1.65
+      // upper 1% percentile is lower bound by ~2.33
+      if ( trackChi2 > fTrackChi2Max )
+	return false;
+    }
+    else
+      // TODO: relate to vertex, for now:
+      return false;
+  } // end if( relateToVertex )
+
   // PID
   // Double_t p[10];
   // track->GetTPCpid(p);
   // AliPID pid(p);
   // if( pid.GetProbability(AliPID::kMuon) < fMuonPIDMin )
   //   return false;
-  
+
   // Extract momentum
   // Double_t p[3]; p[0] = 0.0; p[1] = 0.0; p[2]=0.0;
   // track->GetConstrainedPxPyPz(p);
