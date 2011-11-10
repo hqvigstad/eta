@@ -17,6 +17,16 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 */
 
+
+/*
+ * Class for containing the instance of an eta analysis.
+ * Use by feeding AliESDEvents through member: ProcessEvent()
+ * results are in form of histograms added to list set 
+ * by SetOutputList().
+ */
+
+
+
 #include "AliESDEvent.h"
 #include "EtaAnalysis.h"
 #include "AliESDVertex.h"
@@ -35,6 +45,7 @@ EtaAnalysis::EtaAnalysis()
     fHistograms(new EtaHistograms ),
     fVerbose(1)
 {
+  // default constructor
 }
 
 EtaAnalysis::EtaAnalysis(const EtaConfig* config)
@@ -43,10 +54,12 @@ EtaAnalysis::EtaAnalysis(const EtaConfig* config)
     fHistograms(new EtaHistograms ),
     fVerbose(0)
 {
+  // constructor for setting non standard configurations
 }
 
 EtaAnalysis::~EtaAnalysis()
 {
+  // destructor
   delete fConfig;
   delete fHistograms;
 }
@@ -54,12 +67,15 @@ EtaAnalysis::~EtaAnalysis()
 
 void EtaAnalysis::SetOutputList(TList* list)
 {
+  // sets list where result histograms are added
   fOutputList = list;
   fHistograms->SetOutputList(list);
 }
 
 void EtaAnalysis::ProcessEvent(AliESDEvent* event)
 {
+  // @event is analysed and its candidates are filled into the histograms.
+
   // Get Calorimeter Clusters
   const vector<AliESDCaloCluster*> caloClusters = GetClusters(event);
   const vector<AliESDCaloCluster*> selectedCaloClusters = SelectClusters( caloClusters, fConfig );

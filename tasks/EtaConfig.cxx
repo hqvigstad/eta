@@ -33,7 +33,7 @@ EtaConfig::EtaConfig()
   fMuonPIDMin(0.0),
   fNTPCClustersMin(0),
   fNITSClustersMin(0),
-  fTrackPtMin(0.5),
+  fTrackPtMin(0.0),
   fTrackChi2Max(2),
   fEtaMass(547.853),
   fEtaMassDiffMax(547.853*0.05),
@@ -73,7 +73,7 @@ bool EtaConfig::PassCut(const EtaCandidate& cand, bool checkConstituents) const
 {
   if( cand.GetVector().Pt() < fEtaPtMin )
     return false;
-  
+
   if( fEtaMassDiffMax < TMath::Abs(cand.GetVector().M()-fEtaMass) )
     return false;
 
