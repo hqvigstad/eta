@@ -104,22 +104,22 @@ bool EtaConfig::PassCut(const AliESDtrack* track, const AliESDVertex* relateToVe
   if( ! fTrackCuts->AcceptTrack((AliESDtrack*) track) ) // conversion is quick fix, TODO: remove, as of nov 9, AcceptTrack takes 'const AliESDtrack*' in trunk.
     return false;
 
-  // vertex
-  if( relateToVertex ) {
-    if( track->GetVertexID() == relateToVertex->GetID() ) {
-      // track is related to @relateToVertex
-      const Char_t trackChi2 = track->GetConstrainedChi2();
-      // assuming chi2 is not normalised by degrees of freedom
-      // mean = 1
-      // upper 5% percentile is lower bound by ~1.65
-      // upper 1% percentile is lower bound by ~2.33
-      if ( trackChi2 > fTrackChi2Max )
-	return false;
-    }
-    else
-      // TODO: relate to vertex, for now:
-      return false;
-  } // end if( relateToVertex )
+  // primery track selection based on constained chi2
+  // if( relateToVertex ) {
+  //   if( track->GetVertexID() == relateToVertex->GetID() ) {
+  //     // track is related to @relateToVertex
+  //     const Char_t trackChi2 = track->GetConstrainedChi2();
+  //     // assuming chi2 is not normalised by degrees of freedom
+  //     // mean = 1
+  //     // upper 5% percentile is lower bound by ~1.65
+  //     // upper 1% percentile is lower bound by ~2.33
+  //     if ( trackChi2 > fTrackChi2Max )
+  // 	return false;
+  //   }
+  //   else
+  //     // TODO: relate to vertex, for now:
+  //     return false;
+  // } // end if( relateToVertex )
 
   // PID
   // Double_t p[10];
