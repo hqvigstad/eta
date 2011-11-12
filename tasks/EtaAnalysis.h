@@ -30,6 +30,7 @@ using namespace std;
 
 class TList;
 class AliESDEvent;
+class AliMCEvent;
 class AliESDCaloCluster;
 class AliESDtrack;
 
@@ -44,7 +45,7 @@ class EtaAnalysis
   ~EtaAnalysis();
 
   void SetOutputList(TList* list);
-  void ProcessEvent(AliESDEvent* );
+  void ProcessEvent(AliESDEvent* , AliMCEvent* mce = 0);
 
   void Terminate();
 
@@ -60,10 +61,10 @@ class EtaAnalysis
   int fVerbose; // level of verbosity =0: quiet, =1: low, =2: medium, =3: high
 
   // *** Procedural Functions ***
-  void FillFull( vector<AliESDCaloCluster*> );
-  void FillFull( vector<AliESDtrack*> );
-  void FillFull( vector<EtaCandidate> );
-  void FillFull( vector<EtaPriCandidate> );
+  void FillHistograms( vector<AliESDCaloCluster*>, AliMCEvent* mce = 0 );
+  void FillHistograms( vector<AliESDtrack*>, AliMCEvent* mce = 0 );
+  void FillHistograms( vector<EtaCandidate>, AliMCEvent* mce = 0 );
+  void FillHistograms( vector<EtaPriCandidate>, AliMCEvent* mce = 0 );
 
   // *** Functional Functions **
   static const vector<AliESDCaloCluster*> GetClusters(const AliESDEvent* );

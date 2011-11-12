@@ -29,6 +29,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 #include "TMath.h"
 #include "AliVEvent.h"
 #include "AliESDEvent.h"
+#include "AliMCEvent.h"
 #include "AliESDVertex.h"
 #include "AliESDCaloCluster.h"
 #include "TRefArray.h"
@@ -82,7 +83,8 @@ Bool_t EtaTask::UserNotify()
 void EtaTask::UserExec(Option_t* )
 {
   AliESDEvent* event = GetEvent();
-  fEtaAnalysis->ProcessEvent(event);
+  AliMCEvent* mcEvent = MCEvent();
+  fEtaAnalysis->ProcessEvent(event, mcEvent);
   
   PostData(1, fOutputList);
 }
@@ -102,42 +104,4 @@ AliESDEvent* EtaTask::GetEvent()
   return ( (AliESDEvent*) event);
 }
 
-
-// void EtaTask::GetClusters(TRefArray* clusters)
-// {
-//   const AliESDEvent* event = GetEvent();
-//   for(int i=0; i< event->GetNumberOfCaloClusters(); ++i)
-//     {
-//       clusters->Add( event->GetCaloCluster(i) );
-//     }
-// }
-
-
-// void EtaTask::GetTracks(TRefArray* tracks)
-// {
-//   const AliESDEvent* event = GetEvent();
-//   for(int i=0; i< event->GetNumberOfTracks(); ++i)
-//     tracks->Add( event->GetTrack(i) );
-// }
-
-
-
-// const AliESDCaloCells* EtaTask::GetPHOSCells()
-// {
-//   AliESDCaloCells* cells = GetEvent()->GetPHOSCells();
-//   if( ! cells)
-//     AliFatal("Could not retreive PHOS Calo Cells");
-//   return cells;
-// }
-
-// const TObject* EtaTask::FindOutputObject(const char* const  name, 
-// 				const char* const clas)
-// {
-//   TObject* obj = fOutputList->FindObject(name);
-//   if(! obj)
-//     AliFatal("Can't find object in fOutputList");
-//   if(! obj->InheritsFrom(clas) )
-//     AliFatal("Object of name does not inherit from given class");
-//   return obj;
-// }
 
