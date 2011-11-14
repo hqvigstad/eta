@@ -1,5 +1,5 @@
 
-AliAnalysisGrid* CreateAlienHandler(const char* mode = "full")
+AliAnalysisGrid* CreateAlienHandler(const char* mode = "offline")
 {
 
   //if (!AliAnalysisGrid::CreateToken()) return NULL;
@@ -11,7 +11,7 @@ AliAnalysisGrid* CreateAlienHandler(const char* mode = "full")
    plugin->SetOneStageMerging(kFALSE);
    plugin->SetMaxMergeStages(2);
 
-   plugin->SetAPIVersion("V2.4");
+   plugin->SetAPIVersion("V1.1x");
    plugin->SetROOTVersion("v5-30-03");
    plugin->SetAliROOTVersion("v5-02-06-AN");
 
@@ -19,33 +19,35 @@ AliAnalysisGrid* CreateAlienHandler(const char* mode = "full")
    plugin->SetGridDataDir("/alice/sim/LHC11d2/");
    plugin->SetDataPattern("*tag.root");
    plugin->AddRunNumber(119161);
-  
+   
    
    // Method 2: Declare existing data files 
    //plugin->AddDataFile("tag.xml");
    // plugin->AddDataFile("/alice/data/2008/LHC08c/000057657/raw/Run57657.Merged.RAW.tag.root");
 
    
-   plugin->SetGridWorkingDir("eta-plugin");
+   plugin->SetGridWorkingDir("eta");
    plugin->SetGridOutputDir("output"); // In this case will be $HOME/work/output
 
-   TString source;
-   source += " EtaCandidate.cxx";
-   source += " EtaPriCandidate.cxx";
-   source += " EtaConfig.cxx";
-   source += " EtaHistograms.cxx";
-   source += " EtaAnalysis.cxx";
-   source += " EtaTask.cxx";
-   plugin->SetAnalysisSource(source);
+   // TString source = "";
+   // source += "EtaCandidate.cxx ";
+   // source += "EtaPriCandidate.cxx ";
+   // source += "EtaConfig.cxx ";
+   // source += "EtaHistograms.cxx ";
+   // source += "EtaAnalysis.cxx ";
+   // source += "EtaTask.cxx ";
+   // plugin->SetAnalysisSource(source);
+   plugin->SetAnalysisSource("EtaCandidate.cxx EtaPriCandidate.cxx EtaConfig.cxx EtaHistograms.cxx EtaAnalysis.cxx EtaTask.cxx");
    
-   TString libs = source;
-   libs += " EtaCandidate.h";
-   libs += " EtaPriCandidate.h";
-   libs += " EtaConfig.h";
-   libs += " EtaHistograms.h";
-   libs += " EtaAnalysis.h";
-   libs += " EtaTask.h";
-   plugin->SetAdditionalLibs(libs);
+   // TString libs = source;
+   // libs += "EtaCandidate.h ";
+   // libs += " EtaPriCandidate.h";
+   // libs += " EtaConfig.h";
+   // libs += " EtaHistograms.h";
+   // libs += " EtaAnalysis.h";
+   // libs += " EtaTask.h";
+   // plugin->SetAdditionalLibs(libs);
+   plugin->SetAdditionalLibs("EtaCandidate.h EtaCandidate.cxx EtaPriCandidate.h EtaPriCandidate.cxx EtaConfig.h EtaConfig.cxx EtaHistograms.h EtaHistograms.cxx EtaAnalysis.h EtaAnalysis.cxx EtaTask.h EtaTask.cxx");
 
    //plugin->SetOutputFiles("eta.output.ESD.root");
    plugin->SetDefaultOutputs(kTRUE);

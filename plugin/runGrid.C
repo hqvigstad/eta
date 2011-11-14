@@ -22,7 +22,7 @@ void runGrid(const char* mode = "test")
 
   // Create and configure the alien handler plugin
   gROOT->LoadMacro("CreateAlienHandler.C");
-  AliAnalysisGrid *alienHandler = CreateAlienHandler();  
+  AliAnalysisGrid *alienHandler = CreateAlienHandler(mode);  
   if (!alienHandler) return;
   mgr->SetGridHandler(alienHandler);
 

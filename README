@@ -1,0 +1,20 @@
+*** Eta Prime Analysis ***
+
+In order to run locally:
+1  create tags:
+1.1  cd local/tags/
+1.2  , edit CreateTags.C to point towards local files
+1.3  , call: '$ aliroot runTagCreator.C'.
+2  Run by
+2.1 cd local/
+2.2 , call: '$ aliroot runLocal.C'.
+       By default, this takes the tags from loca/tags
+
+In order to run on grid:
+1  make a build directory:
+1.1 cd plugin
+1.2 call: './build.sh test', were 'test' can be any replaced by desired name.
+2  Run by:
+2.1 cd test
+2.2 aliroot 'runGrid.C'.
+This run the code in Plugin Test Mode. In order to changes this, call runGrid with the appropriate mode as argument. The build directory is the appropriate place to make changes to the run parameters which is not appropriate upstream.
