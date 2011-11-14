@@ -95,10 +95,10 @@ void EtaAnalysis::ProcessEvent(AliESDEvent* event, AliMCEvent* mcEvent)
 
 
   // Fill Histograms
-  FillHistograms(caloClusters, mcEvent);
-  FillHistograms( etaCands, mcEvent);
-  FillHistograms(tracks, mcEvent);
-  FillHistograms(etaPriCands, mcEvent);
+  FillFull(caloClusters, mcEvent);
+  FillFull( etaCands, mcEvent);
+  FillFull(tracks, mcEvent);
+  FillFull(etaPriCands, mcEvent);
 
   fHistograms->GetNSelectedTracks()->Fill( selectedTracks.size() );
   
@@ -174,7 +174,7 @@ void EtaAnalysis::Terminate()
 }
 
 
-void EtaAnalysis::FillHistograms( const vector<AliESDCaloCluster*>  clus, AliMCEvent* mce)
+void EtaAnalysis::FillFull( const vector<AliESDCaloCluster*>  clus, AliMCEvent* mce)
 {
   for(unsigned int i=0; i<clus.size(); ++i)
     {
@@ -185,7 +185,7 @@ void EtaAnalysis::FillHistograms( const vector<AliESDCaloCluster*>  clus, AliMCE
 }
 
 
-void EtaAnalysis::FillHistograms( const vector<AliESDtrack*> trks, AliMCEvent* mce)
+void EtaAnalysis::FillFull( const vector<AliESDtrack*> trks, AliMCEvent* mce)
 {
   vector<AliESDtrack*>::const_iterator iter;
   for(iter = trks.begin(); iter < trks.end(); iter++)
@@ -197,7 +197,7 @@ void EtaAnalysis::FillHistograms( const vector<AliESDtrack*> trks, AliMCEvent* m
 }
 
 
-void EtaAnalysis::FillHistograms( const vector<EtaCandidate> cands, AliMCEvent* mce)
+void EtaAnalysis::FillFull( const vector<EtaCandidate> cands, AliMCEvent* mce)
 {
   for(int idx=0; idx < (int)cands.size(); ++idx)
     {
@@ -208,7 +208,7 @@ void EtaAnalysis::FillHistograms( const vector<EtaCandidate> cands, AliMCEvent* 
 }
 
 
-void EtaAnalysis::FillHistograms( const vector<EtaPriCandidate> cands, AliMCEvent* mce)
+void EtaAnalysis::FillFull( const vector<EtaPriCandidate> cands, AliMCEvent* mce)
 {
   for(int i=0; i < (int)cands.size(); ++i)
     {
