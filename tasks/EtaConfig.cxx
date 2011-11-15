@@ -24,15 +24,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 #include "AliESDVertex.h"
 #include "TMath.h"
 
+ClassImp(EtaConfig)
 
 EtaConfig::EtaConfig()
-: fClusterEnergyMin(0.3),
+: TObject(),
+  fClusterEnergyMin(0.3),
   fEtaPtMin(0.0),
   fEtaPriPtMin(0.0),
   fNCellsMin(3),
-  fMuonPIDMin(0.0),
-  fNTPCClustersMin(0),
-  fNITSClustersMin(0),
+  fCheckPionPID(0.0),
   fTrackPtMin(0.0),
   fTrackChi2Max(2),
   fEtaMass(547.853),
@@ -40,12 +40,55 @@ EtaConfig::EtaConfig()
   fTrackCuts(0)
 {
   fTrackCuts = AliESDtrackCuts::GetStandardITSTPCTrackCuts2010();
+  return;
+}
+
+
+EtaConfig::EtaConfig(const EtaConfig & obj)
+: TObject(obj),
+  fClusterEnergyMin(0.3),
+  fEtaPtMin(0.0),
+  fEtaPriPtMin(0.0),
+  fNCellsMin(3),
+  fCheckPionPID(0.0),
+  fTrackPtMin(0.0),
+  fTrackChi2Max(2),
+  fEtaMass(547.853),
+  fEtaMassDiffMax(547.853*0.05),
+  fTrackCuts(0)
+{
+  obj.Copy(*this);
+}
+
+
+EtaConfig& EtaConfig::operator=(const EtaConfig & obj)
+{
+  obj.Copy(*this);
+  return *this;
 }
 
 
 EtaConfig::~EtaConfig()
 {
   delete fTrackCuts;
+  return;
+}
+
+void EtaConfig::Copy(TObject & obj) const
+{
+  if(&obj == this)
+    return;
+  
+  TObject::Copy(obj);
+  ((EtaConfig&)obj).fClusterEnergyMin = this->fClusterEnergyMin;
+  ((EtaConfig&)obj).fEtaPtMin = this->fEtaPtMin;
+  ((EtaConfig&)obj).fEtaPriPtMin = this->fEtaPriPtMin;
+  ((EtaConfig&)obj).fNCellsMin = this->fNCellsMin;
+  ((EtaConfig&)obj).fCheckPionPID = this->fCheckPionPID;
+  ((EtaConfig&)obj).fTrackPtMin = this->fTrackPtMin;
+  ((EtaConfig&)obj).fEtaMass = this->fEtaMass;
+  ((EtaConfig&)obj).fEtaMassDiffMax = this->fEtaMassDiffMax;
+  ((EtaConfig&)obj).fTrackCuts = new AliESDtrackCuts(*fTrackCuts);
 }
 
 bool EtaConfig::PassCut(const EtaPriCandidate& cand , bool checkConstituents, AliESDVertex* traceTo) const
@@ -93,12 +136,6 @@ bool EtaConfig::PassCut(const AliESDtrack* track, const AliESDVertex* relateToVe
 {
   if( track->Pt() < fTrackPtMin )
     return false;
-  // if( ! track->IsOn(AliESDtrack::kTPCpid) )
-  //   return false;
-  // if( track->GetNcls(0) < fNITSClustersMin )
-  //   return false;
-  // if( track->GetNcls(1) < fNTPCClustersMin )
-  //   return false;
 
   // Use AcceptTrack to reject to reject non standard tracks
   if( ! fTrackCuts->AcceptTrack((AliESDtrack*) track) ) // conversion is quick fix, TODO: remove, as of nov 9, AcceptTrack takes 'const AliESDtrack*' in trunk.
@@ -122,12 +159,17 @@ bool EtaConfig::PassCut(const AliESDtrack* track, const AliESDVertex* relateToVe
   // } // end if( relateToVertex )
 
   // PID
-  // Double_t p[10];
-  // track->GetTPCpid(p);
-  // AliPID pid(p);
-  // if( pid.GetProbability(AliPID::kMuon) < fMuonPIDMin )
-  //   return false;
-
+  if( fCheckPionPID ) {
+    Double_t pids[10];
+    track->GetTPCpid(pids);
+    AliPID pid(pids);
+    if( pid.GetProbability(AliPID::kPion) < pid.GetProbability(AliPID::kMuon) 
+	|| pid.GetProbability(AliPID::kPion) < pid.GetProbability(AliPID::kElectron) 
+	|| pid.GetProbability(AliPID::kPion) < pid.GetProbability(AliPID::kKaon) 
+	|| pid.GetProbability(AliPID::kPion) < pid.GetProbability(AliPID::kProton) 
+	)
+      return false;
+  }
   // Extract momentum
   // Double_t p[3]; p[0] = 0.0; p[1] = 0.0; p[2]=0.0;
   // track->GetConstrainedPxPyPz(p);

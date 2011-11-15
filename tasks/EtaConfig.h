@@ -25,31 +25,37 @@ class AliESDtrack;
 class AliESDCaloCluster;
 class AliESDtrackCuts;
 
-class EtaConfig
+#include "TObject.h"
+
+class EtaConfig : public TObject
 {
  public:
   EtaConfig();
-  ~EtaConfig();
+  EtaConfig(const EtaConfig & );
+  EtaConfig& operator=(const EtaConfig & );
+  virtual ~EtaConfig();
   
-  bool PassCut(const EtaPriCandidate& , bool checkConstituents = false , AliESDVertex* relateToVertex = 0) const;
-  bool PassCut(const EtaCandidate& , bool checkConstituents = false ) const;
-  bool PassCut(const AliESDtrack* , const AliESDVertex* traceTo = 0) const;
-  bool PassCut(const AliESDCaloCluster* ) const;
-
-  double fClusterEnergyMin;
-  double fEtaPtMin;
-  double fEtaPriPtMin;
-  int fNCellsMin;
-  double fMuonPIDMin;
-  int fNTPCClustersMin;
-  int fNITSClustersMin;
-  double fTrackPtMin;
-  double fTrackChi2Max;
-  double fEtaMass;
-  double fEtaMassDiffMax;
-
+  virtual void Copy(TObject & ) const;
+  
+  Bool_t PassCut(const EtaPriCandidate& , Bool_t checkConstituents = false , AliESDVertex* relateToVertex = 0) const;
+  Bool_t PassCut(const EtaCandidate& , Bool_t checkConstituents = false ) const;
+  Bool_t PassCut(const AliESDtrack* , const AliESDVertex* traceTo = 0) const;
+  Bool_t PassCut(const AliESDCaloCluster* ) const;
+  
+  
  private:
+  Double_t fClusterEnergyMin;
+  Double_t fEtaPtMin;
+  Double_t fEtaPriPtMin;
+  Int_t fNCellsMin;
+  Bool_t fCheckPionPID;
+  Double_t fTrackPtMin;
+  Double_t fTrackChi2Max;
+  Double_t fEtaMass;
+  Double_t fEtaMassDiffMax;
   AliESDtrackCuts* fTrackCuts;
+
+  ClassDef(EtaConfig, 1)
 };
 
 #endif

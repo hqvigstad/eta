@@ -1,3 +1,4 @@
+#include "EtaAnalysis.h"
 /*
 Eta Prime Analysis for the ALICE Experiment.
 Copyright (C) 2011 Henrik Qvigstad <henrik.qvigstad@cern.ch>
@@ -25,10 +26,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  * by SetOutputList().
  */
 
+ClassImp(EtaAnalysis)
 
 
 #include "AliESDEvent.h"
-#include "EtaAnalysis.h"
 #include "AliESDVertex.h"
 #include "TCanvas.h"
 #include "TH1F.h"

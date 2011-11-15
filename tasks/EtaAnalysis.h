@@ -33,14 +33,17 @@ class AliESDEvent;
 class AliESDCaloCluster;
 class AliESDtrack;
 
+#include "TObject.h"
+
 /*
  * Class for containing the instance of an eta analysis.
  */
-class EtaAnalysis
+class EtaAnalysis : public TObject
 {
  public:
   EtaAnalysis();
   EtaAnalysis(const EtaConfig* config);
+  
   ~EtaAnalysis();
 
   void SetOutputList(TList* list);
@@ -52,12 +55,15 @@ class EtaAnalysis
 
 
  private:
+  EtaAnalysis(const EtaAnalysis & ); // Not Implemented
+  EtaAnalysis& operator= (const EtaAnalysis & ); // Not Implemented
+
   EtaConfig* fConfig; // the Configuration for the analysis
   TList* fOutputList; // the list fHistogram is to add to
   EtaHistograms* fHistograms; // histograms
 
   // *** Configurations ***
-  int fVerbose; // level of verbosity =0: quiet, =1: low, =2: medium, =3: high
+  Int_t fVerbose; // level of verbosity =0: quiet, =1: low, =2: medium, =3: high
 
   // *** Procedural Functions ***
   void FillFull( vector<AliESDCaloCluster*> );
@@ -76,6 +82,8 @@ class EtaAnalysis
   static const vector<AliESDCaloCluster*> SelectClusters(const vector<AliESDCaloCluster*>& , const EtaConfig* );
   static const vector<EtaCandidate> SelectEtaCands(const vector<EtaCandidate>& , const EtaConfig* );
   static const vector<AliESDtrack*> SelectTracks(const vector<AliESDtrack*>& , const EtaConfig*, const AliESDVertex* vertex = 0 );
+
+  ClassDef(EtaAnalysis, 1)
 };
 
 #endif
