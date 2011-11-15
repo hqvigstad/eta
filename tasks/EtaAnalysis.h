@@ -1,4 +1,4 @@
-#ifndef ETAANALYSIS_H
+ #ifndef ETAANALYSIS_H
 #define ETAANALYSIS_H
 /*
 Eta Prime Analysis for the ALICE Experiment.
@@ -30,6 +30,7 @@ using namespace std;
 
 class TList;
 class AliESDEvent;
+class AliMCEvent;
 class AliESDCaloCluster;
 class AliESDtrack;
 
@@ -47,7 +48,7 @@ class EtaAnalysis : public TObject
   ~EtaAnalysis();
 
   void SetOutputList(TList* list);
-  void ProcessEvent(AliESDEvent* );
+  void ProcessEvent(AliESDEvent* , AliMCEvent* mce = 0);
 
   void Terminate();
 
@@ -66,10 +67,10 @@ class EtaAnalysis : public TObject
   Int_t fVerbose; // level of verbosity =0: quiet, =1: low, =2: medium, =3: high
 
   // *** Procedural Functions ***
-  void FillFull( vector<AliESDCaloCluster*> );
-  void FillFull( vector<AliESDtrack*> );
-  void FillFull( vector<EtaCandidate> );
-  void FillFull( vector<EtaPriCandidate> );
+  void FillFull( vector<AliESDCaloCluster*>, AliMCEvent* mce = 0 );
+  void FillFull( vector<AliESDtrack*>, AliMCEvent* mce = 0 );
+  void FillFull( vector<EtaCandidate>, AliMCEvent* mce = 0 );
+  void FillFull( vector<EtaPriCandidate>, AliMCEvent* mce = 0 );
 
   // *** Functional Functions **
   static const vector<AliESDCaloCluster*> GetClusters(const AliESDEvent* );

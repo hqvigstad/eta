@@ -30,6 +30,7 @@ ClassImp(EtaAnalysis)
 
 
 #include "AliESDEvent.h"
+#include "AliMCEvent.h"
 #include "AliESDVertex.h"
 #include "TCanvas.h"
 #include "TH1F.h"
@@ -73,7 +74,7 @@ void EtaAnalysis::SetOutputList(TList* list)
   fHistograms->SetOutputList(list);
 }
 
-void EtaAnalysis::ProcessEvent(AliESDEvent* event)
+void EtaAnalysis::ProcessEvent(AliESDEvent* event, AliMCEvent* mcEvent)
 {
   // @event is analysed and its candidates are filled into the histograms.
 
@@ -93,14 +94,16 @@ void EtaAnalysis::ProcessEvent(AliESDEvent* event)
   // Get Eta Prime Candidates
   const vector<EtaPriCandidate> etaPriCands = ExtractEtaPriCandidates(selectedEtaCands, selectedTracks);
 
-  FillFull(caloClusters);
-  FillFull( etaCands );
-  FillFull(tracks);
-  FillFull(etaPriCands);
+
+  // Fill Histograms
+  FillFull(caloClusters, mcEvent);
+  FillFull( etaCands, mcEvent);
+  FillFull(tracks, mcEvent);
+  FillFull(etaPriCands, mcEvent);
 
   fHistograms->GetNSelectedTracks()->Fill( selectedTracks.size() );
-    
-    if( fVerbose ) {
+  
+  if( fVerbose ) {
     cout << "Number Calo. Clusters:" << caloClusters.size()
 	 << ", selected:" << selectedCaloClusters.size() << endl;
     cout << "Number Tracks:" << tracks.size()
@@ -172,7 +175,7 @@ void EtaAnalysis::Terminate()
 }
 
 
-void EtaAnalysis::FillFull( const vector<AliESDCaloCluster*>  clus)
+void EtaAnalysis::FillFull( const vector<AliESDCaloCluster*>  clus, AliMCEvent* mce)
 {
   for(unsigned int i=0; i<clus.size(); ++i)
     {
@@ -183,7 +186,7 @@ void EtaAnalysis::FillFull( const vector<AliESDCaloCluster*>  clus)
 }
 
 
-void EtaAnalysis::FillFull( const vector<AliESDtrack*> trks)
+void EtaAnalysis::FillFull( const vector<AliESDtrack*> trks, AliMCEvent* mce)
 {
   vector<AliESDtrack*>::const_iterator iter;
   for(iter = trks.begin(); iter < trks.end(); iter++)
@@ -195,7 +198,7 @@ void EtaAnalysis::FillFull( const vector<AliESDtrack*> trks)
 }
 
 
-void EtaAnalysis::FillFull( const vector<EtaCandidate> cands)
+void EtaAnalysis::FillFull( const vector<EtaCandidate> cands, AliMCEvent* mce)
 {
   for(int idx=0; idx < (int)cands.size(); ++idx)
     {
@@ -206,7 +209,7 @@ void EtaAnalysis::FillFull( const vector<EtaCandidate> cands)
 }
 
 
-void EtaAnalysis::FillFull( const vector<EtaPriCandidate> cands)
+void EtaAnalysis::FillFull( const vector<EtaPriCandidate> cands, AliMCEvent* mce)
 {
   for(int i=0; i < (int)cands.size(); ++i)
     {
