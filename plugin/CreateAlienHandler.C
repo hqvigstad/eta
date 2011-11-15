@@ -17,7 +17,9 @@ AliAnalysisGrid* CreateAlienHandler(const char* mode = "offline")
 
    // add data through aliensh find procedure.
    plugin->SetGridDataDir("/alice/sim/LHC11d2/");
-   plugin->SetDataPattern("*tag.root");
+   //plugin->SetDataPattern("*tag.root");
+   //plugin->SetDataPattern("*pass1/*tag.root");
+   plugin->SetDataPattern("*ESDs.root");
    plugin->AddRunNumber(119161);
    
    
