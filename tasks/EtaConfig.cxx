@@ -35,8 +35,8 @@ EtaConfig::EtaConfig()
   fCheckPionPID(0.0),
   fTrackPtMin(0.0),
   fTrackChi2Max(2),
-  fEtaMass(547.853),
-  fEtaMassDiffMax(547.853*0.05),
+  fEtaMass(0.547853),
+  fEtaMassDiffMax(fEtaMass*0.05),
   fTrackCuts(0)
 {
   fTrackCuts = AliESDtrackCuts::GetStandardITSTPCTrackCuts2010();
@@ -53,8 +53,8 @@ EtaConfig::EtaConfig(const EtaConfig & obj)
   fCheckPionPID(0.0),
   fTrackPtMin(0.0),
   fTrackChi2Max(2),
-  fEtaMass(547.853),
-  fEtaMassDiffMax(547.853*0.05),
+  fEtaMass(0.547853),
+  fEtaMassDiffMax(fEtaMass*0.05),
   fTrackCuts(0)
 {
   obj.Copy(*this);
