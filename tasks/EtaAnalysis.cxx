@@ -67,13 +67,6 @@ EtaAnalysis::~EtaAnalysis()
 }
 
 
-void EtaAnalysis::SetOutputList(TList* list)
-{
-  // sets list where result histograms are added
-  fOutputList = list;
-  fHistograms->SetOutputList(list);
-}
-
 void EtaAnalysis::ProcessEvent(AliESDEvent* event, AliMCEvent* mcEvent)
 {
   // @event is analysed and its candidates are filled into the histograms.
@@ -109,6 +102,30 @@ void EtaAnalysis::ProcessEvent(AliESDEvent* event, AliMCEvent* mcEvent)
     cout << "Number Tracks:" << tracks.size()
 	 << ", selected:" << selectedTracks.size() << endl;
   }
+}
+
+
+
+void EtaAnalysis::SetConfig(const EtaConfig* config)
+{
+  fConfig->operator=(*config);
+}
+
+
+void EtaAnalysis::SetOutputList(TList* list)
+{
+  // sets list where result histograms are added
+  fOutputList = list;
+  fHistograms->SetOutputList(list);
+}
+
+
+void EtaAnalysis::Terminate()
+{
+  new TCanvas;
+  fHistograms->GetEtaCandidates()->Draw();
+  new TCanvas;
+  fHistograms->GetEtaPriCandidates()->Draw();
 }
 
 
@@ -163,15 +180,6 @@ const vector<EtaPriCandidate> EtaAnalysis::ExtractEtaPriCandidates(const vector<
 	cands.push_back( EtaPriCandidate(etas[ie], tracks[it1], tracks[it2]) );
 
   return cands;
-}
-
-
-void EtaAnalysis::Terminate()
-{
-  new TCanvas;
-  fHistograms->GetEtaCandidates()->Draw();
-  new TCanvas;
-  fHistograms->GetEtaPriCandidates()->Draw();
 }
 
 
@@ -248,3 +256,5 @@ const vector<AliESDtrack*> EtaAnalysis::SelectTracks(const vector<AliESDtrack*>&
       selected.push_back( tracks[ti] );
   return selected;
 }
+
+

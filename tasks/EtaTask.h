@@ -6,7 +6,7 @@ Copyright (C) 2011 Henrik Qvigstad <henrik.qvigstad@cern.ch>
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
-License as published by the Free Software Foundation 
+License as published by the Free Software Foundation
 version 2.1 of the License.
 
 This library is distributed in the hope that it will be useful,
@@ -20,6 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 */
 
 class EtaAnalysis;
+class EtaConfig;
 
 class TList;
 class AliESDEvent;
@@ -40,21 +41,23 @@ class EtaTask : public AliAnalysisTaskSE
  public:
   EtaTask(const char* name = "EtaTask");
   virtual ~EtaTask();
-  
+
   virtual void UserCreateOutputObjects();
   virtual Bool_t UserNotify();
   virtual void UserExec(Option_t * );
   virtual void Terminate(Option_t *);
+
+  void SetConfig(const EtaConfig* config);
 
  protected:
   EtaTask(const EtaTask&);//Not Implemented
   EtaTask& operator=(const EtaTask& );//Not Implemented
 
   AliESDEvent* GetEvent(); // returns ESD Event
-  
+
   EtaAnalysis* fEtaAnalysis;
   TList* fOutputList;
-  
+
   ClassDef(EtaTask, 1);
 };
 

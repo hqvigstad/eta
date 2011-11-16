@@ -47,10 +47,22 @@ void runLocal() {
   // Add Eta Task
   EtaTask* etaTask = new EtaTask("EtaTask");
   mgr->AddTask(etaTask);
+
+  EtaTask *omegaTask = new EtaTask("omegaTask");
+  EtaConfig omegaConf;
+  omegaConf.fEtaMass = 0.134;
+  omegaConf.fEtaMassDiffMax = omegaConf.fEtaMass*0.05;
+  omegaTask->SetConfig(&omegaConf);
+  mgr->AddTask(omegaTask);
+
+
   AliAnalysisDataContainer *cinput0 = mgr->GetCommonInputContainer();
-  AliAnalysisDataContainer *coutput1 = mgr->CreateContainer("chist1", TList::Class(),AliAnalysisManager::kOutputContainer,"eta.output.ESD.root");
+  AliAnalysisDataContainer *etaout1= mgr->CreateContainer("eta.output.1", TList::Class(),AliAnalysisManager::kOutputContainer,"eta.output.ESD.root");
+  AliAnalysisDataContainer *omegaout1 = mgr->CreateContainer("omega.output.1", TList::Class(),AliAnalysisManager::kOutputContainer,"eta.output.ESD.root");
   mgr->ConnectInput(etaTask, 0, cinput0);
-  mgr->ConnectOutput(etaTask, 1, coutput1);
+  mgr->ConnectInput(omegaTask, 0, cinput0);
+  mgr->ConnectOutput(etaTask, 1, etaout1);
+  mgr->ConnectOutput(omegaTask, 1, omegaout1);
 
   //____________________________________________//
   mgr->SetDebugLevel(1);

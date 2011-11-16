@@ -4,7 +4,7 @@ Copyright (C) 2011 Henrik Qvigstad <henrik.qvigstad@cern.ch>
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
-License as published by the Free Software Foundation 
+License as published by the Free Software Foundation
 version 2.1 of the License.
 
 This library is distributed in the hope that it will be useful,
@@ -18,6 +18,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 */
 
 #include "EtaTask.h"
+#include "EtaConfig.h"
 
 #include "EtaAnalysis.h"
 #include "TChain.h"
@@ -52,6 +53,8 @@ EtaTask::EtaTask(const char* name)
     fOutputList(0)
 {
   DefineOutput(1, TList::Class());
+
+  fEtaAnalysis = new EtaAnalysis();
 }
 
 
@@ -65,10 +68,9 @@ void EtaTask::UserCreateOutputObjects()
 {
   fOutputList = new TList();
   fOutputList->SetOwner();
-  
+
   EtaConfig* config = new EtaConfig;
-  
-  fEtaAnalysis = new EtaAnalysis(config);
+
   fEtaAnalysis->SetOutputList(fOutputList);
   PostData(1, fOutputList);
 
@@ -79,13 +81,13 @@ Bool_t EtaTask::UserNotify()
 {
   return kTRUE;
 }
-  
+
 void EtaTask::UserExec(Option_t* )
 {
   AliESDEvent* event = GetEvent();
   AliMCEvent* mcEvent = MCEvent();
   fEtaAnalysis->ProcessEvent(event, mcEvent);
-  
+
   PostData(1, fOutputList);
 }
 
@@ -93,6 +95,13 @@ void EtaTask::Terminate(Option_t* )
 {
   fEtaAnalysis->Terminate();
 }
+
+
+void EtaTask::SetConfig(const EtaConfig* config)
+{
+  fEtaAnalysis->SetConfig(config);
+}
+
 
 AliESDEvent* EtaTask::GetEvent()
 {
