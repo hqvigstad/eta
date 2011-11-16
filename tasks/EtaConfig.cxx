@@ -29,14 +29,15 @@ ClassImp(EtaConfig)
 EtaConfig::EtaConfig()
 : TObject(),
   fClusterEnergyMin(0.3),
-  fEtaPtMin(0.0),
-  fEtaPriPtMin(0.0),
   fNCellsMin(3),
-  fCheckPionPID(0.0),
+  fDistToBadCellMin(2),
   fTrackPtMin(0.0),
+  fCheckPionPID(0.0),
   fTrackChi2Max(2),
+  fEtaPtMin(0.0),
   fEtaMass(0.547853),
   fEtaMassDiffMax(fEtaMass*0.05),
+  fEtaPriPtMin(0.0),
   fTrackCuts(0)
 {
   fTrackCuts = AliESDtrackCuts::GetStandardITSTPCTrackCuts2010();
@@ -47,14 +48,15 @@ EtaConfig::EtaConfig()
 EtaConfig::EtaConfig(const EtaConfig & obj)
 : TObject(obj),
   fClusterEnergyMin(0.3),
-  fEtaPtMin(0.0),
-  fEtaPriPtMin(0.0),
   fNCellsMin(3),
-  fCheckPionPID(0.0),
+  fDistToBadCellMin(2),
   fTrackPtMin(0.0),
+  fCheckPionPID(0.0),
   fTrackChi2Max(2),
+  fEtaPtMin(0.0),
   fEtaMass(0.547853),
   fEtaMassDiffMax(fEtaMass*0.05),
+  fEtaPriPtMin(0.0),
   fTrackCuts(0)
 {
   obj.Copy(*this);
@@ -80,14 +82,20 @@ void EtaConfig::Copy(TObject & obj) const
     return;
   
   TObject::Copy(obj);
+  
   ((EtaConfig&)obj).fClusterEnergyMin = this->fClusterEnergyMin;
-  ((EtaConfig&)obj).fEtaPtMin = this->fEtaPtMin;
-  ((EtaConfig&)obj).fEtaPriPtMin = this->fEtaPriPtMin;
   ((EtaConfig&)obj).fNCellsMin = this->fNCellsMin;
-  ((EtaConfig&)obj).fCheckPionPID = this->fCheckPionPID;
+  ((EtaConfig&)obj).fDistToBadCellMin = this->fDistToBadCellMin;
+  
   ((EtaConfig&)obj).fTrackPtMin = this->fTrackPtMin;
+  ((EtaConfig&)obj).fCheckPionPID = this->fCheckPionPID;
+
+  ((EtaConfig&)obj).fEtaPtMin = this->fEtaPtMin;
   ((EtaConfig&)obj).fEtaMass = this->fEtaMass;
   ((EtaConfig&)obj).fEtaMassDiffMax = this->fEtaMassDiffMax;
+
+  ((EtaConfig&)obj).fEtaPriPtMin = this->fEtaPriPtMin;
+  
   ((EtaConfig&)obj).fTrackCuts = new AliESDtrackCuts(*fTrackCuts);
 }
 
@@ -137,10 +145,25 @@ bool EtaConfig::PassCut(const AliESDtrack* track, const AliESDVertex* relateToVe
   if( track->Pt() < fTrackPtMin )
     return false;
 
+  // PID
+  if( fCheckPionPID ) {
+    Double_t pids[10];
+    track->GetTPCpid(pids);
+    AliPID pid(pids);
+    if( pid.GetProbability(AliPID::kPion) < pid.GetProbability(AliPID::kMuon) 
+	|| pid.GetProbability(AliPID::kPion) < pid.GetProbability(AliPID::kElectron) 
+	|| pid.GetProbability(AliPID::kPion) < pid.GetProbability(AliPID::kKaon) 
+	|| pid.GetProbability(AliPID::kPion) < pid.GetProbability(AliPID::kProton) 
+	)
+      return false;
+  }
+
   // Use AcceptTrack to reject to reject non standard tracks
   if( ! fTrackCuts->AcceptTrack((AliESDtrack*) track) ) // conversion is quick fix, TODO: remove, as of nov 9, AcceptTrack takes 'const AliESDtrack*' in trunk.
     return false;
 
+
+  
   // primery track selection based on constained chi2
   // if( relateToVertex ) {
   //   if( track->GetVertexID() == relateToVertex->GetID() ) {
@@ -158,18 +181,6 @@ bool EtaConfig::PassCut(const AliESDtrack* track, const AliESDVertex* relateToVe
   //     return false;
   // } // end if( relateToVertex )
 
-  // PID
-  if( fCheckPionPID ) {
-    Double_t pids[10];
-    track->GetTPCpid(pids);
-    AliPID pid(pids);
-    if( pid.GetProbability(AliPID::kPion) < pid.GetProbability(AliPID::kMuon) 
-	|| pid.GetProbability(AliPID::kPion) < pid.GetProbability(AliPID::kElectron) 
-	|| pid.GetProbability(AliPID::kPion) < pid.GetProbability(AliPID::kKaon) 
-	|| pid.GetProbability(AliPID::kPion) < pid.GetProbability(AliPID::kProton) 
-	)
-      return false;
-  }
   // Extract momentum
   // Double_t p[3]; p[0] = 0.0; p[1] = 0.0; p[2]=0.0;
   // track->GetConstrainedPxPyPz(p);
@@ -186,7 +197,9 @@ bool EtaConfig::PassCut(const AliESDCaloCluster* cluster) const
     return false;
   if( cluster->GetNCells() < fNCellsMin )
     return false;
-
+  if( cluster->GetDistanceToBadChannel() < fDistToBadCellMin )
+    return false;
+  
   return true;
 }
 

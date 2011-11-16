@@ -44,17 +44,23 @@ class EtaConfig : public TObject
   
   
  private:
+  // Cluster Cut Parameters
   Double_t fClusterEnergyMin;
-  Double_t fEtaPtMin;
-  Double_t fEtaPriPtMin;
   Int_t fNCellsMin;
-  Bool_t fCheckPionPID;
+  Double_t fDistToBadCellMin;
+  // Track Cut Parameters
   Double_t fTrackPtMin;
+  Bool_t fCheckPionPID;
   Double_t fTrackChi2Max;
+  // Eta Cut Parameters
+  Double_t fEtaPtMin;
   Double_t fEtaMass;
   Double_t fEtaMassDiffMax;
-  AliESDtrackCuts* fTrackCuts;
+  // Eta Prime Cut Parameters
+  Double_t fEtaPriPtMin;
 
+  AliESDtrackCuts* fTrackCuts;
+  
   ClassDef(EtaConfig, 1)
 };
 
