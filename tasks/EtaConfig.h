@@ -42,8 +42,6 @@ class EtaConfig : public TObject
   Bool_t PassCut(const AliESDtrack* , const AliESDVertex* traceTo = 0) const;
   Bool_t PassCut(const AliESDCaloCluster* ) const;
   
-  
- private:
   // Cluster Cut Parameters
   Double_t fClusterEnergyMin;
   Int_t fNCellsMin;
@@ -59,6 +57,7 @@ class EtaConfig : public TObject
   // Eta Prime Cut Parameters
   Double_t fEtaPriPtMin;
 
+ private:
   AliESDtrackCuts* fTrackCuts;
   
   ClassDef(EtaConfig, 1)

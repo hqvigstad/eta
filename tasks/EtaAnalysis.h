@@ -47,13 +47,13 @@ class EtaAnalysis : public TObject
   
   ~EtaAnalysis();
 
-  void SetOutputList(TList* list);
   void ProcessEvent(AliESDEvent* , AliMCEvent* mce = 0);
 
-  void Terminate();
-
+  void SetConfig(const EtaConfig* config);
+  void SetOutputList(TList* list);
   void SetVerbose(int verbose) {fVerbose = verbose;}
 
+  void Terminate();
 
  private:
   EtaAnalysis(const EtaAnalysis & ); // Not Implemented
