@@ -78,7 +78,7 @@ TH2F* EtaHistograms::GetEtaPriCandidates()
       fEtaPriCandidates->GetXaxis()->SetTitle("Pt [GeV/c]");
       fEtaPriCandidates->GetYaxis()->SetTitle("IM [GeV/c^2]");
       if( fOutputList )
-	fOutputList->Add(fEtaCandidates);
+	fOutputList->Add(fEtaPriCandidates);
     }
   
   return fEtaPriCandidates;

@@ -35,6 +35,7 @@ ClassImp(EtaAnalysis)
 #include "TCanvas.h"
 #include "TH1F.h"
 #include "TH2F.h"
+#include "TList.h"
 
 #include "EtaHistograms.h"
 
@@ -117,6 +118,7 @@ void EtaAnalysis::SetOutputList(TList* list)
   // sets list where result histograms are added
   fOutputList = list;
   fHistograms->SetOutputList(list);
+  fOutputList->Add(fConfig);
 }
 
 
