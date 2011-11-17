@@ -34,7 +34,7 @@ void runGrid(const char* mode = "test")
   gROOT->LoadMacro("EtaAnalysis.cxx+g");
   gROOT->LoadMacro("EtaTask.cxx+g");
 
-  AliAnalysisTask *etaTask = new EtaTask("etaTask");
+  EtaTask *etaTask = new EtaTask("etaTask");
   mgr->AddTask(etaTask);
 
   EtaTask *omegaTask = new EtaTask("omegaTask");
@@ -47,6 +47,11 @@ void runGrid(const char* mode = "test")
 
   AliESDInputHandler* esdH = new AliESDInputHandler();
   mgr->SetInputEventHandler(esdH);
+
+  gROOT->LoadMacro("$ALICE_ROOT/ANALYSIS/macros/AddTaskPhysicsSelection.C");
+  AliPhysicsSelectionTask* physSelTask = AddTaskPhysicsSelection();
+  etaTask->SelectCollisionCandidates(AliVEvent::kPHI7);
+  omegaTask->SelectCollisionCandidates(AliVEvent::kPHI7);
 
   
   AliAnalysisDataContainer *cinput0 = mgr->GetCommonInputContainer();
