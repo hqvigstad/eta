@@ -28,6 +28,7 @@ ClassImp(EtaConfig)
 
 EtaConfig::EtaConfig()
 : TObject(),
+  fEnableEMCAL(false),
   fClusterEnergyMin(0.3),
   fNCellsMin(3),
   fDistToBadCellMin(2),
@@ -37,6 +38,9 @@ EtaConfig::EtaConfig()
   fEtaPtMin(0.0),
   fEtaMass(0.547853),
   fEtaMassDiffMax(fEtaMass*0.05),
+  fPi0PtMin(0.0),
+  fPi0Mass(0.1349766),
+  fPi0MassDiffMax(fPi0Mass*0.05),
   fEtaPriPtMin(0.0),
   fTrackCuts(0)
 {
@@ -47,6 +51,7 @@ EtaConfig::EtaConfig()
 
 EtaConfig::EtaConfig(const EtaConfig & obj)
 : TObject(obj),
+  fEnableEMCAL(false),
   fClusterEnergyMin(0.3),
   fNCellsMin(3),
   fDistToBadCellMin(2),
@@ -140,6 +145,26 @@ bool EtaConfig::PassCut(const EtaCandidate& cand, bool checkConstituents) const
 }
 
 
+bool EtaConfig::PassCutPi0(const Pi0Candidate_t& cand, bool checkConstituents) const
+{
+  if( cand.GetVector().Pt() < fPi0PtMin )
+    return false;
+
+  if( fPi0MassDiffMax < TMath::Abs(cand.GetVector().M()-fPi0Mass) )
+    return false;
+
+  if( checkConstituents )
+    {
+      if( ! PassCut(cand.GetCluster1()) )
+	return false;
+      if( ! PassCut(cand.GetCluster2()) )
+	return false;
+    }
+
+  return true;
+}
+
+
 bool EtaConfig::PassCut(const AliESDtrack* track, const AliESDVertex* relateToVertex) const
 {
   if( track->Pt() < fTrackPtMin )
@@ -193,6 +218,8 @@ bool EtaConfig::PassCut(const AliESDtrack* track, const AliESDVertex* relateToVe
 
 bool EtaConfig::PassCut(const AliESDCaloCluster* cluster) const
 {
+  if( ! fEnableEMCAL && cluster->IsEMCAL() )
+    return false;
   if( cluster->E() < fClusterEnergyMin)
     return false;
   if( cluster->GetNCells() < fNCellsMin )

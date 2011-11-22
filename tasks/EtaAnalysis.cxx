@@ -5,7 +5,7 @@ Copyright (C) 2011 Henrik Qvigstad <henrik.qvigstad@cern.ch>
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
-License as published by the Free Software Foundation 
+License as published by the Free Software Foundation
 version 2.1 of the License.
 
 This library is distributed in the hope that it will be useful,
@@ -22,7 +22,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 /*
  * Class for containing the instance of an eta analysis.
  * Use by feeding AliESDEvents through member: ProcessEvent()
- * results are in form of histograms added to list set 
+ * results are in form of histograms added to list set
  * by SetOutputList().
  */
 
@@ -81,6 +81,9 @@ void EtaAnalysis::ProcessEvent(AliESDEvent* event, AliMCEvent* mcEvent)
   const vector<EtaCandidate> etaCands = ExtractEtaCandidates(selectedCaloClusters, vertex);
   const vector<EtaCandidate> selectedEtaCands = SelectEtaCands( etaCands, fConfig );
 
+  // Get Pi0 Candidates
+  const vector<Pi0Candidate_t> selectedPi0Cands = SelectPi0Cands( etaCands, fConfig );
+
   // Get Tracks
   const vector<AliESDtrack*> tracks = GetTracks(event);
   const vector<AliESDtrack*> selectedTracks = SelectTracks( tracks, fConfig );
@@ -88,15 +91,21 @@ void EtaAnalysis::ProcessEvent(AliESDEvent* event, AliMCEvent* mcEvent)
   // Get Eta Prime Candidates
   const vector<EtaPriCandidate> etaPriCands = ExtractEtaPriCandidates(selectedEtaCands, selectedTracks);
 
+  // Get Omega Candidates
+  const vector<OmegaCandidate_t> omegaCands = ExtractEtaPriCandidates(selectedPi0Cands, selectedTracks);
+
+
 
   // Fill Histograms
   FillFull(caloClusters, mcEvent);
   FillFull( etaCands, mcEvent);
   FillFull(tracks, mcEvent);
   FillFull(etaPriCands, mcEvent);
+  FillFullOmegas(omegaCands, mcEvent);
 
   fHistograms->GetNSelectedTracks()->Fill( selectedTracks.size() );
-  
+  fHistograms->GetTracksSelectedRatio()->Fill( selectedTracks.size(), double(selectedTracks.size())/tracks.size());
+
   if( fVerbose ) {
     cout << "Number Calo. Clusters:" << caloClusters.size()
 	 << ", selected:" << selectedCaloClusters.size() << endl;
@@ -124,10 +133,14 @@ void EtaAnalysis::SetOutputList(TList* list)
 
 void EtaAnalysis::Terminate()
 {
-  new TCanvas;
-  fHistograms->GetEtaCandidates()->Draw();
-  new TCanvas;
-  fHistograms->GetEtaPriCandidates()->Draw();
+  // new TCanvas;
+  // fHistograms->GetEtaCandidates()->Draw();
+  // new TCanvas;
+  // fHistograms->GetEtaPriCandidates()->Draw();
+  Printf("-Number of eta/pi0 candidates: %d", int(fHistograms->GetEtaCandidates()->GetEntries()));
+  Printf("-Number of omega candidates: %d", int(fHistograms->GetOmegaCandidates()->GetEntries()));
+  Printf("-Number of eta' candidates: %d", int(fHistograms->GetEtaPriCandidates()->GetEntries()));
+  printf("\n");
 }
 
 
@@ -142,7 +155,7 @@ const vector<AliESDCaloCluster*> EtaAnalysis::GetClusters(const AliESDEvent* eve
 const vector<AliESDtrack*> EtaAnalysis::GetTracks(const AliESDEvent* event)
 {
   vector<AliESDtrack*> tracks;
-  
+
   Int_t nTracks = event->GetNumberOfTracks();
   for(Int_t iTracks = 0; iTracks < nTracks; iTracks++)
     tracks.push_back( event->GetTrack(iTracks) );
@@ -193,6 +206,8 @@ void EtaAnalysis::FillFull( const vector<AliESDCaloCluster*>  clus, AliMCEvent* 
       double nCells = clus[i]->GetNCells();
       fHistograms->GetNCells()->Fill(e, nCells);
     }
+  if( mce )
+    Printf("EtaAnalysis::FillFull does not use its AliMCEvent*");
 }
 
 
@@ -205,6 +220,8 @@ void EtaAnalysis::FillFull( const vector<AliESDtrack*> trks, AliMCEvent* mce)
       double nTPCClusters = (*iter)->GetNcls(1);
       fHistograms->GetNTPCClusters()->Fill(pt, nTPCClusters );
     }
+  if( mce )
+    Printf("EtaAnalysis::FillFull does not use its AliMCEvent*");
 }
 
 
@@ -216,6 +233,8 @@ void EtaAnalysis::FillFull( const vector<EtaCandidate> cands, AliMCEvent* mce)
       double m = cands[idx].GetVector().M();
       fHistograms->GetEtaCandidates()->Fill(pt, m );
     }
+  if( mce )
+    Printf("EtaAnalysis::FillFull does not use its AliMCEvent*");
 }
 
 
@@ -227,6 +246,21 @@ void EtaAnalysis::FillFull( const vector<EtaPriCandidate> cands, AliMCEvent* mce
       double m = cands[i].GetVector().M();
       fHistograms->GetEtaPriCandidates()->Fill(pt, m );
     }
+  if( mce )
+    Printf("EtaAnalysis::FillFull does not use its AliMCEvent*");
+}
+
+
+void EtaAnalysis::FillFullOmegas( vector<OmegaCandidate_t> cands, AliMCEvent* mce )
+{
+  for(int i=0; i < (int)cands.size(); ++i)
+    {
+      double pt = cands[i].GetVector().Pt();
+      double m = cands[i].GetVector().M();
+      fHistograms->GetOmegaCandidates()->Fill(pt, m );
+    }
+  if( mce )
+    Printf("EtaAnalysis::FillFull does not use its AliMCEvent*");
 }
 
 
@@ -247,6 +281,17 @@ const vector<EtaCandidate> EtaAnalysis::SelectEtaCands(const vector<EtaCandidate
     if( config->PassCut(etas[ei]) )
       selected.push_back( etas[ei] );
   return selected;
+}
+
+
+const vector<Pi0Candidate_t> EtaAnalysis::SelectPi0Cands(const vector<EtaCandidate>& pi0s, const EtaConfig* config )
+{
+  vector<Pi0Candidate_t> selected;
+  for(unsigned int pi = 0; pi < pi0s.size(); pi++)
+    if( config->PassCutPi0(pi0s[pi]) )
+      selected.push_back( pi0s[pi] );
+  return selected;
+
 }
 
 

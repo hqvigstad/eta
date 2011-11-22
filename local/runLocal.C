@@ -43,26 +43,31 @@ void runLocal() {
   AliAnalysisManager *mgr = new AliAnalysisManager("TestManager");
   AliESDInputHandler* esdH = new AliESDInputHandler();
   mgr->SetInputEventHandler(esdH);
-
-  // Add Eta Task
-  EtaTask* etaTask = new EtaTask("EtaTask");
-  mgr->AddTask(etaTask);
-
-  EtaTask *omegaTask = new EtaTask("omegaTask");
-  EtaConfig omegaConf;
-  omegaConf.fEtaMass = 0.134;
-  omegaConf.fEtaMassDiffMax = omegaConf.fEtaMass*0.05;
-  omegaTask->SetConfig(&omegaConf);
-  mgr->AddTask(omegaTask);
-
-
   AliAnalysisDataContainer *cinput0 = mgr->GetCommonInputContainer();
-  AliAnalysisDataContainer *etaout1= mgr->CreateContainer("eta.output.1", TList::Class(),AliAnalysisManager::kOutputContainer,"eta.output.ESD.root");
-  AliAnalysisDataContainer *omegaout1 = mgr->CreateContainer("omega.output.1", TList::Class(),AliAnalysisManager::kOutputContainer,"eta.output.ESD.root");
-  mgr->ConnectInput(etaTask, 0, cinput0);
-  mgr->ConnectInput(omegaTask, 0, cinput0);
-  mgr->ConnectOutput(etaTask, 1, etaout1);
-  mgr->ConnectOutput(omegaTask, 1, omegaout1);
+
+  
+  float pts [] = {0.0, 0.5, 1.0, 2.0, 3.0};
+  bool emcals [] = {false, true};
+  for(int pti = 0; pti < 5; ++pti)
+    for(int emi = 0; emi < 2; ++emi) {
+	const float pt = pts[pti];
+	const bool em = emcals[emi];
+	char hash[256];
+	sprintf(hash, "p%.1f_e%d", pt, em);
+	char name[256];
+	sprintf(name, "etaTask_%s", hash);
+	EtaTask *task = new EtaTask(name);
+	EtaConfig conf;
+	if(em)
+	  conf.fEnableEMCAL = true;
+	task->SetConfig(&conf);
+	
+	mgr->AddTask(task);
+	mgr->ConnectInput(task, 0, cinput0);
+	sprintf(name, "eta.%s.output1", hash);
+	AliAnalysisDataContainer *outContainer = mgr->CreateContainer(name, TList::Class(),AliAnalysisManager::kOutputContainer,"eta.output.ESD.root");
+	mgr->ConnectOutput(task, 1, outContainer);
+    }
 
   //____________________________________________//
   mgr->SetDebugLevel(1);

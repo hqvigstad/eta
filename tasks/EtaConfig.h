@@ -39,10 +39,12 @@ class EtaConfig : public TObject
   
   Bool_t PassCut(const EtaPriCandidate& , Bool_t checkConstituents = false , AliESDVertex* relateToVertex = 0) const;
   Bool_t PassCut(const EtaCandidate& , Bool_t checkConstituents = false ) const;
+  Bool_t PassCutPi0(const Pi0Candidate_t& , Bool_t checkConstituents = false ) const;
   Bool_t PassCut(const AliESDtrack* , const AliESDVertex* traceTo = 0) const;
   Bool_t PassCut(const AliESDCaloCluster* ) const;
   
   // Cluster Cut Parameters
+  Bool_t fEnableEMCAL;
   Double_t fClusterEnergyMin;
   Int_t fNCellsMin;
   Double_t fDistToBadCellMin;
@@ -54,6 +56,10 @@ class EtaConfig : public TObject
   Double_t fEtaPtMin;
   Double_t fEtaMass;
   Double_t fEtaMassDiffMax;
+  // Pi0 Parameters
+  Double_t fPi0PtMin;
+  Double_t fPi0Mass;
+  Double_t fPi0MassDiffMax;
   // Eta Prime Cut Parameters
   Double_t fEtaPriPtMin;
 

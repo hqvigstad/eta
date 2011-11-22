@@ -93,6 +93,7 @@ void EtaTask::UserExec(Option_t* )
 
 void EtaTask::Terminate(Option_t* )
 {
+  Printf("%s::Terminate:", GetName());
   fEtaAnalysis->Terminate();
 }
 

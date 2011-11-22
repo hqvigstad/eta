@@ -23,6 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 #include "EtaPriCandidate.h"
 
 class TH1I;
+class TH2I;
 class TH2F;
 class TList;
 
@@ -39,19 +40,25 @@ class EtaHistograms
   // *** Getters / Generators 
   TH2F* GetEtaCandidates();
   TH2F* GetEtaPriCandidates();
+  TH2F* GetPi0Candidates();
+  TH2F* GetOmegaCandidates();
   TH2F* GetNCells();
   TH2F* GetNTPCClusters();
   TH1I* GetNSelectedTracks();
+  TH2I* GetTracksSelectedRatio();
 
  private:
   TList* fOutputList;
 
   TH2F* fEtaCandidates;
   TH2F* fEtaPriCandidates;
+  TH2F* fPi0Candidates;
+  TH2F* fOmegaCandidates;
   TH2F* fNCells;
   TH2F* fNTPCClusters;
   TH2F* fNITSClusters;
   TH1I* fNSelectedTracks;
+  TH2I* fTracksSelectedRatio;
 };
   
 

@@ -55,6 +55,7 @@ class EtaAnalysis : public TObject
 
   void Terminate();
 
+  
  private:
   EtaAnalysis(const EtaAnalysis & ); // Not Implemented
   EtaAnalysis& operator= (const EtaAnalysis & ); // Not Implemented
@@ -71,6 +72,8 @@ class EtaAnalysis : public TObject
   void FillFull( vector<AliESDtrack*>, AliMCEvent* mce = 0 );
   void FillFull( vector<EtaCandidate>, AliMCEvent* mce = 0 );
   void FillFull( vector<EtaPriCandidate>, AliMCEvent* mce = 0 );
+  void FillFullOmegas( vector<OmegaCandidate_t>, AliMCEvent* mce = 0 );
+
 
   // *** Functional Functions **
   static const vector<AliESDCaloCluster*> GetClusters(const AliESDEvent* );
@@ -79,9 +82,9 @@ class EtaAnalysis : public TObject
 
   static const vector<EtaCandidate> ExtractEtaCandidates(const vector<AliESDCaloCluster*>& , const AliESDVertex* );
   static const vector<EtaPriCandidate> ExtractEtaPriCandidates(const vector<EtaCandidate>& , const vector<AliESDtrack*>&);
-
   static const vector<AliESDCaloCluster*> SelectClusters(const vector<AliESDCaloCluster*>& , const EtaConfig* );
   static const vector<EtaCandidate> SelectEtaCands(const vector<EtaCandidate>& , const EtaConfig* );
+  static const vector<Pi0Candidate_t> SelectPi0Cands(const vector<EtaCandidate>& , const EtaConfig* );
   static const vector<AliESDtrack*> SelectTracks(const vector<AliESDtrack*>& , const EtaConfig*, const AliESDVertex* vertex = 0 );
 
   ClassDef(EtaAnalysis, 1)

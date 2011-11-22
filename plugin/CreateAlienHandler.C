@@ -54,8 +54,10 @@ AliAnalysisGrid* CreateAlienHandler(const char* mode = "offline")
    // plugin->SetAdditionalLibs(libs);
    plugin->SetAdditionalLibs("EtaCandidate.h EtaCandidate.cxx EtaPriCandidate.h EtaPriCandidate.cxx EtaConfig.h EtaConfig.cxx EtaHistograms.h EtaHistograms.cxx EtaAnalysis.h EtaAnalysis.cxx EtaTask.h EtaTask.cxx");
 
-   //plugin->SetOutputFiles("eta.output.ESD.root");
    plugin->SetDefaultOutputs(kTRUE);
+   //plugin->SetDefaultOutputs(kFALSE);
+   //plugin->SetOutputFiles("eta.output.ESD.root EventStat_temp.root");
+   
    
    // Optionally define the files to be archived.
    // plugin->SetOutputArchive("log_archive.zip:stdout,stderr@ALICE::NIHAM::File root_archive.zip:*.root@ALICE::NIHAM::File");

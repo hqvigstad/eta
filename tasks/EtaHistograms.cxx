@@ -20,6 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 
 
 #include "TH1I.h"
+#include "TH2I.h"
 #include "TH2F.h"
 #include "TList.h"
 #include "TCanvas.h"
@@ -31,10 +32,13 @@ EtaHistograms::EtaHistograms()
   : fOutputList(0),
     fEtaCandidates(0),
     fEtaPriCandidates(0),
+    fPi0Candidates(0),
+    fOmegaCandidates(0),
     fNCells(0),
     fNTPCClusters(0),
     fNITSClusters(0),
-    fNSelectedTracks(0)
+    fNSelectedTracks(0),
+    fTracksSelectedRatio(0)
 {}
 
 
@@ -42,10 +46,13 @@ EtaHistograms::EtaHistograms(TList* outputList)
   : fOutputList(0),
     fEtaCandidates(0),
     fEtaPriCandidates(0),
+    fPi0Candidates(0),
+    fOmegaCandidates(0),
     fNCells(0),
     fNTPCClusters(0),
     fNITSClusters(0),
-    fNSelectedTracks(0)
+    fNSelectedTracks(0),
+    fTracksSelectedRatio(0)
 {
   SetOutputList( outputList );
 }
@@ -82,6 +89,36 @@ TH2F* EtaHistograms::GetEtaPriCandidates()
     }
   
   return fEtaPriCandidates;
+}
+
+
+TH2F* EtaHistograms::GetPi0Candidates()
+{
+  if( ! fPi0Candidates )
+    {
+      fPi0Candidates = new TH2F("fPi0Candidates", "Two Gamma Decay Candidates", 1000, 0, 100, 1000, 0, 1);
+      fPi0Candidates->GetXaxis()->SetTitle("Pt [GeV]");
+      fPi0Candidates->GetYaxis()->SetTitle("IM [GeV]");
+      if( fOutputList )
+	fOutputList->Add(fPi0Candidates);
+    }
+  
+  return fPi0Candidates;
+}
+
+
+TH2F* EtaHistograms::GetOmegaCandidates()
+{
+  if( ! fOmegaCandidates )
+    {
+      fOmegaCandidates = new TH2F("fOmegaCandidates", "Two Gamma Decay Candidates", 1000, 0, 100, 1000, 0, 1);
+      fOmegaCandidates->GetXaxis()->SetTitle("Pt [GeV]");
+      fOmegaCandidates->GetYaxis()->SetTitle("IM [GeV]");
+      if( fOutputList )
+	fOutputList->Add(fOmegaCandidates);
+    }
+  
+  return fOmegaCandidates;
 }
 
 
@@ -122,11 +159,23 @@ TH1I* EtaHistograms::GetNSelectedTracks()
 {
   if( ! fNSelectedTracks )
     {
-      fNSelectedTracks = new TH1I("fNSelectedTracks", "fNSelectedTracks", 1000, 0, 1000);
-      fNSelectedTracks->GetXaxis()->SetTitle("N. Tracks");
+      fNSelectedTracks = new TH1I("fNSelectedTracks", "Number of Selected Tracks", 10000, 0, 10000);
+      fNSelectedTracks->GetXaxis()->SetTitle("N. Selected Tracks");
       if( fOutputList )
 	fOutputList->Add(fNSelectedTracks);
     }
   return fNSelectedTracks;
 }
 
+TH2I* EtaHistograms::GetTracksSelectedRatio()
+{
+  if( ! fTracksSelectedRatio )
+    {
+      fTracksSelectedRatio = new TH2I("fTracksSelectedRatio", "The ratio of tracks to selected tracks", 10000, 0, 10000, 1100, 0, 1.1);
+      fTracksSelectedRatio->GetXaxis()->SetTitle("N. Tracks");
+      fTracksSelectedRatio->GetYaxis()->SetTitle("Selected / Total tracks");
+      if( fOutputList )
+	fOutputList->Add( fTracksSelectedRatio );
+    }
+  return fTracksSelectedRatio;
+}

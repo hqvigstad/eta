@@ -44,4 +44,7 @@ class EtaCandidate
   const AliESDVertex* fVertex;
 };
 
+// essentially the same structurec
+typedef EtaCandidate Pi0Candidate_t;
+
 #endif

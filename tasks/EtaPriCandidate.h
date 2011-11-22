@@ -49,4 +49,7 @@ class EtaPriCandidate
   TLorentzVector fVector; // The measured lorentz
 };
 
+// essentially the same structurec
+typedef EtaPriCandidate OmegaCandidate_t;
+
 #endif
