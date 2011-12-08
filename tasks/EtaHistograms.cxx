@@ -159,7 +159,7 @@ TH1I* EtaHistograms::GetNSelectedTracks()
 {
   if( ! fNSelectedTracks )
     {
-      fNSelectedTracks = new TH1I("fNSelectedTracks", "Number of Selected Tracks", 10000, 0, 10000);
+      fNSelectedTracks = new TH1I("fNSelectedTracks", "Number of Selected Tracks", 1000, 0, 1000);
       fNSelectedTracks->GetXaxis()->SetTitle("N. Selected Tracks");
       if( fOutputList )
 	fOutputList->Add(fNSelectedTracks);
@@ -171,7 +171,7 @@ TH2I* EtaHistograms::GetTracksSelectedRatio()
 {
   if( ! fTracksSelectedRatio )
     {
-      fTracksSelectedRatio = new TH2I("fTracksSelectedRatio", "The ratio of tracks to selected tracks", 10000, 0, 10000, 1100, 0, 1.1);
+      fTracksSelectedRatio = new TH2I("fTracksSelectedRatio", "The ratio of tracks to selected tracks", 1000, 0, 1000, 1100, 0, 1.1);
       fTracksSelectedRatio->GetXaxis()->SetTitle("N. Tracks");
       fTracksSelectedRatio->GetYaxis()->SetTitle("Selected / Total tracks");
       if( fOutputList )
