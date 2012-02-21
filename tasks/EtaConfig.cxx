@@ -104,7 +104,7 @@ void EtaConfig::Copy(TObject & obj) const
   ((EtaConfig&)obj).fTrackCuts = new AliESDtrackCuts(*fTrackCuts);
 }
 
-bool EtaConfig::PassCut(const EtaPriCandidate& cand , bool checkConstituents, AliESDVertex* traceTo) const
+bool EtaConfig::PassCut(const EtaPriCandidate& cand , bool checkConstituents, AliVVertex* traceTo) const
 {
   if( cand.GetVector().Pt() < fEtaPriPtMin )
     return false;
@@ -165,7 +165,7 @@ bool EtaConfig::PassCutPi0(const Pi0Candidate_t& cand, bool checkConstituents) c
 }
 
 
-bool EtaConfig::PassCut(const AliESDtrack* track, const AliESDVertex* relateToVertex) const
+bool EtaConfig::PassCut(const AliVtrack* track, const AliVVertex* relateToVertex) const
 {
   if( track->Pt() < fTrackPtMin )
     return false;
@@ -184,7 +184,7 @@ bool EtaConfig::PassCut(const AliESDtrack* track, const AliESDVertex* relateToVe
   }
 
   // Use AcceptTrack to reject to reject non standard tracks
-  if( ! fTrackCuts->AcceptTrack((AliESDtrack*) track) ) // conversion is quick fix, TODO: remove, as of nov 9, AcceptTrack takes 'const AliESDtrack*' in trunk.
+  if( fTrackCuts && dynamic_cast<AliESDtrack*>(track) && ! fTrackCuts->AcceptTrack((AliESDtrack*) track) )
     return false;
 
 
@@ -216,7 +216,7 @@ bool EtaConfig::PassCut(const AliESDtrack* track, const AliESDVertex* relateToVe
   return true;
 }
 
-bool EtaConfig::PassCut(const AliESDCaloCluster* cluster) const
+bool EtaConfig::PassCut(const AliVCaloCluster* cluster) const
 {
   if( ! fEnableEMCAL && cluster->IsEMCAL() )
     return false;

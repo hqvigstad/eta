@@ -21,27 +21,27 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 #include "TObject.h"
 #include "TLorentzVector.h"
 #include "TRefArray.h"
-class AliESDCaloCluster;
-class AliESDVertex;
-class AliESDEvent;
+class AliVCaloCluster;
+class AliVVertex;
+class AliVEvent;
 
 class EtaCandidate
 {
  public:
-  EtaCandidate(AliESDCaloCluster* clu1, AliESDCaloCluster* clu2, const AliESDVertex* );
+  EtaCandidate(AliVCaloCluster* clu1, AliVCaloCluster* clu2, const AliVVertex* );
 
-  AliESDCaloCluster* GetCluster1() const {return fCluster1;}
-  AliESDCaloCluster* GetCluster2() const {return fCluster2;}
+  AliVCaloCluster* GetCluster1() const {return fCluster1;}
+  AliVCaloCluster* GetCluster2() const {return fCluster2;}
 
   const TLorentzVector& GetVector() const { return fVector; }
-  const AliESDVertex* GetVertex() const { return fVertex; }
+  const AliVVertex* GetVertex() const { return fVertex; }
   
  protected:
-  AliESDCaloCluster* fCluster1;
-  AliESDCaloCluster* fCluster2;
+  AliVCaloCluster* fCluster1;
+  AliVCaloCluster* fCluster2;
 
   TLorentzVector fVector; // The measured lorentz
-  const AliESDVertex* fVertex;
+  const AliVVertex* fVertex;
 };
 
 // essentially the same structurec

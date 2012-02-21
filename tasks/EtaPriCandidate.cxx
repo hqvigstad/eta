@@ -20,7 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 #include "EtaCandidate.h"
 #include "AliESDtrack.h"
 
-EtaPriCandidate::EtaPriCandidate(EtaCandidate eta, const AliESDtrack* track1, const AliESDtrack* track2)
+EtaPriCandidate::EtaPriCandidate(EtaCandidate eta, const AliVtrack* track1, const AliVtrack* track2)
   : fEta(eta),
     fTrack1(track1),
     fTrack2(track2),

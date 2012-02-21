@@ -29,10 +29,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 using namespace std;
 
 class TList;
-class AliESDEvent;
+class AliVEvent;
 class AliMCEvent;
-class AliESDCaloCluster;
-class AliESDtrack;
+class AliVCaloCluster;
+class AliVtrack;
 
 #include "TObject.h"
 
@@ -47,7 +47,7 @@ class EtaAnalysis : public TObject
   
   ~EtaAnalysis();
 
-  void ProcessEvent(AliESDEvent* , AliMCEvent* mce = 0);
+  void ProcessEvent(AliVEvent* , AliMCEvent* mce = 0);
 
   void SetConfig(const EtaConfig* config);
   void SetOutputList(TList* list);
@@ -68,24 +68,24 @@ class EtaAnalysis : public TObject
   Int_t fVerbose; // level of verbosity =0: quiet, =1: low, =2: medium, =3: high
 
   // *** Procedural Functions ***
-  void FillFull( vector<AliESDCaloCluster*>, AliMCEvent* mce = 0 );
-  void FillFull( vector<AliESDtrack*>, AliMCEvent* mce = 0 );
+  void FillFull( vector<AliVCaloCluster*>, AliMCEvent* mce = 0 );
+  void FillFull( vector<AliVtrack*>, AliMCEvent* mce = 0 );
   void FillFull( vector<EtaCandidate>, AliMCEvent* mce = 0 );
   void FillFull( vector<EtaPriCandidate>, AliMCEvent* mce = 0 );
   void FillFullOmegas( vector<OmegaCandidate_t>, AliMCEvent* mce = 0 );
 
 
   // *** Functional Functions **
-  static const vector<AliESDCaloCluster*> GetClusters(const AliESDEvent* );
-  static const vector<AliESDtrack*> GetTracks(const AliESDEvent* );
-  static const AliESDVertex* GetVertex(const AliESDEvent* );
+  static const vector<AliVCaloCluster*> GetClusters(const AliVEvent* );
+  static const vector<AliVtrack*> GetTracks(const AliVEvent* );
+  static const AliVVertex* GetVertex(const AliVEvent* );
 
-  static const vector<EtaCandidate> ExtractEtaCandidates(const vector<AliESDCaloCluster*>& , const AliESDVertex* );
-  static const vector<EtaPriCandidate> ExtractEtaPriCandidates(const vector<EtaCandidate>& , const vector<AliESDtrack*>&);
-  static const vector<AliESDCaloCluster*> SelectClusters(const vector<AliESDCaloCluster*>& , const EtaConfig* );
+  static const vector<EtaCandidate> ExtractEtaCandidates(const vector<AliVCaloCluster*>& , const AliVVertex* );
+  static const vector<EtaPriCandidate> ExtractEtaPriCandidates(const vector<EtaCandidate>& , const vector<AliVtrack*>&);
+  static const vector<AliVCaloCluster*> SelectClusters(const vector<AliVCaloCluster*>& , const EtaConfig* );
   static const vector<EtaCandidate> SelectEtaCands(const vector<EtaCandidate>& , const EtaConfig* );
   static const vector<Pi0Candidate_t> SelectPi0Cands(const vector<EtaCandidate>& , const EtaConfig* );
-  static const vector<AliESDtrack*> SelectTracks(const vector<AliESDtrack*>& , const EtaConfig*, const AliESDVertex* vertex = 0 );
+  static const vector<AliVtrack*> SelectTracks(const vector<AliVtrack*>& , const EtaConfig*, const AliVVertex* vertex = 0 );
 
   ClassDef(EtaAnalysis, 1)
 };

@@ -24,27 +24,27 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 #include "TRefArray.h"
 
 #include "EtaCandidate.h"
-class AliESDCaloCluster;
-class AliESDVertex;
-class AliESDEvent;
-class AliESDtrack;
+class AliVCaloCluster;
+class AliVVertex;
+class AliVEvent;
+class AliVtrack;
 
 class EtaPriCandidate
 {
  public:
-  EtaPriCandidate(EtaCandidate eta, const AliESDtrack* track1, const AliESDtrack* track2);
+  EtaPriCandidate(EtaCandidate eta, const AliVtrack* track1, const AliVtrack* track2);
 
   const EtaCandidate& GetEtaCandidate() const {return fEta; }
-  const AliESDtrack* GetTrack1() const {return fTrack1;}
-  const AliESDtrack* GetTrack2() const {return fTrack2;}
+  const AliVtrack* GetTrack1() const {return fTrack1;}
+  const AliVtrack* GetTrack2() const {return fTrack2;}
   
   const TLorentzVector& GetVector() const { return fVector; }
-  const AliESDVertex* GetVertex() const { return fEta.GetVertex(); }
+  const AliVVertex* GetVertex() const { return fEta.GetVertex(); }
   
  protected:
   EtaCandidate fEta;
-  const AliESDtrack* fTrack1;
-  const AliESDtrack* fTrack2;
+  const AliVtrack* fTrack1;
+  const AliVtrack* fTrack2;
 
   TLorentzVector fVector; // The measured lorentz
 };

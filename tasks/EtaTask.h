@@ -23,10 +23,10 @@ class EtaAnalysis;
 class EtaConfig;
 
 class TList;
-class AliESDEvent;
+class AliVEvent;
 class TRefArray;
-class AliESDVertex;
-class AliESDCaloCells;
+class AliVVertex;
+class AliVCaloCells;
 class EtaHandler;
 class TH1F;
 class TH1;
@@ -53,7 +53,7 @@ class EtaTask : public AliAnalysisTaskSE
   EtaTask(const EtaTask&);//Not Implemented
   EtaTask& operator=(const EtaTask& );//Not Implemented
 
-  AliESDEvent* GetEvent(); // returns ESD Event
+  AliVEvent* GetEvent(); // returns ESD Event
 
   EtaAnalysis* fEtaAnalysis;
   TList* fOutputList;

@@ -45,7 +45,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 #include <fstream>
 #include <stdexcept>
 
-ClassImp(EtaTask);
+ClassImp(EtaTask)
 
 EtaTask::EtaTask(const char* name)
   : AliAnalysisTaskSE(name),
@@ -84,7 +84,7 @@ Bool_t EtaTask::UserNotify()
 
 void EtaTask::UserExec(Option_t* )
 {
-  AliESDEvent* event = GetEvent();
+  AliVEvent* event = GetEvent();
   AliMCEvent* mcEvent = MCEvent();
   fEtaAnalysis->ProcessEvent(event, mcEvent);
 
@@ -104,14 +104,14 @@ void EtaTask::SetConfig(const EtaConfig* config)
 }
 
 
-AliESDEvent* EtaTask::GetEvent()
+AliVEvent* EtaTask::GetEvent()
 {
   AliVEvent *event = InputEvent();
   if (!event)
     AliFatal("Could not retrieve event");
-  if(! event->InheritsFrom("AliESDEvent"))
-      AliFatal("Event is not ESD");
-  return ( (AliESDEvent*) event);
+//   if(! event->InheritsFrom("AliVEvent"))
+//       AliFatal("Event is not ESD");
+  return  event;
 }
 
 

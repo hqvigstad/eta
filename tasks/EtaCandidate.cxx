@@ -22,7 +22,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 #include "AliESDVertex.h"
 #include "AliESDEvent.h"
 
-EtaCandidate::EtaCandidate(AliESDCaloCluster* clu1, AliESDCaloCluster* clu2, const AliESDVertex* vertex)
+EtaCandidate::EtaCandidate(AliVCaloCluster* clu1, AliVCaloCluster* clu2, const AliVVertex* vertex)
   : fCluster1(clu1),
     fCluster2(clu2),
     fVector(),

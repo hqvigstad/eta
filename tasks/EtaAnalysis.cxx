@@ -21,7 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 
 /*
  * Class for containing the instance of an eta analysis.
- * Use by feeding AliESDEvents through member: ProcessEvent()
+ * Use by feeding AliVEvents through member: ProcessEvent()
  * results are in form of histograms added to list set
  * by SetOutputList().
  */
@@ -68,16 +68,16 @@ EtaAnalysis::~EtaAnalysis()
 }
 
 
-void EtaAnalysis::ProcessEvent(AliESDEvent* event, AliMCEvent* mcEvent)
+void EtaAnalysis::ProcessEvent(AliVEvent* event, AliMCEvent* mcEvent)
 {
   // @event is analysed and its candidates are filled into the histograms.
 
   // Get Calorimeter Clusters
-  const vector<AliESDCaloCluster*> caloClusters = GetClusters(event);
-  const vector<AliESDCaloCluster*> selectedCaloClusters = SelectClusters( caloClusters, fConfig );
+  const vector<AliVCaloCluster*> caloClusters = GetClusters(event);
+  const vector<AliVCaloCluster*> selectedCaloClusters = SelectClusters( caloClusters, fConfig );
 
   // Get Eta Candidates
-  const AliESDVertex* vertex = GetVertex(event);
+  const AliVVertex* vertex = GetVertex(event);
   const vector<EtaCandidate> etaCands = ExtractEtaCandidates(selectedCaloClusters, vertex);
   const vector<EtaCandidate> selectedEtaCands = SelectEtaCands( etaCands, fConfig );
 
@@ -85,8 +85,8 @@ void EtaAnalysis::ProcessEvent(AliESDEvent* event, AliMCEvent* mcEvent)
   const vector<Pi0Candidate_t> selectedPi0Cands = SelectPi0Cands( etaCands, fConfig );
 
   // Get Tracks
-  const vector<AliESDtrack*> tracks = GetTracks(event);
-  const vector<AliESDtrack*> selectedTracks = SelectTracks( tracks, fConfig );
+  const vector<AliVtrack*> tracks = GetTracks(event);
+  const vector<AliVtrack*> selectedTracks = SelectTracks( tracks, fConfig );
 
   // Get Eta Prime Candidates
   const vector<EtaPriCandidate> etaPriCands = ExtractEtaPriCandidates(selectedEtaCands, selectedTracks);
@@ -145,17 +145,17 @@ void EtaAnalysis::Terminate()
 }
 
 
-const vector<AliESDCaloCluster*> EtaAnalysis::GetClusters(const AliESDEvent* event)
+const vector<AliVCaloCluster*> EtaAnalysis::GetClusters(const AliVEvent* event)
 {
-  vector<AliESDCaloCluster*> cluArray;
+  vector<AliVCaloCluster*> cluArray;
   for(int iClu=0; iClu< event->GetNumberOfCaloClusters(); ++iClu)
     cluArray.push_back( event->GetCaloCluster(iClu) );
   return cluArray;
 }
 
-const vector<AliESDtrack*> EtaAnalysis::GetTracks(const AliESDEvent* event)
+const vector<AliVtrack*> EtaAnalysis::GetTracks(const AliVEvent* event)
 {
-  vector<AliESDtrack*> tracks;
+  vector<AliVtrack*> tracks;
 
   Int_t nTracks = event->GetNumberOfTracks();
   for(Int_t iTracks = 0; iTracks < nTracks; iTracks++)
@@ -164,9 +164,9 @@ const vector<AliESDtrack*> EtaAnalysis::GetTracks(const AliESDEvent* event)
 }
 
 
-const AliESDVertex* EtaAnalysis::GetVertex(const AliESDEvent* event)
+const AliVVertex* EtaAnalysis::GetVertex(const AliVEvent* event)
 {
-  AliESDVertex *esdVertex = (AliESDVertex* )event->GetPrimaryVertex();
+  AliVVertex *esdVertex = (AliVVertex* )event->GetPrimaryVertex();
   if (!esdVertex) {
     cout << "FATAL: Vertex not found" << endl;
   }
@@ -174,7 +174,7 @@ const AliESDVertex* EtaAnalysis::GetVertex(const AliESDEvent* event)
 }
 
 
-const vector<EtaCandidate> EtaAnalysis::ExtractEtaCandidates(const vector<AliESDCaloCluster*> & clus, const AliESDVertex* vertex)
+const vector<EtaCandidate> EtaAnalysis::ExtractEtaCandidates(const vector<AliVCaloCluster*> & clus, const AliVVertex* vertex)
 {
   vector<EtaCandidate> cands;
 
@@ -186,7 +186,7 @@ const vector<EtaCandidate> EtaAnalysis::ExtractEtaCandidates(const vector<AliESD
 }
 
 
-const vector<EtaPriCandidate> EtaAnalysis::ExtractEtaPriCandidates(const vector<EtaCandidate> & etas, const vector<AliESDtrack*> & tracks)
+const vector<EtaPriCandidate> EtaAnalysis::ExtractEtaPriCandidates(const vector<EtaCandidate> & etas, const vector<AliVtrack*> & tracks)
 {
   vector<EtaPriCandidate> cands;
 
@@ -199,7 +199,7 @@ const vector<EtaPriCandidate> EtaAnalysis::ExtractEtaPriCandidates(const vector<
 }
 
 
-void EtaAnalysis::FillFull( const vector<AliESDCaloCluster*>  clus, AliMCEvent* mce)
+void EtaAnalysis::FillFull( const vector<AliVCaloCluster*>  clus, AliMCEvent* mce)
 {
   for(unsigned int i=0; i<clus.size(); ++i)
     {
@@ -212,9 +212,9 @@ void EtaAnalysis::FillFull( const vector<AliESDCaloCluster*>  clus, AliMCEvent* 
 }
 
 
-void EtaAnalysis::FillFull( const vector<AliESDtrack*> trks, AliMCEvent* mce)
+void EtaAnalysis::FillFull( const vector<AliVtrack*> trks, AliMCEvent* mce)
 {
-  vector<AliESDtrack*>::const_iterator iter;
+  vector<AliVtrack*>::const_iterator iter;
   for(iter = trks.begin(); iter < trks.end(); iter++)
     {
       double pt = (*iter)->Pt();
@@ -265,9 +265,9 @@ void EtaAnalysis::FillFullOmegas( vector<OmegaCandidate_t> cands, AliMCEvent* mc
 }
 
 
-const vector<AliESDCaloCluster*> EtaAnalysis::SelectClusters(const vector<AliESDCaloCluster*>&  clusters, const EtaConfig* config)
+const vector<AliVCaloCluster*> EtaAnalysis::SelectClusters(const vector<AliVCaloCluster*>&  clusters, const EtaConfig* config)
 {
-  vector<AliESDCaloCluster*> selected;
+  vector<AliVCaloCluster*> selected;
   for(unsigned int ci = 0; ci < clusters.size(); ci++)
     if( config->PassCut(clusters[ci]) )
       selected.push_back( clusters[ci] );
@@ -296,9 +296,9 @@ const vector<Pi0Candidate_t> EtaAnalysis::SelectPi0Cands(const vector<EtaCandida
 }
 
 
-const vector<AliESDtrack*> EtaAnalysis::SelectTracks(const vector<AliESDtrack*>& tracks, const EtaConfig* config, const AliESDVertex* vertex)
+const vector<AliVtrack*> EtaAnalysis::SelectTracks(const vector<AliVtrack*>& tracks, const EtaConfig* config, const AliVVertex* vertex)
 {
-  vector<AliESDtrack*> selected;
+  vector<AliVtrack*> selected;
   for(unsigned int ti = 0; ti < tracks.size(); ti++)
     if( config->PassCut( tracks[ti], vertex ) )
       selected.push_back( tracks[ti] );

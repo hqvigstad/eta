@@ -34,8 +34,8 @@ void runGrid(const char* mode = "test")
   mgr->SetGridHandler(alienHandler);
 
 
-  AliESDInputHandler* esdH = new AliESDInputHandler();
-  mgr->SetInputEventHandler(esdH);
+  AliInputHandler* inputHandler = new AliInputHandler();
+  mgr->SetInputEventHandler(inputHandler);
 
   // Add Physics Selection
   gROOT->LoadMacro("$ALICE_ROOT/ANALYSIS/macros/AddTaskPhysicsSelection.C");
@@ -68,7 +68,7 @@ void runGrid(const char* mode = "test")
 	mgr->AddTask(task);
 	mgr->ConnectInput(task, 0, cinput0);
 	sprintf(name, "eta.%s.output1", hash);
-	AliAnalysisDataContainer *outContainer = mgr->CreateContainer(name, TList::Class(),AliAnalysisManager::kOutputContainer,"eta.output.ESD.root");
+	AliAnalysisDataContainer *outContainer = mgr->CreateContainer(name, TList::Class(),AliAnalysisManager::kOutputContainer,"eta.output.root");
 	mgr->ConnectOutput(task, 1, outContainer);
       }
     }
