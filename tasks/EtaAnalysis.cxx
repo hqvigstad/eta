@@ -104,7 +104,8 @@ void EtaAnalysis::ProcessEvent(AliESDEvent* event, AliMCEvent* mcEvent)
   FillFullOmegas(omegaCands, mcEvent);
 
   fHistograms->GetNSelectedTracks()->Fill( selectedTracks.size() );
-  fHistograms->GetTracksSelectedRatio()->Fill( selectedTracks.size(), double(selectedTracks.size())/tracks.size());
+  if( tracks.size() )
+    fHistograms->GetTracksSelectedRatio()->Fill( selectedTracks.size(), double(selectedTracks.size())/tracks.size());
 
   if( fVerbose ) {
     cout << "Number Calo. Clusters:" << caloClusters.size()
