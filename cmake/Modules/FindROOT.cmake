@@ -4,7 +4,7 @@
 # This module sets up ROOT information
 # We suppose root-config to be in the PATH. Otherwise we stop.
 #
-# Taken from AliRoot, modified by
+# Taken from AliRoot at some point, modified by
 #    Henrik Qvigstad <henrik.qvigstad@cern.ch>
 #
 # If ROOT is found, the following is defined:
