@@ -31,8 +31,8 @@ using namespace std;
 class TList;
 class AliVEvent;
 class AliMCEvent;
-class AliVCaloCluster;
-class AliVtrack;
+class AliVCluster;
+class AliVParticle;
 
 #include "TObject.h"
 
@@ -68,24 +68,24 @@ class EtaAnalysis : public TObject
   Int_t fVerbose; // level of verbosity =0: quiet, =1: low, =2: medium, =3: high
 
   // *** Procedural Functions ***
-  void FillFull( vector<AliVCaloCluster*>, AliMCEvent* mce = 0 );
-  void FillFull( vector<AliVtrack*>, AliMCEvent* mce = 0 );
+  void FillFull( vector<AliVCluster*>, AliMCEvent* mce = 0 );
+  void FillFull( vector<AliVParticle*>, AliMCEvent* mce = 0 );
   void FillFull( vector<EtaCandidate>, AliMCEvent* mce = 0 );
   void FillFull( vector<EtaPriCandidate>, AliMCEvent* mce = 0 );
   void FillFullOmegas( vector<OmegaCandidate_t>, AliMCEvent* mce = 0 );
 
 
   // *** Functional Functions **
-  static const vector<AliVCaloCluster*> GetClusters(const AliVEvent* );
-  static const vector<AliVtrack*> GetTracks(const AliVEvent* );
+  static const vector<AliVCluster*> GetClusters(const AliVEvent* );
+  static const vector<AliVParticle*> GetTracks(const AliVEvent* );
   static const AliVVertex* GetVertex(const AliVEvent* );
 
-  static const vector<EtaCandidate> ExtractEtaCandidates(const vector<AliVCaloCluster*>& , const AliVVertex* );
-  static const vector<EtaPriCandidate> ExtractEtaPriCandidates(const vector<EtaCandidate>& , const vector<AliVtrack*>&);
-  static const vector<AliVCaloCluster*> SelectClusters(const vector<AliVCaloCluster*>& , const EtaConfig* );
+  static const vector<EtaCandidate> ExtractEtaCandidates(const vector<AliVCluster*>& , const AliVVertex* );
+  static const vector<EtaPriCandidate> ExtractEtaPriCandidates(const vector<EtaCandidate>& , const vector<AliVParticle*>&);
+  static const vector<AliVCluster*> SelectClusters(const vector<AliVCluster*>& , const EtaConfig* );
   static const vector<EtaCandidate> SelectEtaCands(const vector<EtaCandidate>& , const EtaConfig* );
   static const vector<Pi0Candidate_t> SelectPi0Cands(const vector<EtaCandidate>& , const EtaConfig* );
-  static const vector<AliVtrack*> SelectTracks(const vector<AliVtrack*>& , const EtaConfig*, const AliVVertex* vertex = 0 );
+  static const vector<AliVParticle*> SelectTracks(const vector<AliVParticle*>& , const EtaConfig*, const AliVVertex* vertex = 0 );
 
   ClassDef(EtaAnalysis, 1)
 };

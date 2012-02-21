@@ -44,7 +44,7 @@ EtaConfig::EtaConfig()
   fEtaPriPtMin(0.0),
   fTrackCuts(0)
 {
-  fTrackCuts = AliESDtrackCuts::GetStandardITSTPCTrackCuts2010();
+  //fTrackCuts = AliESDtrackCuts::GetStandardITSTPCTrackCuts2010();
   return;
 }
 
@@ -101,7 +101,8 @@ void EtaConfig::Copy(TObject & obj) const
 
   ((EtaConfig&)obj).fEtaPriPtMin = this->fEtaPriPtMin;
   
-  ((EtaConfig&)obj).fTrackCuts = new AliESDtrackCuts(*fTrackCuts);
+  if(fTrackCuts)
+    ((EtaConfig&)obj).fTrackCuts = new AliESDtrackCuts(*fTrackCuts);
 }
 
 bool EtaConfig::PassCut(const EtaPriCandidate& cand , bool checkConstituents, AliVVertex* traceTo) const
@@ -165,15 +166,18 @@ bool EtaConfig::PassCutPi0(const Pi0Candidate_t& cand, bool checkConstituents) c
 }
 
 
-bool EtaConfig::PassCut(const AliVtrack* track, const AliVVertex* relateToVertex) const
+bool EtaConfig::PassCut(const AliVParticle* track, const AliVVertex* relateToVertex) const
 {
   if( track->Pt() < fTrackPtMin )
     return false;
 
+
+  const AliESDtrack* esdTrack = dynamic_cast<const AliESDtrack*>(track);
+
   // PID
-  if( fCheckPionPID ) {
+  if( esdTrack && fCheckPionPID ) {
     Double_t pids[10];
-    track->GetTPCpid(pids);
+    esdTrack->GetTPCpid(pids);
     AliPID pid(pids);
     if( pid.GetProbability(AliPID::kPion) < pid.GetProbability(AliPID::kMuon) 
 	|| pid.GetProbability(AliPID::kPion) < pid.GetProbability(AliPID::kElectron) 
@@ -184,7 +188,7 @@ bool EtaConfig::PassCut(const AliVtrack* track, const AliVVertex* relateToVertex
   }
 
   // Use AcceptTrack to reject to reject non standard tracks
-  if( fTrackCuts && dynamic_cast<AliESDtrack*>(track) && ! fTrackCuts->AcceptTrack((AliESDtrack*) track) )
+  if( fTrackCuts && esdTrack && ! fTrackCuts->AcceptTrack((AliESDtrack*) track) )
     return false;
 
 
@@ -216,7 +220,7 @@ bool EtaConfig::PassCut(const AliVtrack* track, const AliVVertex* relateToVertex
   return true;
 }
 
-bool EtaConfig::PassCut(const AliVCaloCluster* cluster) const
+bool EtaConfig::PassCut(const AliVCluster* cluster) const
 {
   if( ! fEnableEMCAL && cluster->IsEMCAL() )
     return false;

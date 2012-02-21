@@ -21,24 +21,24 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 #include "TObject.h"
 #include "TLorentzVector.h"
 #include "TRefArray.h"
-class AliVCaloCluster;
+class AliVCluster;
 class AliVVertex;
 class AliVEvent;
 
 class EtaCandidate
 {
  public:
-  EtaCandidate(AliVCaloCluster* clu1, AliVCaloCluster* clu2, const AliVVertex* );
+  EtaCandidate(AliVCluster* clu1, AliVCluster* clu2, const AliVVertex* );
 
-  AliVCaloCluster* GetCluster1() const {return fCluster1;}
-  AliVCaloCluster* GetCluster2() const {return fCluster2;}
+  AliVCluster* GetCluster1() const {return fCluster1;}
+  AliVCluster* GetCluster2() const {return fCluster2;}
 
   const TLorentzVector& GetVector() const { return fVector; }
   const AliVVertex* GetVertex() const { return fVertex; }
   
  protected:
-  AliVCaloCluster* fCluster1;
-  AliVCaloCluster* fCluster2;
+  AliVCluster* fCluster1;
+  AliVCluster* fCluster2;
 
   TLorentzVector fVector; // The measured lorentz
   const AliVVertex* fVertex;
