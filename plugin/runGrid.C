@@ -1,4 +1,6 @@
-void runGrid(const char* mode = "test")
+void runGrid(const char* mode = "full",
+  const TString eventType = "AOD"
+)
 {
   TStopwatch timer;
   timer.Start();
@@ -33,9 +35,14 @@ void runGrid(const char* mode = "test")
   if (!alienHandler) return;
   mgr->SetGridHandler(alienHandler);
 
-
-  AliInputHandler* inputHandler = new AliInputHandler();
-  mgr->SetInputEventHandler(inputHandler);
+  AliInputEventHandler* inputEventHandler;
+  if( eventType.EqualTo("ESD") )
+    inputEventHandler = new AliESDnputHandler();
+  if( eventType.EqualTo("AOD") )
+    inputEventHandler = new AliAODInputHandler();
+    
+    
+  mgr->SetInputEventHandler(inputEventHandler);
 
   // Add Physics Selection
   gROOT->LoadMacro("$ALICE_ROOT/ANALYSIS/macros/AddTaskPhysicsSelection.C");
@@ -68,7 +75,7 @@ void runGrid(const char* mode = "test")
 	mgr->AddTask(task);
 	mgr->ConnectInput(task, 0, cinput0);
 	sprintf(name, "eta.%s.output1", hash);
-	AliAnalysisDataContainer *outContainer = mgr->CreateContainer(name, TList::Class(),AliAnalysisManager::kOutputContainer,"eta.output.root");
+	AliAnalysisDataContainer *outContainer = mgr->CreateContainer(name, TList::Class(),AliAnalysisManager::kOutputContainer,"eta.output.ESD.root");
 	mgr->ConnectOutput(task, 1, outContainer);
       }
     }

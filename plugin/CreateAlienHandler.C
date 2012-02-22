@@ -13,7 +13,7 @@ AliAnalysisGrid* CreateAlienHandler(const char* mode = "offline")
 
    plugin->SetAPIVersion("V1.1x");
    plugin->SetROOTVersion("v5-30-03");
-   plugin->SetAliROOTVersion("v5-02-06-AN");
+   plugin->SetAliROOTVersion("v5-02-16-AN");
 
    // add data through aliensh find procedure.
    //plugin->SetGridDataDir("/alice/sim/LHC11d2/");
@@ -23,7 +23,8 @@ AliAnalysisGrid* CreateAlienHandler(const char* mode = "offline")
    //plugin->SetDataPattern("*pass1/*tag.root");
    plugin->SetDataPattern("*ESDs.root");
    //plugin->AddRunNumber(119161);
-   plugin->AddRunNumber("000162740");
+   //plugin->AddRunNumber("000162740");
+   plugin->AddRunNumber("000161585");
    
    
    // Method 2: Declare existing data files 
