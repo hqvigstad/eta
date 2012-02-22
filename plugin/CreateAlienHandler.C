@@ -24,7 +24,8 @@ AliAnalysisGrid* CreateAlienHandler(const char* mode = "offline")
    plugin->SetDataPattern("*ESDs.root");
    //plugin->AddRunNumber(119161);
    //plugin->AddRunNumber("000162740");
-   plugin->AddRunNumber("000161585");
+   //plugin->AddRunNumber("000161585");
+   plugin->AddRunNumber("000162644");
    
    
    // Method 2: Declare existing data files 
