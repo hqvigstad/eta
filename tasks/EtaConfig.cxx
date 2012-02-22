@@ -166,7 +166,7 @@ bool EtaConfig::PassCutPi0(const Pi0Candidate_t& cand, bool checkConstituents) c
 }
 
 
-bool EtaConfig::PassCut(const AliVParticle* track, const AliVVertex* relateToVertex) const
+bool EtaConfig::PassCut(const AliVTrack* track, const AliVVertex* relateToVertex) const
 {
   if( track->Pt() < fTrackPtMin )
     return false;

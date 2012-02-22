@@ -28,7 +28,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 
 ClassImp(EtaAnalysis)
 
-#include "AliVParticle.h"
+#include "AliVTrack.h"
 #include "AliESDEvent.h"
 
 #include "AliMCEvent.h"
@@ -86,8 +86,8 @@ void EtaAnalysis::ProcessEvent(AliVEvent* event, AliMCEvent* mcEvent)
   const vector<Pi0Candidate_t> selectedPi0Cands = SelectPi0Cands( etaCands, fConfig );
 
   // Get Tracks
-  const vector<AliVParticle*> tracks = GetTracks(event);
-  const vector<AliVParticle*> selectedTracks = SelectTracks( tracks, fConfig );
+  const vector<AliVTrack*> tracks = GetTracks(event);
+  const vector<AliVTrack*> selectedTracks = SelectTracks( tracks, fConfig );
 
   // Get Eta Prime Candidates
   const vector<EtaPriCandidate> etaPriCands = ExtractEtaPriCandidates(selectedEtaCands, selectedTracks);
@@ -154,13 +154,19 @@ const vector<AliVCluster*> EtaAnalysis::GetClusters(const AliVEvent* event)
   return cluArray;
 }
 
-const vector<AliVParticle*> EtaAnalysis::GetTracks(const AliVEvent* event)
+const vector<AliVTrack*> EtaAnalysis::GetTracks(const AliVEvent* event)
 {
-  vector<AliVParticle*> tracks;
+  vector<AliVTrack*> tracks;
 
   Int_t nTracks = event->GetNumberOfTracks();
-  for(Int_t iTracks = 0; iTracks < nTracks; iTracks++)
-    tracks.push_back( event->GetTrack(iTracks) );
+  for(Int_t iTracks = 0; iTracks < nTracks; iTracks++) {
+    AliVParticle* particle = event->GetTrack(iTracks);
+    AliVTrack* track = dynamic_cast<AliVTrack*>( particle );
+    if ( track )
+      tracks.push_back( track );
+    else
+      Printf("EtaAnalysis::GetTracks AliVEvent::GetTrack, event, returned AliVParticle which is not AliVTrack");
+  }
   return tracks;
 }
 
@@ -187,7 +193,7 @@ const vector<EtaCandidate> EtaAnalysis::ExtractEtaCandidates(const vector<AliVCl
 }
 
 
-const vector<EtaPriCandidate> EtaAnalysis::ExtractEtaPriCandidates(const vector<EtaCandidate> & etas, const vector<AliVParticle*> & tracks)
+const vector<EtaPriCandidate> EtaAnalysis::ExtractEtaPriCandidates(const vector<EtaCandidate> & etas, const vector<AliVTrack*> & tracks)
 {
   vector<EtaPriCandidate> cands;
 
@@ -213,9 +219,9 @@ void EtaAnalysis::FillFull( const vector<AliVCluster*>  clus, AliMCEvent* mce)
 }
 
 
-void EtaAnalysis::FillFull( const vector<AliVParticle*> trks, AliMCEvent* mce)
+void EtaAnalysis::FillFull( const vector<AliVTrack*> trks, AliMCEvent* mce)
 {
-  vector<AliVParticle*>::const_iterator iter;
+  vector<AliVTrack*>::const_iterator iter;
   for(iter = trks.begin(); iter < trks.end(); iter++)
     {
       double pt = (*iter)->Pt();
@@ -297,9 +303,9 @@ const vector<Pi0Candidate_t> EtaAnalysis::SelectPi0Cands(const vector<EtaCandida
 }
 
 
-const vector<AliVParticle*> EtaAnalysis::SelectTracks(const vector<AliVParticle*>& tracks, const EtaConfig* config, const AliVVertex* vertex)
+const vector<AliVTrack*> EtaAnalysis::SelectTracks(const vector<AliVTrack*>& tracks, const EtaConfig* config, const AliVVertex* vertex)
 {
-  vector<AliVParticle*> selected;
+  vector<AliVTrack*> selected;
   for(unsigned int ti = 0; ti < tracks.size(); ti++)
     if( config->PassCut( tracks[ti], vertex ) )
       selected.push_back( tracks[ti] );

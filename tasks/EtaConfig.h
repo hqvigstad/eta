@@ -21,7 +21,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 
 #include "EtaCandidate.h"
 #include "EtaPriCandidate.h"
-class AliVParticle;
+
+class AliVTrack;
 class AliVCluster;
 class AliESDtrackCuts;
 
@@ -40,7 +41,7 @@ class EtaConfig : public TObject
   Bool_t PassCut(const EtaPriCandidate& , Bool_t checkConstituents = false , AliVVertex* relateToVertex = 0) const;
   Bool_t PassCut(const EtaCandidate& , Bool_t checkConstituents = false ) const;
   Bool_t PassCutPi0(const Pi0Candidate_t& , Bool_t checkConstituents = false ) const;
-  Bool_t PassCut(const AliVParticle* , const AliVVertex* traceTo = 0) const;
+  Bool_t PassCut(const AliVTrack* , const AliVVertex* traceTo = 0) const;
   Bool_t PassCut(const AliVCluster* ) const;
   
   // Cluster Cut Parameters

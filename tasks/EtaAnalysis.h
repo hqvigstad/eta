@@ -32,7 +32,7 @@ class TList;
 class AliVEvent;
 class AliMCEvent;
 class AliVCluster;
-class AliVParticle;
+class AliVTrack;
 
 #include "TObject.h"
 
@@ -69,7 +69,7 @@ class EtaAnalysis : public TObject
 
   // *** Procedural Functions ***
   void FillFull( vector<AliVCluster*>, AliMCEvent* mce = 0 );
-  void FillFull( vector<AliVParticle*>, AliMCEvent* mce = 0 );
+  void FillFull( vector<AliVTrack*>, AliMCEvent* mce = 0 );
   void FillFull( vector<EtaCandidate>, AliMCEvent* mce = 0 );
   void FillFull( vector<EtaPriCandidate>, AliMCEvent* mce = 0 );
   void FillFullOmegas( vector<OmegaCandidate_t>, AliMCEvent* mce = 0 );
@@ -77,15 +77,15 @@ class EtaAnalysis : public TObject
 
   // *** Functional Functions **
   static const vector<AliVCluster*> GetClusters(const AliVEvent* );
-  static const vector<AliVParticle*> GetTracks(const AliVEvent* );
+  static const vector<AliVTrack*> GetTracks(const AliVEvent* );
   static const AliVVertex* GetVertex(const AliVEvent* );
-
+  
   static const vector<EtaCandidate> ExtractEtaCandidates(const vector<AliVCluster*>& , const AliVVertex* );
-  static const vector<EtaPriCandidate> ExtractEtaPriCandidates(const vector<EtaCandidate>& , const vector<AliVParticle*>&);
+  static const vector<EtaPriCandidate> ExtractEtaPriCandidates(const vector<EtaCandidate>& , const vector<AliVTrack*>&);
   static const vector<AliVCluster*> SelectClusters(const vector<AliVCluster*>& , const EtaConfig* );
   static const vector<EtaCandidate> SelectEtaCands(const vector<EtaCandidate>& , const EtaConfig* );
   static const vector<Pi0Candidate_t> SelectPi0Cands(const vector<EtaCandidate>& , const EtaConfig* );
-  static const vector<AliVParticle*> SelectTracks(const vector<AliVParticle*>& , const EtaConfig*, const AliVVertex* vertex = 0 );
+  static const vector<AliVTrack*> SelectTracks(const vector<AliVTrack*>& , const EtaConfig*, const AliVVertex* vertex = 0 );
 
   ClassDef(EtaAnalysis, 1)
 };
