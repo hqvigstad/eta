@@ -18,12 +18,12 @@ void runLocal() {
   gROOT->ProcessLine(".include $ALICE_ROOT/include");
 
   //___________Compile analysis task using AClic____________//
-  gROOT->LoadMacro("../tasks/EtaCandidate.cxx+g");
-  gROOT->LoadMacro("../tasks/EtaPriCandidate.cxx+g");
-  gROOT->LoadMacro("../tasks/EtaHistograms.cxx+g");
-  gROOT->LoadMacro("../tasks/EtaConfig.cxx+g");
-  gROOT->LoadMacro("../tasks/EtaAnalysis.cxx+g");
-  gROOT->LoadMacro("../tasks/EtaTask.cxx+g");
+  gROOT->LoadMacro("EtaCandidate.cxx+g");
+  gROOT->LoadMacro("EtaPriCandidate.cxx+g");
+  gROOT->LoadMacro("EtaHistograms.cxx+g");
+  gROOT->LoadMacro("EtaConfig.cxx+g");
+  gROOT->LoadMacro("EtaAnalysis.cxx+g");
+  gROOT->LoadMacro("EtaTask.cxx+g");
 
   //____________________________________________//
   AliTagAnalysis *tagAna = new AliTagAnalysis("ESD");
