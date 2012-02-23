@@ -59,6 +59,10 @@ class EtaHistograms
   TH2F* fNITSClusters;
   TH1I* fNSelectedTracks;
   TH2I* fTracksSelectedRatio;
+
+private:
+  EtaHistograms(const EtaHistograms& );
+  EtaHistograms& operator= (const EtaHistograms& );
 };
   
 

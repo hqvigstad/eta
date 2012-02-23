@@ -61,6 +61,9 @@ EtaConfig::EtaConfig(const EtaConfig & obj)
   fEtaPtMin(0.0),
   fEtaMass(0.547853),
   fEtaMassDiffMax(fEtaMass*0.05),
+  fPi0PtMin(0.0),
+  fPi0Mass(0.1349766),
+  fPi0MassDiffMax(fPi0Mass*0.05),
   fEtaPriPtMin(0.0),
   fTrackCuts(0)
 {

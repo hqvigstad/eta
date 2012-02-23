@@ -29,6 +29,8 @@ class EtaCandidate
 {
  public:
   EtaCandidate(AliVCluster* clu1, AliVCluster* clu2, const AliVVertex* );
+  EtaCandidate(const EtaCandidate& other);
+  EtaCandidate& operator= (const EtaCandidate& other);
 
   AliVCluster* GetCluster1() const {return fCluster1;}
   AliVCluster* GetCluster2() const {return fCluster2;}

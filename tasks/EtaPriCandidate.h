@@ -33,6 +33,8 @@ class EtaPriCandidate
 {
  public:
   EtaPriCandidate(EtaCandidate eta, const AliVTrack* track1, const AliVTrack* track2);
+  EtaPriCandidate(const EtaPriCandidate& );
+  EtaPriCandidate& operator= (const EtaPriCandidate& );
 
   const EtaCandidate& GetEtaCandidate() const {return fEta; }
   const AliVTrack* GetTrack1() const {return fTrack1;}
@@ -47,6 +49,7 @@ class EtaPriCandidate
   const AliVTrack* fTrack2;
 
   TLorentzVector fVector; // The measured lorentz
+
 };
 
 // essentially the same structurec
