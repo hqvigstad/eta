@@ -225,8 +225,8 @@ void EtaAnalysis::FillFull( const vector<AliVTrack*> trks, AliMCEvent* mce)
   for(iter = trks.begin(); iter < trks.end(); iter++)
     {
       double pt = (*iter)->Pt();
-      //double nTPCClusters = (*iter)->GetNcls(1);
-      //fHistograms->GetNTPCClusters()->Fill(pt, nTPCClusters );
+      double nTPCClusters = (*iter)->GetTPCNcls();
+      fHistograms->GetNTPCClusters()->Fill(pt, nTPCClusters );
     }
   if( mce )
     Printf("EtaAnalysis::FillFull does not use its AliMCEvent*");
