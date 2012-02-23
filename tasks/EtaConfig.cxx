@@ -105,7 +105,7 @@ void EtaConfig::Copy(TObject & obj) const
     ((EtaConfig&)obj).fTrackCuts = new AliESDtrackCuts(*fTrackCuts);
 }
 
-bool EtaConfig::PassCut(const EtaPriCandidate& cand , bool checkConstituents, AliVVertex* traceTo) const
+bool EtaConfig::PassEtaPrime(const EtaPriCandidate& cand , bool checkConstituents, AliVVertex* traceTo) const
 {
   if( cand.GetVector().Pt() < fEtaPriPtMin )
     return false;
@@ -114,11 +114,11 @@ bool EtaConfig::PassCut(const EtaPriCandidate& cand , bool checkConstituents, Al
 
   if( checkConstituents )
     {
-      if( ! PassCut(cand.GetEtaCandidate(), checkConstituents) )
+      if( ! PassEta(cand.GetEtaCandidate(), checkConstituents) )
 	return false;
-      if( ! PassCut(cand.GetTrack1(), traceTo) )
+      if( ! PassTrack(cand.GetTrack1(), traceTo) )
 	return false;
-      if( ! PassCut(cand.GetTrack2(), traceTo) )
+      if( ! PassTrack(cand.GetTrack2(), traceTo) )
 	return false;
     }
 
@@ -126,7 +126,7 @@ bool EtaConfig::PassCut(const EtaPriCandidate& cand , bool checkConstituents, Al
 }
 
 
-bool EtaConfig::PassCut(const EtaCandidate& cand, bool checkConstituents) const
+bool EtaConfig::PassEta(const EtaCandidate& cand, bool checkConstituents) const
 {
   if( cand.GetVector().Pt() < fEtaPtMin )
     return false;
@@ -136,9 +136,9 @@ bool EtaConfig::PassCut(const EtaCandidate& cand, bool checkConstituents) const
 
   if( checkConstituents )
     {
-      if( ! PassCut(cand.GetCluster1()) )
+      if( ! PassCluster(cand.GetCluster1()) )
 	return false;
-      if( ! PassCut(cand.GetCluster2()) )
+      if( ! PassCluster(cand.GetCluster2()) )
 	return false;
     }
 
@@ -146,7 +146,7 @@ bool EtaConfig::PassCut(const EtaCandidate& cand, bool checkConstituents) const
 }
 
 
-bool EtaConfig::PassCutPi0(const Pi0Candidate_t& cand, bool checkConstituents) const
+bool EtaConfig::PassPi0(const Pi0Candidate_t& cand, bool checkConstituents) const
 {
   if( cand.GetVector().Pt() < fPi0PtMin )
     return false;
@@ -156,9 +156,9 @@ bool EtaConfig::PassCutPi0(const Pi0Candidate_t& cand, bool checkConstituents) c
 
   if( checkConstituents )
     {
-      if( ! PassCut(cand.GetCluster1()) )
+      if( ! PassCluster(cand.GetCluster1()) )
 	return false;
-      if( ! PassCut(cand.GetCluster2()) )
+      if( ! PassCluster(cand.GetCluster2()) )
 	return false;
     }
 
@@ -166,7 +166,7 @@ bool EtaConfig::PassCutPi0(const Pi0Candidate_t& cand, bool checkConstituents) c
 }
 
 
-bool EtaConfig::PassCut(const AliVTrack* track, const AliVVertex* relateToVertex) const
+bool EtaConfig::PassTrack(const AliVTrack* track, const AliVVertex* relateToVertex) const
 {
   if( track->Pt() < fTrackPtMin )
     return false;
@@ -220,7 +220,7 @@ bool EtaConfig::PassCut(const AliVTrack* track, const AliVVertex* relateToVertex
   return true;
 }
 
-bool EtaConfig::PassCut(const AliVCluster* cluster) const
+bool EtaConfig::PassCluster(const AliVCluster* cluster) const
 {
   if( ! fEnableEMCAL && cluster->IsEMCAL() )
     return false;

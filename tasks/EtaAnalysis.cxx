@@ -276,7 +276,7 @@ const vector<AliVCluster*> EtaAnalysis::SelectClusters(const vector<AliVCluster*
 {
   vector<AliVCluster*> selected;
   for(unsigned int ci = 0; ci < clusters.size(); ci++)
-    if( config->PassCut(clusters[ci]) )
+    if( config->PassCluster(clusters[ci]) )
       selected.push_back( clusters[ci] );
   return selected;
 }
@@ -286,7 +286,7 @@ const vector<EtaCandidate> EtaAnalysis::SelectEtaCands(const vector<EtaCandidate
 {
   vector<EtaCandidate> selected;
   for(unsigned int ei = 0; ei < etas.size(); ei++)
-    if( config->PassCut(etas[ei]) )
+    if( config->PassEta(etas[ei]) )
       selected.push_back( etas[ei] );
   return selected;
 }
@@ -296,7 +296,7 @@ const vector<Pi0Candidate_t> EtaAnalysis::SelectPi0Cands(const vector<EtaCandida
 {
   vector<Pi0Candidate_t> selected;
   for(unsigned int pi = 0; pi < pi0s.size(); pi++)
-    if( config->PassCutPi0(pi0s[pi]) )
+    if( config->PassPi0(pi0s[pi]) )
       selected.push_back( pi0s[pi] );
   return selected;
 
@@ -307,7 +307,7 @@ const vector<AliVTrack*> EtaAnalysis::SelectTracks(const vector<AliVTrack*>& tra
 {
   vector<AliVTrack*> selected;
   for(unsigned int ti = 0; ti < tracks.size(); ti++)
-    if( config->PassCut( tracks[ti], vertex ) )
+    if( config->PassTrack( tracks[ti], vertex ) )
       selected.push_back( tracks[ti] );
   return selected;
 }
