@@ -73,7 +73,7 @@ AliAnalysisGrid* CreateAlienHandler(const char* mode = "offline")
    plugin->SetSplitMaxInputFileNumber(100);
    plugin->SetMaxInitFailed(5);
    plugin->SetMasterResubmitThreshold(90);
-   plugin->SetTTL(300000);
+   plugin->SetTTL(43200);
    plugin->SetInputFormat("xml-single");
    plugin->SetPrice(1);      
    plugin->SetSplitMode("se");
