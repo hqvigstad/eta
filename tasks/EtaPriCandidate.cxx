@@ -36,3 +36,21 @@ EtaPriCandidate::EtaPriCandidate(EtaCandidate eta, const AliVTrack* track1, cons
   
   fVector = lVec1 + lVec2 + eta.GetVector();
 }
+
+
+EtaPriCandidate::EtaPriCandidate(const EtaPriCandidate& other )
+  : fEta(other.fEta),
+    fTrack1(other.fTrack1),
+    fTrack2(other.fTrack2),
+    fVector(other.fVector)
+{
+}
+
+EtaPriCandidate& EtaPriCandidate::operator=(const EtaPriCandidate& other)
+{
+  fEta = other.fEta;
+  fTrack1 = other.fTrack1;
+  fTrack2 = other.fTrack2;
+  fVector = other.fVector;
+  return *this;
+}

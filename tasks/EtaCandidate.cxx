@@ -39,3 +39,20 @@ EtaCandidate::EtaCandidate(AliVCluster* clu1, AliVCluster* clu2, const AliVVerte
   fCluster2->GetMomentum(v2, vertex_pos);
   fVector = v1 + v2;
 }
+
+EtaCandidate::EtaCandidate(const EtaCandidate& other)
+  : fCluster1(other.fCluster1),
+    fCluster2(other.fCluster2),
+    fVector(other.fVector),
+    fVertex(other.fVertex)
+{;}
+
+EtaCandidate& EtaCandidate::operator= (const EtaCandidate& other)
+{
+  fCluster1 = other.fCluster1;
+  fCluster2 = other.fCluster2;
+  fVector = other.fVector;
+  fVertex = other.fVertex;
+  return *this;
+}
+  
