@@ -18,3 +18,6 @@ In order to run on grid:
 2.1 cd test
 2.2 aliroot 'runGrid.C'.
 This run the code in Plugin Test Mode. In order to changes this, call runGrid with the appropriate mode as argument. The build directory is the appropriate place to make changes to the run parameters which is not appropriate upstream.
+
+
+Stuff for running bath "mode" I hope to add later.
