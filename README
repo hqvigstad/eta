@@ -21,3 +21,5 @@ This run the code in Plugin Test Mode. In order to changes this, call runGrid wi
 
 
 Stuff for running bath "mode" I hope to add later.
+
+cmake builds libraries correctly, but does no linking, TODO.
