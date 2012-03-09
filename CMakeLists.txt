@@ -10,6 +10,9 @@ set(LIBS ${LIBS} ${ROOT_LIBRARIES})
 
 #AliROOT
 find_package(ALIROOT REQUIRED PHOS)
+message(${ALIROOT_INCLUDE_DIRS})
+include_directories(SYSTEM ${ALIROOT_INCLUDE_DIRS})
+set(LIBS ${LIBS} ${ALIROOT_LIBRARIES})
 
 
 # Build options
