@@ -1,5 +1,5 @@
-#ifndef ETAHISTOGRAMS_H
-#define ETAHISTOGRAMS_H
+#ifndef ETAOUTPUT_H
+#define ETAOUTPUT_H
 /*
 Eta Prime Analysis for the ALICE Experiment.
 Copyright (C) 2011 Henrik Qvigstad <henrik.qvigstad@cern.ch>
@@ -27,12 +27,12 @@ class TH2I;
 class TH2F;
 class TList;
 
-class EtaHistograms
+class EtaOutput
 {
  public:
-  EtaHistograms();
-  EtaHistograms(TList* outputList);
-  ~EtaHistograms();
+  EtaOutput();
+  EtaOutput(TList* outputList);
+  ~EtaOutput();
   
   void SetOutputList(TList* list) {fOutputList = list;}
   TList* GetOutputList() {return fOutputList;}
@@ -61,8 +61,8 @@ class EtaHistograms
   TH2I* fTracksSelectedRatio;
 
 private:
-  EtaHistograms(const EtaHistograms& );
-  EtaHistograms& operator= (const EtaHistograms& );
+  EtaOutput(const EtaOutput& );
+  EtaOutput& operator= (const EtaOutput& );
 };
   
 

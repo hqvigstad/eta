@@ -22,7 +22,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 #include "EtaCandidate.h"
 #include "EtaPriCandidate.h"
 #include "EtaConfig.h"
-#include "EtaHistograms.h"
+#include "EtaOutput.h"
 
 #include <vector>
 #include <iostream>
@@ -62,7 +62,7 @@ class EtaAnalysis : public TObject
 
   EtaConfig* fConfig; // the Configuration for the analysis
   TList* fOutputList; // the list fHistogram is to add to
-  EtaHistograms* fHistograms; // histograms
+  EtaOutput* fHistograms; // histograms
 
   // *** Configurations ***
   Int_t fVerbose; // level of verbosity =0: quiet, =1: low, =2: medium, =3: high

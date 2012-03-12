@@ -22,7 +22,7 @@ void runGrid(const char* mode = "full",
   gROOT->LoadMacro("EtaCandidate.cxx+g");
   gROOT->LoadMacro("EtaPriCandidate.cxx+g");
   gROOT->LoadMacro("EtaConfig.cxx+g");
-  gROOT->LoadMacro("EtaHistograms.cxx+g");
+  gROOT->LoadMacro("EtaOutput.cxx+g");
   gROOT->LoadMacro("EtaAnalysis.cxx+g");
   gROOT->LoadMacro("EtaTask.cxx+g");
 

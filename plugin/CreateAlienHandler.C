@@ -40,21 +40,21 @@ AliAnalysisGrid* CreateAlienHandler(const char* mode = "offline")
    // source += "EtaCandidate.cxx ";
    // source += "EtaPriCandidate.cxx ";
    // source += "EtaConfig.cxx ";
-   // source += "EtaHistograms.cxx ";
+   // source += "EtaOutput.cxx ";
    // source += "EtaAnalysis.cxx ";
    // source += "EtaTask.cxx ";
    // plugin->SetAnalysisSource(source);
-   plugin->SetAnalysisSource("EtaCandidate.cxx EtaPriCandidate.cxx EtaConfig.cxx EtaHistograms.cxx EtaAnalysis.cxx EtaTask.cxx");
+   plugin->SetAnalysisSource("EtaCandidate.cxx EtaPriCandidate.cxx EtaConfig.cxx EtaOutput.cxx EtaAnalysis.cxx EtaTask.cxx");
    
    // TString libs = source;
    // libs += "EtaCandidate.h ";
    // libs += " EtaPriCandidate.h";
    // libs += " EtaConfig.h";
-   // libs += " EtaHistograms.h";
+   // libs += " EtaOutput.h";
    // libs += " EtaAnalysis.h";
    // libs += " EtaTask.h";
    // plugin->SetAdditionalLibs(libs);
-   plugin->SetAdditionalLibs("EtaCandidate.h EtaCandidate.cxx EtaPriCandidate.h EtaPriCandidate.cxx EtaConfig.h EtaConfig.cxx EtaHistograms.h EtaHistograms.cxx EtaAnalysis.h EtaAnalysis.cxx EtaTask.h EtaTask.cxx");
+   plugin->SetAdditionalLibs("EtaCandidate.h EtaCandidate.cxx EtaPriCandidate.h EtaPriCandidate.cxx EtaConfig.h EtaConfig.cxx EtaOutput.h EtaOutput.cxx EtaAnalysis.h EtaAnalysis.cxx EtaTask.h EtaTask.cxx");
 
    plugin->SetDefaultOutputs(kTRUE);
    //plugin->SetDefaultOutputs(kFALSE);

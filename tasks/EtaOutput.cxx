@@ -1,4 +1,4 @@
-#include "EtaHistograms.h"
+#include "EtaOutput.h"
 /*
 Eta Prime Analysis for the ALICE Experiment.
 Copyright (C) 2011 Henrik Qvigstad <henrik.qvigstad@cern.ch>
@@ -28,7 +28,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 #include "AliESDCaloCluster.h"
 #include "AliESDtrack.h"
 
-EtaHistograms::EtaHistograms()
+EtaOutput::EtaOutput()
   : fOutputList(0),
     fEtaCandidates(0),
     fEtaPriCandidates(0),
@@ -42,7 +42,7 @@ EtaHistograms::EtaHistograms()
 {}
 
 
-EtaHistograms::EtaHistograms(TList* outputList)
+EtaOutput::EtaOutput(TList* outputList)
   : fOutputList(0),
     fEtaCandidates(0),
     fEtaPriCandidates(0),
@@ -58,11 +58,11 @@ EtaHistograms::EtaHistograms(TList* outputList)
 }
 
 
-EtaHistograms::~EtaHistograms()
+EtaOutput::~EtaOutput()
 {}
 
 
-TH2F* EtaHistograms::GetEtaCandidates()
+TH2F* EtaOutput::GetEtaCandidates()
 {
   if( ! fEtaCandidates )
     {
@@ -77,7 +77,7 @@ TH2F* EtaHistograms::GetEtaCandidates()
 }
 
 
-TH2F* EtaHistograms::GetEtaPriCandidates()
+TH2F* EtaOutput::GetEtaPriCandidates()
 {
   if( ! fEtaPriCandidates )
     {
@@ -92,7 +92,7 @@ TH2F* EtaHistograms::GetEtaPriCandidates()
 }
 
 
-TH2F* EtaHistograms::GetPi0Candidates()
+TH2F* EtaOutput::GetPi0Candidates()
 {
   if( ! fPi0Candidates )
     {
@@ -107,7 +107,7 @@ TH2F* EtaHistograms::GetPi0Candidates()
 }
 
 
-TH2F* EtaHistograms::GetOmegaCandidates()
+TH2F* EtaOutput::GetOmegaCandidates()
 {
   if( ! fOmegaCandidates )
     {
@@ -122,7 +122,7 @@ TH2F* EtaHistograms::GetOmegaCandidates()
 }
 
 
-TH2F* EtaHistograms::GetNCells()
+TH2F* EtaOutput::GetNCells()
 {
   if( ! fNCells )
     {
@@ -139,7 +139,7 @@ TH2F* EtaHistograms::GetNCells()
 }
 
 
-TH2F* EtaHistograms::GetNTPCClusters()
+TH2F* EtaOutput::GetNTPCClusters()
 {
   if( ! fNTPCClusters )
     {
@@ -155,7 +155,7 @@ TH2F* EtaHistograms::GetNTPCClusters()
 
 
 
-TH1I* EtaHistograms::GetNSelectedTracks()
+TH1I* EtaOutput::GetNSelectedTracks()
 {
   if( ! fNSelectedTracks )
     {
@@ -167,7 +167,7 @@ TH1I* EtaHistograms::GetNSelectedTracks()
   return fNSelectedTracks;
 }
 
-TH2I* EtaHistograms::GetTracksSelectedRatio()
+TH2I* EtaOutput::GetTracksSelectedRatio()
 {
   if( ! fTracksSelectedRatio )
     {

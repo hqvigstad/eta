@@ -38,7 +38,7 @@ ClassImp(EtaAnalysis)
 #include "TH2F.h"
 #include "TList.h"
 
-#include "EtaHistograms.h"
+#include "EtaOutput.h"
 
 #include <iostream>
 using namespace std;
@@ -46,7 +46,7 @@ using namespace std;
 EtaAnalysis::EtaAnalysis()
   : fConfig(new EtaConfig),
     fOutputList(0),
-    fHistograms(new EtaHistograms ),
+    fHistograms(new EtaOutput ),
     fVerbose(1)
 {
   // default constructor
@@ -55,7 +55,7 @@ EtaAnalysis::EtaAnalysis()
 EtaAnalysis::EtaAnalysis(const EtaConfig* config)
   : fConfig(new EtaConfig(*config)),
     fOutputList(0),
-    fHistograms(new EtaHistograms ),
+    fHistograms(new EtaOutput ),
     fVerbose(0)
 {
   // constructor for setting non standard configurations
