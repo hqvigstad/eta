@@ -11,5 +11,6 @@ do
     cp $file $build_dir
 done
 cp runLocal.C $build_dir
+cp files.txt $build_dir
 cp -r tags $build_dir
 

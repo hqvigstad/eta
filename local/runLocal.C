@@ -26,18 +26,24 @@ void runLocal() {
   gROOT->LoadMacro("EtaTask.cxx+g");
 
   //____________________________________________//
-  AliTagAnalysis *tagAna = new AliTagAnalysis("ESD");
-  tagAna->ChainLocalTags("tags");
+  // chain using tags
+//   AliTagAnalysis *tagAna = new AliTagAnalysis("ESD");
+//   tagAna->ChainLocalTags("tags");
+// 
+//   AliRunTagCuts *runCuts = new AliRunTagCuts();
+//   AliLHCTagCuts *lhcCuts = new AliLHCTagCuts();
+//   AliDetectorTagCuts *detCuts = new AliDetectorTagCuts();
+//   AliEventTagCuts *evCuts = new AliEventTagCuts();
+//   // evCuts->SetMultiplicityRange(11,12);
+//   TChain* chain = 0x0;
+//   chain = tagAna->QueryTags(runCuts, lhcCuts, detCuts, evCuts);
 
-  AliRunTagCuts *runCuts = new AliRunTagCuts();
-  AliLHCTagCuts *lhcCuts = new AliLHCTagCuts();
-  AliDetectorTagCuts *detCuts = new AliDetectorTagCuts();
-  AliEventTagCuts *evCuts = new AliEventTagCuts();
-  // evCuts->SetMultiplicityRange(11,12);
+  //____________________________________________//
+  // chain using list of files.
+  gROOT->LoadMacro("$ALICE_ROOT/PWGUD/macros/CreateESDChain.C");
+  TChain* chain = CreateESDChain("files.txt", 2);
 
-  TChain* chain = 0x0;
-  chain = tagAna->QueryTags(runCuts, lhcCuts, detCuts, evCuts);
-
+  
   //____________________________________________//
   // Make the analysis manager
   AliAnalysisManager *mgr = new AliAnalysisManager("TestManager");
