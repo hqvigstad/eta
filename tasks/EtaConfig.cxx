@@ -18,11 +18,17 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 */
 
+#include "etaparameters.h"
+using namespace EtaParameters;
+
 #include "AliESDCaloCluster.h"
 #include "AliESDtrack.h"
 #include "AliESDtrackCuts.h"
 #include "AliESDVertex.h"
 #include "TMath.h"
+
+#include <iostream>
+using namespace std;
 
 ClassImp(EtaConfig)
 
@@ -42,7 +48,8 @@ EtaConfig::EtaConfig()
   fPi0Mass(0.1349766),
   fPi0MassDiffMax(fPi0Mass*0.05),
   fEtaPriPtMin(0.0),
-  fTrackCuts(0)
+  fTrackCuts(0),
+  fVerbose(TRACK)
 {
   //fTrackCuts = AliESDtrackCuts::GetStandardITSTPCTrackCuts2010();
   return;
@@ -65,7 +72,8 @@ EtaConfig::EtaConfig(const EtaConfig & obj)
   fPi0Mass(0.1349766),
   fPi0MassDiffMax(fPi0Mass*0.05),
   fEtaPriPtMin(0.0),
-  fTrackCuts(0)
+  fTrackCuts(0),
+  fVerbose(TRACK)
 {
   obj.Copy(*this);
 }
@@ -225,15 +233,27 @@ bool EtaConfig::PassTrack(const AliVTrack* track, const AliVVertex* relateToVert
 
 bool EtaConfig::PassCluster(const AliVCluster* cluster) const
 {
-  if( ! fEnableEMCAL && cluster->IsEMCAL() )
+  if( ! fEnableEMCAL && cluster->IsEMCAL() ) {
+    if( EtaParameters::TRACK <= fVerbose )
+      Print("EtaConfig::PassCluster reject cluster: EMCAL not enabled");
     return false;
-  if( cluster->E() < fClusterEnergyMin)
+  }
+  if( cluster->E() < fClusterEnergyMin ) {
+    if( EtaParameters::TRACK <= fVerbose )
+      Printf("EtaConfig::PassCluster reject cluster: energy cut, e:%f  cut:%f", cluster->E(), fClusterEnergyMin);
     return false;
-  if( cluster->GetNCells() < fNCellsMin )
+  }
+  if( cluster->GetNCells() < fNCellsMin ) {
+    if( EtaParameters::TRACK <= fVerbose )
+      Printf("EtaConfig::PassCluster reject cluster: nCells cut, nCells:%d  cut:%d", cluster->GetNCells(), fNCellsMin);
     return false;
-  if( cluster->GetDistanceToBadChannel() < fDistToBadCellMin )
+  }
     return false;
-  
+  if( cluster->GetDistanceToBadChannel() < fDistToBadCellMin ) {
+    if( EtaParameters::TRACK <= fVerbose )
+      Printf("EtaConfig::PassCluster reject cluster: distToBad: dist:%f  cut:%f", cluster->GetDistanceToBadChannel(), fDistToBadCellMin);
+    return false;
+  }
   return true;
 }
 

@@ -22,6 +22,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 #include "EtaCandidate.h"
 #include "EtaPriCandidate.h"
 
+#include "etaparameters.h"
+
 class AliVTrack;
 class AliVCluster;
 class AliESDtrackCuts;
@@ -63,6 +65,8 @@ class EtaConfig : public TObject
   Double_t fPi0MassDiffMax;
   // Eta Prime Cut Parameters
   Double_t fEtaPriPtMin;
+
+  Int_t fVerbose;
 
  private:
   AliESDtrackCuts* fTrackCuts;
