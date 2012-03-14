@@ -235,24 +235,28 @@ bool EtaConfig::PassCluster(const AliVCluster* cluster) const
 {
   if( ! fEnableEMCAL && cluster->IsEMCAL() ) {
     if( EtaParameters::TRACK <= fVerbose )
-      Print("EtaConfig::PassCluster reject cluster: EMCAL not enabled");
+      Print("EtaConfig::PassCluster reject: cluster: EMCAL not enabled");
     return false;
   }
   if( cluster->E() < fClusterEnergyMin ) {
     if( EtaParameters::TRACK <= fVerbose )
-      Printf("EtaConfig::PassCluster reject cluster: energy cut, e:%f  cut:%f", cluster->E(), fClusterEnergyMin);
+      Printf("EtaConfig::PassCluster reject: cluster: energy cut, e:%f  cut:%f", cluster->E(), fClusterEnergyMin);
     return false;
   }
   if( cluster->GetNCells() < fNCellsMin ) {
     if( EtaParameters::TRACK <= fVerbose )
-      Printf("EtaConfig::PassCluster reject cluster: nCells cut, nCells:%d  cut:%d", cluster->GetNCells(), fNCellsMin);
+      Printf("EtaConfig::PassCluster reject: cluster: nCells cut, nCells:%d  cut:%d", cluster->GetNCells(), fNCellsMin);
     return false;
   }
   if( cluster->GetDistanceToBadChannel() < fDistToBadCellMin ) {
     if( EtaParameters::TRACK <= fVerbose )
-      Printf("EtaConfig::PassCluster reject cluster: distToBad: dist:%f  cut:%f", cluster->GetDistanceToBadChannel(), fDistToBadCellMin);
+      Printf("EtaConfig::PassCluster: reject cluster: distToBad: dist:%f  cut:%f", cluster->GetDistanceToBadChannel(), fDistToBadCellMin);
     return false;
   }
+
+ 
+   if( TRACK <= fVerbose )
+     Printf("EtaConfig::PassCluster: cluster passed");
   return true;
 }
 

@@ -76,7 +76,9 @@ EtaAnalysis::~EtaAnalysis()
 void EtaAnalysis::ProcessEvent(AliVEvent* event, AliMCEvent* mcEvent)
 {
   // @event is analysed and its candidates are filled into the histograms.
-
+  if( EVENT < fVerbose )
+    Printf("EtaAnalysis::ProcessEvent: processing...");
+  
   // Get Calorimeter Clusters
   const vector<AliVCluster*> caloClusters = GetClusters(event);
   const vector<AliVCluster*> selectedCaloClusters = SelectClusters( caloClusters, fConfig );
@@ -116,7 +118,7 @@ void EtaAnalysis::ProcessEvent(AliVEvent* event, AliMCEvent* mcEvent)
     cout << "Number Calo. Clusters:" << caloClusters.size()
 	 << ", selected:" << selectedCaloClusters.size() << endl;
     cout << "Number Tracks:" << tracks.size()
-	 << ", selected:" << selectedTracks.size() << endl;
+	 << ", selected:" << selectedTracks.size() << endl << endl;
   }
 }
 
@@ -282,6 +284,7 @@ const vector<AliVCluster*> EtaAnalysis::SelectClusters(const vector<AliVCluster*
   for(unsigned int ci = 0; ci < clusters.size(); ci++)
     if( config->PassCluster(clusters[ci]) )
       selected.push_back( clusters[ci] );
+  Printf("EtaAnalysis::SelectClusters returning %d selected clusters", selected.size());
   return selected;
 }
 
