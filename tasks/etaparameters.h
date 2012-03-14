@@ -9,7 +9,8 @@ namespace EtaParameters {
 		 FLOW=10, // flow of analysis
 		 EVENT=20, // event level
 		 CANDIDATE=30, // candidate level
-		 TRACK=40 // Track, cluster
+		 TRACK=40, // Track, cluster
+		 TRACK_EXTRA=45
   };
   
 }
