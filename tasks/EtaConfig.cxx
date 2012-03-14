@@ -255,7 +255,7 @@ bool EtaConfig::PassCluster(const AliVCluster* cluster) const
   }
 
  
-   if( TRACK <= fVerbose )
+   if( TRACK_EXTRA <= fVerbose )
      Printf("EtaConfig::PassCluster: cluster passed");
   return true;
 }
