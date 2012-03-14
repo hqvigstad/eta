@@ -64,6 +64,7 @@ void runLocal() {
 	sprintf(name, "etaTask_%s", hash);
 	EtaTask *task = new EtaTask(name);
 	EtaConfig conf;
+	conf.fDistToBadCellMin = -1;
 	if(em)
 	  conf.fEnableEMCAL = true;
 	task->SetConfig(&conf);
