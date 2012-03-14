@@ -26,7 +26,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  * by SetOutputList().
  */
 
-ClassImp(EtaAnalysis)
+#include "etaparameters.h"
+using namespace EtaParameters;
 
 #include "AliVTrack.h"
 #include "AliESDEvent.h"
@@ -43,11 +44,14 @@ ClassImp(EtaAnalysis)
 #include <iostream>
 using namespace std;
 
+
+ClassImp(EtaAnalysis)
+
 EtaAnalysis::EtaAnalysis()
   : fConfig(new EtaConfig),
     fOutputList(0),
     fHistograms(new EtaOutput ),
-    fVerbose(1)
+    fVerbose(TRACK)
 {
   // default constructor
 }
@@ -56,7 +60,7 @@ EtaAnalysis::EtaAnalysis(const EtaConfig* config)
   : fConfig(new EtaConfig(*config)),
     fOutputList(0),
     fHistograms(new EtaOutput ),
-    fVerbose(0)
+    fVerbose(TRACK)
 {
   // constructor for setting non standard configurations
 }
@@ -108,7 +112,7 @@ void EtaAnalysis::ProcessEvent(AliVEvent* event, AliMCEvent* mcEvent)
   if( tracks.size() )
     fHistograms->GetTracksSelectedRatio()->Fill( selectedTracks.size(), double(selectedTracks.size())/tracks.size());
 
-  if( fVerbose ) {
+  if( EVENT <= fVerbose ) {
     cout << "Number Calo. Clusters:" << caloClusters.size()
 	 << ", selected:" << selectedCaloClusters.size() << endl;
     cout << "Number Tracks:" << tracks.size()
