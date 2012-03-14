@@ -248,7 +248,6 @@ bool EtaConfig::PassCluster(const AliVCluster* cluster) const
       Printf("EtaConfig::PassCluster reject cluster: nCells cut, nCells:%d  cut:%d", cluster->GetNCells(), fNCellsMin);
     return false;
   }
-    return false;
   if( cluster->GetDistanceToBadChannel() < fDistToBadCellMin ) {
     if( EtaParameters::TRACK <= fVerbose )
       Printf("EtaConfig::PassCluster reject cluster: distToBad: dist:%f  cut:%f", cluster->GetDistanceToBadChannel(), fDistToBadCellMin);
