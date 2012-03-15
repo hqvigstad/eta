@@ -19,6 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 #include "EtaPriCandidate.h"
 #include "EtaCandidate.h"
 #include "AliESDtrack.h"
+#include <TVector3.h>
 
 EtaPriCandidate::EtaPriCandidate(EtaCandidate eta, const AliVTrack* track1, const AliVTrack* track2)
   : fEta(eta),
@@ -26,13 +27,14 @@ EtaPriCandidate::EtaPriCandidate(EtaCandidate eta, const AliVTrack* track1, cons
     fTrack2(track2),
     fVector()
 {
-  const double pionMass = 139.57018;
+  const double pionMass = 0.13957018;
   
   double pvec1[3], pvec2[3];
-  track1->PxPyPz(pvec1);
-  track2->PxPyPz(pvec2);
-  TLorentzVector lVec1(pvec1[0], pvec1[1], pvec1[2], pionMass);
-  TLorentzVector lVec2(pvec2[0], pvec2[1], pvec2[2], pionMass);
+  track1->GetPxPyPz(pvec1);
+  track2->GetPxPyPz(pvec2);
+  TLorentzVector lVec1, lVec2;
+  lVec1.SetVectM(TVector3(pvec1), pionMass);
+  lVec2.SetVectM(TVector3(pvec2), pionMass);
   
   fVector = lVec1 + lVec2 + eta.GetVector();
 }
