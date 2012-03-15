@@ -284,7 +284,8 @@ const vector<AliVCluster*> EtaAnalysis::SelectClusters(const vector<AliVCluster*
   for(unsigned int ci = 0; ci < clusters.size(); ci++)
     if( config->PassCluster(clusters[ci]) )
       selected.push_back( clusters[ci] );
-  Printf("EtaAnalysis::SelectClusters returning %d selected clusters", selected.size());
+  if(TRACK <= config->fVerbose)
+    Printf("EtaAnalysis::SelectClusters returning %d selected clusters", selected.size());
   return selected;
 }
 
