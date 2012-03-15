@@ -49,7 +49,7 @@ EtaConfig::EtaConfig()
   fPi0MassDiffMax(fPi0Mass*0.05),
   fEtaPriPtMin(0.0),
   fTrackCuts(0),
-  fVerbose(TRACK)
+  fVerbose(SILENT)
 {
   //fTrackCuts = AliESDtrackCuts::GetStandardITSTPCTrackCuts2010();
   return;
@@ -73,7 +73,7 @@ EtaConfig::EtaConfig(const EtaConfig & obj)
   fPi0MassDiffMax(fPi0Mass*0.05),
   fEtaPriPtMin(0.0),
   fTrackCuts(0),
-  fVerbose(TRACK)
+  fVerbose(SILENT)
 {
   obj.Copy(*this);
 }
