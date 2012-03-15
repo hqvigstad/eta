@@ -3,4 +3,4 @@
   message(${ALIROOT_INCLUDES})
   set(LIBS ${LIBS} ${ALIROOT_LIBRARIES})
 
-  add_library(libTask EtaAnalysis.cxx  EtaCandidate.cxx  EtaConfig.cxx  EtaHistograms.cxx  EtaPriCandidate.cxx  EtaTask.cxx )
+  add_library(libTask EtaAnalysis.cxx  EtaCandidate.cxx  EtaConfig.cxx  EtaOutput.cxx  EtaPriCandidate.cxx  EtaTask.cxx )
