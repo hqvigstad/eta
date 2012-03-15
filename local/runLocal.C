@@ -41,7 +41,7 @@ void runLocal() {
   //____________________________________________//
   // chain using list of files.
   gROOT->LoadMacro("$ALICE_ROOT/PWGUD/macros/CreateESDChain.C");
-  TChain* chain = CreateESDChain("files.txt", 2);
+  TChain* chain = CreateESDChain("files.txt", 10);
 
   
   //____________________________________________//
